@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+*.log
+pnpm-debug.log*
+.env
+.env.*
+!.env.example
+/android_screenshot.png

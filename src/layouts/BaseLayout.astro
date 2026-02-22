@@ -1,0 +1,63 @@
+---
+import "../styles/global.css";
+import type { Locale } from "../i18n/types";
+
+interface Props {
+    locale: Locale;
+    title: string;
+    description: string;
+    canonicalPath: string;
+}
+
+const { locale, title, description, canonicalPath } = Astro.props;
+const siteUrl = "https://trendingai.cn";
+const canonical = `${siteUrl}${canonicalPath}`;
+const zhUrl = `${siteUrl}/`;
+const enUrl = `${siteUrl}/en/`;
+const ogImage = `${siteUrl}/android_screenshot.png`;
+---
+
+<!doctype html>
+<html lang={locale === "zh-CN" ? "zh-CN" : "en"}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonical} />
+        <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="x-default" href={zhUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={ogImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+        <title>{title}</title>
+    </head>
+    <body>
+        <slot />
+        <script is:inline>
+            const observer = new IntersectionObserver((entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                }
+            }, {
+                threshold: 0.15
+            });
+
+            document.querySelectorAll(".reveal").forEach((element) => {
+                observer.observe(element);
+            });
+        </script>
+    </body>
+</html>

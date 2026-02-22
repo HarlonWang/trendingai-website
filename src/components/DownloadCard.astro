@@ -1,0 +1,145 @@
+---
+import type { Locale, SiteMessages } from "../i18n/types";
+
+interface Props {
+    locale: Locale;
+    messages: SiteMessages["download"];
+}
+
+const { locale, messages } = Astro.props;
+const fallbackUrl = "https://github.com/HarlonWang/TrendingAI/releases";
+---
+
+<section class="wrap section reveal" id="download">
+    <div class="download-card" data-download-card data-locale={locale}>
+        <h2>{messages.title}</h2>
+        <p>{messages.description}</p>
+
+        <p class="download-loading" data-download-loading>{messages.loading}</p>
+        <p class="download-error" data-download-error hidden>{messages.error}</p>
+
+        <dl class="download-meta" data-download-meta hidden>
+            <div>
+                <dt>{messages.versionLabel}</dt>
+                <dd data-download-version>-</dd>
+            </div>
+            <div>
+                <dt>{messages.dateLabel}</dt>
+                <dd data-download-date>-</dd>
+            </div>
+            <div>
+                <dt>{messages.sizeLabel}</dt>
+                <dd data-download-size>-</dd>
+            </div>
+            <div>
+                <dt>{messages.digestLabel}</dt>
+                <dd data-download-digest>-</dd>
+            </div>
+        </dl>
+
+        <div class="download-actions">
+            <a class="btn btn-primary" href={fallbackUrl} data-download-link target="_blank" rel="noreferrer">{messages.fallbackCta}</a>
+            <a class="btn btn-ghost" href={fallbackUrl} target="_blank" rel="noreferrer">GitHub Releases</a>
+        </div>
+    </div>
+</section>
+
+<script is:inline define:vars={{ locale, ctaText: messages.cta }}>
+    const card = document.querySelector("[data-download-card]");
+
+    if (card instanceof HTMLElement) {
+        const loadingElement = card.querySelector("[data-download-loading]");
+        const errorElement = card.querySelector("[data-download-error]");
+        const metaElement = card.querySelector("[data-download-meta]");
+        const linkElement = card.querySelector("[data-download-link]");
+        const versionElement = card.querySelector("[data-download-version]");
+        const dateElement = card.querySelector("[data-download-date]");
+        const sizeElement = card.querySelector("[data-download-size]");
+        const digestElement = card.querySelector("[data-download-digest]");
+
+        const formatSize = (bytes) => {
+            if (!Number.isFinite(bytes) || bytes <= 0) {
+                return "-";
+            }
+
+            const units = ["B", "KB", "MB", "GB"];
+            let value = bytes;
+            let unitIndex = 0;
+
+            while (value >= 1024 && unitIndex < units.length - 1) {
+                value = value / 1024;
+                unitIndex += 1;
+            }
+
+            return `${value.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+        };
+
+        const formatDate = (value) => {
+            if (!value) {
+                return "-";
+            }
+
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) {
+                return "-";
+            }
+
+            return new Intl.DateTimeFormat(locale, {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }).format(date);
+        };
+
+        fetch("/api/latest-apk", {
+            headers: {
+                "Accept": "application/json"
+            }
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Request failed");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (!data || !data.downloadUrl) {
+                    throw new Error("Invalid payload");
+                }
+
+                if (loadingElement instanceof HTMLElement) {
+                    loadingElement.hidden = true;
+                }
+                if (errorElement instanceof HTMLElement) {
+                    errorElement.hidden = true;
+                }
+                if (metaElement instanceof HTMLElement) {
+                    metaElement.hidden = false;
+                }
+                if (linkElement instanceof HTMLAnchorElement) {
+                    linkElement.href = data.downloadUrl;
+                    linkElement.textContent = ctaText;
+                }
+                if (versionElement instanceof HTMLElement) {
+                    versionElement.textContent = data.version ?? "-";
+                }
+                if (dateElement instanceof HTMLElement) {
+                    dateElement.textContent = formatDate(data.publishedAt);
+                }
+                if (sizeElement instanceof HTMLElement) {
+                    sizeElement.textContent = formatSize(data.size);
+                }
+                if (digestElement instanceof HTMLElement) {
+                    digestElement.textContent = data.digest ?? "-";
+                }
+            })
+            .catch(() => {
+                if (loadingElement instanceof HTMLElement) {
+                    loadingElement.hidden = true;
+                }
+                if (errorElement instanceof HTMLElement) {
+                    errorElement.hidden = false;
+                }
+            });
+    }
+</script>

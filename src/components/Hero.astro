@@ -1,0 +1,51 @@
+---
+import LanguageSwitch from "./LanguageSwitch.astro";
+
+interface Props {
+    homeHref: string;
+    badge: string;
+    title: string;
+    subtitle: string;
+    primaryCta: string;
+    secondaryCta: string;
+    githubLabel: string;
+    downloadLabel: string;
+    languageLabel: string;
+    languageHref: string;
+}
+
+const {
+    homeHref,
+    badge,
+    title,
+    subtitle,
+    primaryCta,
+    secondaryCta,
+    githubLabel,
+    downloadLabel,
+    languageLabel,
+    languageHref
+} = Astro.props;
+---
+
+<header class="hero wrap">
+    <nav class="topbar reveal">
+        <a class="brand" href={homeHref}>Trending AI</a>
+        <div class="topbar-actions">
+            <a class="top-link" href="#download">{downloadLabel}</a>
+            <a class="top-link" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{githubLabel}</a>
+            <LanguageSwitch href={languageHref} label={languageLabel} />
+        </div>
+    </nav>
+
+    <div class="hero-content reveal">
+        <p class="hero-badge">{badge}</p>
+        <h1>{title}</h1>
+        <p class="hero-subtitle">{subtitle}</p>
+
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#download">{primaryCta}</a>
+            <a class="btn btn-ghost" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{secondaryCta}</a>
+        </div>
+    </div>
+</header>

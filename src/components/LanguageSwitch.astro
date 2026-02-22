@@ -1,0 +1,25 @@
+---
+interface Props {
+    href: string;
+    label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<a class="lang-switch" href={href} data-lang-switch>{label}</a>
+
+<script is:inline>
+    document.querySelectorAll("[data-lang-switch]").forEach((element) => {
+        const anchor = element;
+        if (!(anchor instanceof HTMLAnchorElement)) {
+            return;
+        }
+
+        const baseHref = anchor.getAttribute("href") || "/";
+        const hash = window.location.hash;
+        if (hash) {
+            anchor.href = `${baseHref}${hash}`;
+        }
+    });
+</script>

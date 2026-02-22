@@ -1,0 +1,19 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    alt: string;
+}
+
+const { title, description, alt } = Astro.props;
+---
+
+<section class="wrap section preview-section reveal" id="preview">
+    <div class="preview-copy">
+        <h2>{title}</h2>
+        <p>{description}</p>
+    </div>
+    <div class="preview-image-wrap">
+        <img src="/android_screenshot.png" alt={alt} class="preview-image" loading="lazy" />
+    </div>
+</section>

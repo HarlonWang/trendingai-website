@@ -1,0 +1,22 @@
+---
+import type { FeatureItem } from "../i18n/types";
+
+interface Props {
+    title: string;
+    items: FeatureItem[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="wrap section reveal" id="features">
+    <h2>{title}</h2>
+    <div class="feature-grid">
+        {items.map((item, index) => (
+            <article class="feature-card" style={`--stagger:${index};`}>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+            </article>
+        ))}
+    </div>
+</section>
