@@ -3,7 +3,6 @@ import DownloadCard from "../components/DownloadCard.astro";
 import Features from "../components/Features.astro";
 import Footer from "../components/Footer.astro";
 import Hero from "../components/Hero.astro";
-import Preview from "../components/Preview.astro";
 import { getMessages, getPathByLocale, getSwitchLocale } from "../lib/i18n";
 import type { Locale } from "../i18n/types";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -23,9 +22,10 @@ const switchPath = getPathByLocale(switchLocale);
 >
     <Hero
         homeHref={homePath}
-        badge={messages.hero.badge}
         title={messages.hero.title}
         subtitle={messages.hero.subtitle}
+        previewSrc="/android_screenshot_zh.png"
+        previewAlt={messages.preview.alt}
         primaryCta={messages.hero.primaryCta}
         secondaryCta={messages.hero.secondaryCta}
         githubLabel={messages.nav.github}
@@ -34,11 +34,6 @@ const switchPath = getPathByLocale(switchLocale);
         languageHref={switchPath}
     />
     <Features title={messages.features.title} items={messages.features.items} />
-    <Preview
-        title={messages.preview.title}
-        description={messages.preview.description}
-        alt={messages.preview.alt}
-    />
     <DownloadCard locale={locale} messages={messages.download} />
     <Footer
         copyright={messages.footer.copyright}

@@ -3,9 +3,10 @@ import LanguageSwitch from "./LanguageSwitch.astro";
 
 interface Props {
     homeHref: string;
-    badge: string;
     title: string;
     subtitle: string;
+    previewSrc: string;
+    previewAlt: string;
     primaryCta: string;
     secondaryCta: string;
     githubLabel: string;
@@ -16,9 +17,10 @@ interface Props {
 
 const {
     homeHref,
-    badge,
     title,
     subtitle,
+    previewSrc,
+    previewAlt,
     primaryCta,
     secondaryCta,
     githubLabel,
@@ -38,14 +40,21 @@ const {
         </div>
     </nav>
 
-    <div class="hero-content reveal">
-        <p class="hero-badge">{badge}</p>
-        <h1>{title}</h1>
-        <p class="hero-subtitle">{subtitle}</p>
+    <div class="hero-main reveal">
+        <div class="hero-content">
+            <h1>{title}</h1>
+            <p class="hero-subtitle">{subtitle}</p>
 
-        <div class="hero-actions">
-            <a class="btn btn-primary" href="#download">{primaryCta}</a>
-            <a class="btn btn-ghost" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{secondaryCta}</a>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#download">{primaryCta}</a>
+                <a class="btn btn-ghost" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{secondaryCta}</a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-image-wrap">
+                <img src={previewSrc} alt={previewAlt} class="hero-image" loading="eager" />
+            </div>
         </div>
     </div>
 </header>
