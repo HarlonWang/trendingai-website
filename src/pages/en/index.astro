@@ -1,6 +1,5 @@
 ---
 import DownloadCard from "../../components/DownloadCard.astro";
-import Features from "../../components/Features.astro";
 import Footer from "../../components/Footer.astro";
 import Hero from "../../components/Hero.astro";
 import { getMessages, getPathByLocale, getSwitchLocale } from "../../lib/i18n";
@@ -24,16 +23,16 @@ const switchPath = getPathByLocale(switchLocale);
         homeHref={homePath}
         title={messages.hero.title}
         subtitle={messages.hero.subtitle}
+        featuresTitle={messages.features.title}
+        features={messages.features.items}
         previewSrc="/android_screenshot.png"
         previewAlt={messages.preview.alt}
         primaryCta={messages.hero.primaryCta}
-        secondaryCta={messages.hero.secondaryCta}
         githubLabel={messages.nav.github}
         downloadLabel={messages.nav.download}
         languageLabel={messages.nav.languageLabel}
         languageHref={switchPath}
     />
-    <Features title={messages.features.title} items={messages.features.items} />
     <DownloadCard locale={locale} messages={messages.download} />
     <Footer
         copyright={messages.footer.copyright}
