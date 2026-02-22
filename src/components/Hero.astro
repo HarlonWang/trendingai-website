@@ -35,10 +35,13 @@ const {
 
 <header class="hero wrap">
     <nav class="topbar reveal">
-        <a class="brand" href={homeHref}>Trending AI</a>
+        <a class="brand" href={homeHref}>
+            <img class="brand-logo" src="/ic_launcher_round.webp" alt="Trending AI Logo" loading="eager" />
+            <span class="brand-text">Trending AI</span>
+        </a>
         <div class="topbar-actions">
-            <a class="top-link" href="#download">{downloadLabel}</a>
-            <a class="top-link" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{githubLabel}</a>
+            <a class="top-link nav-cta" href="#download">{downloadLabel}</a>
+            <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{githubLabel}</a>
             <LanguageSwitch href={languageHref} label={languageLabel} />
         </div>
     </nav>

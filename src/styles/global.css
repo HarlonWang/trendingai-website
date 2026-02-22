@@ -79,17 +79,32 @@ a {
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: 10px 16px;
-    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--md-sys-color-surface-container) 80%, transparent);
-    backdrop-filter: blur(8px);
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
 }
 
 .brand {
-    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.08rem;
     font-weight: 800;
     letter-spacing: 0.01em;
+}
+
+.brand-logo {
+    display: block;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+
+.brand-text {
+    display: inline-block;
+    line-height: 1;
 }
 
 .topbar-actions {
@@ -100,18 +115,36 @@ a {
 
 .top-link,
 .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 8px 12px;
-    border-radius: 12px;
-    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
+    font-weight: 600;
     font-size: 0.87rem;
     color: var(--md-sys-color-on-surface-variant);
     transition: background-color 180ms ease, color 180ms ease;
 }
 
-.top-link:hover,
+.top-link.nav-text:hover,
 .lang-switch:hover {
     background: color-mix(in srgb, var(--md-sys-color-primary-container) 68%, transparent);
     color: var(--md-sys-color-on-primary-container);
+}
+
+.top-link.nav-cta {
+    padding: 8px 14px;
+    border-radius: 10px;
+    color: var(--md-sys-color-on-primary);
+    background: var(--md-sys-color-primary);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--md-sys-color-primary) 32%, transparent);
+}
+
+.top-link.nav-cta:hover {
+    color: var(--md-sys-color-on-primary);
+    background: color-mix(in srgb, var(--md-sys-color-primary) 92%, black 8%);
 }
 
 .hero-content {
@@ -366,6 +399,7 @@ a {
 
     .topbar {
         flex-wrap: wrap;
+        gap: 10px;
     }
 
     .hero-main {
@@ -392,14 +426,19 @@ a {
 }
 
 @media (max-width: 520px) {
+    .brand-logo {
+        width: 30px;
+        height: 30px;
+    }
+
     .topbar-actions {
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
     }
 
     .top-link,
     .lang-switch {
-        flex: 1;
-        text-align: center;
+        flex: 0 0 auto;
+        text-align: left;
     }
 }
