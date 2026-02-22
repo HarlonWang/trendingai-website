@@ -1,5 +1,4 @@
 ---
-import DownloadCard from "../../components/DownloadCard.astro";
 import Footer from "../../components/Footer.astro";
 import Hero from "../../components/Hero.astro";
 import { getMessages, getPathByLocale, getSwitchLocale } from "../../lib/i18n";
@@ -33,7 +32,6 @@ const switchPath = getPathByLocale(switchLocale);
         languageLabel={messages.nav.languageLabel}
         languageHref={switchPath}
     />
-    <DownloadCard locale={locale} messages={messages.download} />
     <Footer
         copyright={messages.footer.copyright}
         license={messages.footer.license}

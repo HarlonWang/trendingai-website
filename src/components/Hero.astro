@@ -2,6 +2,8 @@
 import LanguageSwitch from "./LanguageSwitch.astro";
 import type { FeatureItem } from "../i18n/types";
 
+const DOWNLOAD_URL = "https://download.trendingai.cn/TrendingAI-latest.apk";
+
 interface Props {
     homeHref: string;
     title: string;
@@ -40,7 +42,7 @@ const {
             <span class="brand-text">Trending AI</span>
         </a>
         <div class="topbar-actions">
-            <a class="top-link nav-cta" href="#download">{downloadLabel}</a>
+            <a class="top-link nav-cta" href={DOWNLOAD_URL} target="_blank" rel="noreferrer">{downloadLabel}</a>
             <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{githubLabel}</a>
             <LanguageSwitch href={languageHref} label={languageLabel} />
         </div>
@@ -51,7 +53,7 @@ const {
             <h1>{title}</h1>
             <p class="hero-subtitle">{subtitle}</p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="#download">{primaryCta}</a>
+                <a class="btn btn-primary" href={DOWNLOAD_URL} target="_blank" rel="noreferrer">{primaryCta}</a>
                 <a class="btn btn-ghost" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{secondaryCta}</a>
             </div>
 
