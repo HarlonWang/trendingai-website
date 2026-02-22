@@ -63,7 +63,7 @@ a {
 }
 
 .hero {
-    padding-top: 28px;
+    padding-top: 16px;
 }
 
 .hero-main {
@@ -71,7 +71,7 @@ a {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
     gap: 26px;
     align-items: center;
-    padding: 46px 0 28px;
+    padding: 24px 0 28px;
 }
 
 .topbar {
@@ -398,7 +398,7 @@ a {
 
     .hero-main {
         grid-template-columns: 1fr;
-        padding-top: 34px;
+        padding-top: 18px;
     }
 
     .hero-visual {
