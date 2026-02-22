@@ -28,14 +28,9 @@ const switchPath = getPathByLocale(switchLocale);
         primaryCta={messages.hero.primaryCta}
         secondaryCta={messages.hero.secondaryCta}
         githubLabel={messages.nav.github}
-        downloadLabel={messages.nav.download}
+        changelogLabel={messages.footer.changelog}
         languageLabel={messages.nav.languageLabel}
         languageHref={switchPath}
     />
-    <Footer
-        copyright={messages.footer.copyright}
-        license={messages.footer.license}
-        changelog={messages.footer.changelog}
-        repository={messages.footer.repository}
-    />
+    <Footer copyright={messages.footer.copyright} />
 </BaseLayout>

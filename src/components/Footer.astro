@@ -1,19 +1,11 @@
 ---
 interface Props {
     copyright: string;
-    license: string;
-    changelog: string;
-    repository: string;
 }
 
-const { copyright, license, changelog, repository } = Astro.props;
+const { copyright } = Astro.props;
 ---
 
 <footer class="wrap footer reveal">
     <p>{copyright}</p>
-    <div class="footer-links">
-        <a href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{repository}</a>
-        <a href="https://github.com/HarlonWang/TrendingAI/releases" target="_blank" rel="noreferrer">{changelog}</a>
-        <a href="https://github.com/HarlonWang/TrendingAI/blob/main/LICENSE" target="_blank" rel="noreferrer">{license}</a>
-    </div>
 </footer>

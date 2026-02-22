@@ -14,7 +14,7 @@ interface Props {
     primaryCta: string;
     secondaryCta: string;
     githubLabel: string;
-    downloadLabel: string;
+    changelogLabel: string;
     languageLabel: string;
     languageHref: string;
 }
@@ -29,7 +29,7 @@ const {
     primaryCta,
     secondaryCta,
     githubLabel,
-    downloadLabel,
+    changelogLabel,
     languageLabel,
     languageHref
 } = Astro.props;
@@ -42,7 +42,7 @@ const {
             <span class="brand-text">Trending AI</span>
         </a>
         <div class="topbar-actions">
-            <a class="top-link nav-cta" href={DOWNLOAD_URL} target="_blank" rel="noreferrer">{downloadLabel}</a>
+            <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI/releases" target="_blank" rel="noreferrer">{changelogLabel}</a>
             <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{githubLabel}</a>
             <LanguageSwitch href={languageHref} label={languageLabel} />
         </div>
