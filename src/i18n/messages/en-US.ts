@@ -14,9 +14,9 @@ export const enUS: SiteMessages = {
     hero: {
         badge: "Material 3 aligned · Minimal landing",
         title: "Understand GitHub Trending with AI",
-        subtitle: "Browse daily, weekly, and monthly trending repositories and get concise AI summaries to discover high-value open source projects faster.",
+        subtitle: "Save time reading long READMEs and source code by efficiently filtering and locating high-value open source repositories.",
         primaryCta: "Download Now",
-        secondaryCta: "View Source"
+        secondaryCta: "Open Repository"
     },
     features: {
         title: "Core Features",

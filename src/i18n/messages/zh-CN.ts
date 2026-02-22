@@ -14,9 +14,9 @@ export const zhCN: SiteMessages = {
     hero: {
         badge: "Material 3 风格 · 极简官网",
         title: "用 AI 快速读懂 GitHub Trending",
-        subtitle: "聚合今日、本周、本月热门仓库，并自动生成高质量摘要，帮助你更快发现高价值开源项目。",
+        subtitle: "省去翻阅冗长 README 和源码的时间，高效过滤并定位高价值的开源仓库。",
         primaryCta: "立即下载",
-        secondaryCta: "查看源码"
+        secondaryCta: "开源仓库"
     },
     features: {
         title: "核心能力",

@@ -6,11 +6,11 @@ interface Props {
     homeHref: string;
     title: string;
     subtitle: string;
-    featuresTitle: string;
     features: FeatureItem[];
     previewSrc: string;
     previewAlt: string;
     primaryCta: string;
+    secondaryCta: string;
     githubLabel: string;
     downloadLabel: string;
     languageLabel: string;
@@ -21,11 +21,11 @@ const {
     homeHref,
     title,
     subtitle,
-    featuresTitle,
     features,
     previewSrc,
     previewAlt,
     primaryCta,
+    secondaryCta,
     githubLabel,
     downloadLabel,
     languageLabel,
@@ -52,10 +52,10 @@ const {
             <p class="hero-subtitle">{subtitle}</p>
             <div class="hero-actions">
                 <a class="btn btn-primary" href="#download">{primaryCta}</a>
+                <a class="btn btn-ghost" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{secondaryCta}</a>
             </div>
 
             <section class="hero-feature-block">
-                <h2 class="hero-feature-title">{featuresTitle}</h2>
                 <div class="hero-feature-list">
                     {features.map((item) => (
                         <article class="hero-feature-item">
