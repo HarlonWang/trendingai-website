@@ -8,3 +8,5 @@ pnpm-debug.log*
 .env.*
 !.env.example
 /android_screenshot.png
+
+.idea/
