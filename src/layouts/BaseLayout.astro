@@ -12,14 +12,37 @@ interface Props {
 const { locale, title, description, canonicalPath } = Astro.props;
 const siteUrl = "https://trendingai.cn";
 const canonical = `${siteUrl}${canonicalPath}`;
-const zhUrl = `${siteUrl}/`;
-const enUrl = `${siteUrl}/en/`;
+const zhUrl = `${siteUrl}/zh/`;
+const enUrl = `${siteUrl}/`;
 const ogImage = `${siteUrl}/android_screenshot.png`;
 ---
 
 <!doctype html>
 <html lang={locale === "zh-CN" ? "zh-CN" : "en"}>
     <head>
+        <script is:inline>
+            (function() {
+                const storageKey = 'preferred-locale';
+                const savedLocale = localStorage.getItem(storageKey);
+                
+                // 探测浏览器语言
+                let browserLocale = 'en-US';
+                if (navigator.language.toLowerCase().startsWith('zh')) {
+                    browserLocale = 'zh-CN';
+                }
+                
+                // 最终决定使用的语言 (手动选择优先)
+                const finalLocale = savedLocale || browserLocale;
+                const currentPath = window.location.pathname;
+
+                // 跳转逻辑
+                if (finalLocale === 'zh-CN' && (currentPath === '/' || currentPath === '/index.html')) {
+                    window.location.href = '/zh/';
+                } else if (finalLocale === 'en-US' && currentPath.startsWith('/zh/')) {
+                    window.location.href = '/';
+                }
+            })();
+        </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={description} />
@@ -29,7 +52,7 @@ const ogImage = `${siteUrl}/android_screenshot.png`;
         <link rel="canonical" href={canonical} />
         <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
         <link rel="alternate" hreflang="en" href={enUrl} />
-        <link rel="alternate" hreflang="x-default" href={zhUrl} />
+        <link rel="alternate" hreflang="x-default" href={enUrl} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

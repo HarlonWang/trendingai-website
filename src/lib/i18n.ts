@@ -12,7 +12,7 @@ export function getMessages(locale: Locale): SiteMessages {
 }
 
 export function getPathByLocale(locale: Locale): string {
-    return locale === "en-US" ? "/en/" : "/";
+    return locale === "zh-CN" ? "/zh/" : "/";
 }
 
 export function getSwitchLocale(locale: Locale): Locale {

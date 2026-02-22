@@ -5,7 +5,7 @@ import { getMessages, getPathByLocale, getSwitchLocale } from "../../lib/i18n";
 import type { Locale } from "../../i18n/types";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const locale: Locale = "en-US";
+const locale: Locale = "zh-CN";
 const messages = getMessages(locale);
 const homePath = getPathByLocale(locale);
 const switchLocale = getSwitchLocale(locale);
@@ -16,14 +16,14 @@ const switchPath = getPathByLocale(switchLocale);
     locale={locale}
     title={messages.meta.title}
     description={messages.meta.description}
-    canonicalPath="/en/"
+    canonicalPath="/zh/"
 >
     <Hero
         homeHref={homePath}
         title={messages.hero.title}
         subtitle={messages.hero.subtitle}
         features={messages.features.items}
-        previewSrc="/android_screenshot.png"
+        previewSrc="/android_screenshot_zh.png"
         previewAlt={messages.preview.alt}
         primaryCta={messages.hero.primaryCta}
         secondaryCta={messages.hero.secondaryCta}

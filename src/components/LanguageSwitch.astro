@@ -11,6 +11,12 @@ const { href, label } = Astro.props;
 
 <script is:inline>
     document.querySelectorAll("[data-lang-switch]").forEach((element) => {
+        element.addEventListener('click', () => {
+            const href = element.getAttribute("href") || "/";
+            const newLocale = href.startsWith("/zh/") ? "zh-CN" : "en-US";
+            localStorage.setItem("preferred-locale", newLocale);
+        });
+
         const anchor = element;
         if (!(anchor instanceof HTMLAnchorElement)) {
             return;
