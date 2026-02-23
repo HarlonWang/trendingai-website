@@ -27,7 +27,7 @@ export const enUS: SiteMessages = {
             },
             {
                 title: "AI-Powered Summaries",
-                description: "Integrated with Gemini and DeepSeek to extract key capabilities and technical highlights."
+                description: "Integrated with ChatGPT and DeepSeek to extract key capabilities and technical highlights."
             },
             {
                 title: "Historical Records",

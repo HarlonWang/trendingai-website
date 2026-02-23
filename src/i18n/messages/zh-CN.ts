@@ -27,7 +27,7 @@ export const zhCN: SiteMessages = {
             },
             {
                 title: "AI 智能摘要",
-                description: "集成 Gemini 与 DeepSeek，为热门项目自动提炼核心信息与技术要点。"
+                description: "集成 ChatGPT 与 DeepSeek，为热门项目自动提炼核心信息与技术要点。"
             },
             {
                 title: "历史记录回溯",
