@@ -159,11 +159,10 @@ const config = {
             statusElement.className = "trending-status";
 
             if (!message) {
-                statusElement.hidden = true;
                 return;
             }
 
-            statusElement.hidden = false;
+            statusElement.classList.add("is-visible");
             if (type) {
                 statusElement.classList.add(`is-${type}`);
             }

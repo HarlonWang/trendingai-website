@@ -432,11 +432,15 @@ a {
     border-radius: 12px;
     border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
     padding: 10px 12px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
     background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+}
+
+.trending-status.is-visible {
+    display: flex;
 }
 
 .trending-status p {
