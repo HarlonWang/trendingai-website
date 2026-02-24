@@ -343,9 +343,10 @@ const config = {
                 const rank = Number(item.rank) || index + 1;
                 const repoName = `${item.author || "unknown"}/${item.repoName || "unknown"}`;
                 const url = safeUrl(item.url);
-                const description = (typeof item.description === "string" && item.description.trim()) ? item.description.trim() : (labels.repoDescriptionFallback || "No description");
+                const description = typeof item.description === "string" ? item.description.trim() : "";
                 const summary = pickSummary(item) || (labels.summaryFallback || "No summary");
                 const language = (typeof item.language === "string" && item.language.trim()) ? item.language.trim() : "-";
+                const descriptionHtml = description ? `<p class=\"trending-repo-description\">${escapeHtml(description)}</p>` : "";
 
                 return `
                     <article class="trending-repo-card">
@@ -353,7 +354,7 @@ const config = {
                             <span class="trending-rank">#${escapeHtml(rank)}</span>
                             <a class="trending-repo-link" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(repoName)}</a>
                         </header>
-                        <p class="trending-repo-description">${escapeHtml(description)}</p>
+                        ${descriptionHtml}
                         <dl class="trending-repo-meta">
                             <div>
                                 <dt>${escapeHtml(labels.languageLabel || "Language")}</dt>

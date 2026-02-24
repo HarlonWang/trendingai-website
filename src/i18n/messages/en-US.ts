@@ -71,7 +71,6 @@ export const enUS: SiteMessages = {
         retry: "Retry",
         summaryLabel: "AI Summary",
         summaryFallback: "No AI summary available yet.",
-        repoDescriptionFallback: "No repository description.",
         languageLabel: "Language",
         starsLabel: "Stars",
         periodStarsLabel: "Stars (Daily)"
