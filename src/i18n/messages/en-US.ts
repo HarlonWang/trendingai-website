@@ -2,13 +2,16 @@ import type { SiteMessages } from "../types";
 
 export const enUS: SiteMessages = {
     meta: {
-        title: "Trending AI - Understand GitHub Trending with AI",
-        description: "Trending AI is a Kotlin Multiplatform app that helps you explore GitHub Trending repositories with AI-powered summaries.",
+        trendingTitle: "Trending AI - Daily GitHub Trending with AI Summaries",
+        trendingDescription: "Explore the latest GitHub Trending repositories with AI summaries, refreshed by daily AM and PM batches.",
+        appTitle: "Trending AI - Understand GitHub Trending with AI",
+        appDescription: "Trending AI is a Kotlin Multiplatform app that helps you explore GitHub Trending repositories with AI-powered summaries.",
         keywords: "Trending AI, GitHub Trending, AI Summary, Kotlin Multiplatform, APK Download"
     },
     nav: {
+        trending: "Trending",
+        app: "App",
         github: "GitHub",
-        download: "Download APK",
         languageLabel: "中文"
     },
     hero: {
@@ -55,6 +58,22 @@ export const enUS: SiteMessages = {
         dateLabel: "Published",
         sizeLabel: "Package Size",
         digestLabel: "SHA256"
+    },
+    trending: {
+        sidebarTitle: "Date & Batch",
+        sidebarHint: "Showing the last 14 days from today. Each date has AM and PM snapshots.",
+        todayLabel: "Today",
+        batchAm: "AM",
+        batchPm: "PM",
+        loading: "Loading trending data...",
+        empty: "No trending data found for this date and batch.",
+        error: "Failed to load trending data. Please retry.",
+        retry: "Retry",
+        summaryLabel: "AI Summary",
+        summaryFallback: "No AI summary available yet.",
+        languageLabel: "Language",
+        starsLabel: "Stars",
+        periodStarsLabel: "Stars (Daily)"
     },
     footer: {
         copyright: "© 2026 Trending AI",

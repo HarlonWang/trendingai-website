@@ -1,0 +1,37 @@
+---
+import LanguageSwitch from "./LanguageSwitch.astro";
+import type { Locale, SiteMessages } from "../i18n/types";
+
+interface Props {
+    locale: Locale;
+    activeRoute: "trending" | "app";
+    nav: SiteMessages["nav"];
+    trendingHref: string;
+    appHref: string;
+    languageHref: string;
+}
+
+const {
+    locale,
+    activeRoute,
+    nav,
+    trendingHref,
+    appHref,
+    languageHref
+} = Astro.props;
+
+const homeLabel = locale === "zh-CN" ? "首页" : "Home";
+---
+
+<nav class="topbar reveal">
+    <a class="brand" href={trendingHref} aria-label={homeLabel}>
+        <img class="brand-logo" src="/ic_launcher_round.webp" alt="Trending AI Logo" loading="eager" />
+        <span class="brand-text">Trending AI</span>
+    </a>
+    <div class="topbar-actions">
+        <a class={`top-link nav-text ${activeRoute === "trending" ? "is-active" : ""}`.trim()} href={trendingHref}>{nav.trending}</a>
+        <a class={`top-link nav-text ${activeRoute === "app" ? "is-active" : ""}`.trim()} href={appHref}>{nav.app}</a>
+        <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noreferrer">{nav.github}</a>
+        <LanguageSwitch href={languageHref} label={nav.languageLabel} />
+    </div>
+</nav>
