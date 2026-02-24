@@ -303,6 +303,20 @@ const config = {
             return "#";
         }
 
+        function sanitizeLanguageColor(input) {
+            if (typeof input !== "string") {
+                return "";
+            }
+
+            const value = input.trim();
+            const hexPattern = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
+            if (!hexPattern.test(value)) {
+                return "";
+            }
+
+            return value;
+        }
+
         function pickSummary(item) {
             if (!Array.isArray(item.aiSummaries)) {
                 return "";
@@ -346,6 +360,7 @@ const config = {
                 const description = typeof item.description === "string" ? item.description.trim() : "";
                 const summary = pickSummary(item) || (labels.summaryFallback || "No summary");
                 const language = (typeof item.language === "string" && item.language.trim()) ? item.language.trim() : "-";
+                const languageColor = sanitizeLanguageColor(item.languageColor) || "#9a8fb3";
                 const descriptionHtml = description ? `<p class=\"trending-repo-description\">${escapeHtml(description)}</p>` : "";
 
                 return `
@@ -355,24 +370,20 @@ const config = {
                             <a class="trending-repo-link" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(repoName)}</a>
                         </header>
                         ${descriptionHtml}
-                        <dl class="trending-repo-meta">
-                            <div>
-                                <dt>${escapeHtml(labels.languageLabel || "Language")}</dt>
-                                <dd>${escapeHtml(language)}</dd>
-                            </div>
-                            <div>
-                                <dt>${escapeHtml(labels.starsLabel || "Stars")}</dt>
-                                <dd>${escapeHtml(formatNumber(Number(item.stars)))}</dd>
-                            </div>
-                            <div>
-                                <dt>${escapeHtml(labels.periodStarsLabel || "Stars")}</dt>
-                                <dd>${escapeHtml(formatNumber(Number(item.currentPeriodStars)))}</dd>
-                            </div>
-                        </dl>
                         <section class="trending-summary">
                             <h3>${escapeHtml(labels.summaryLabel || "AI Summary")}</h3>
                             <p>${escapeHtml(summary)}</p>
                         </section>
+                        <p class="trending-meta-line">
+                            <span class="trending-meta-item">
+                                <span class="trending-lang-dot" style="--lang-color:${escapeHtml(languageColor)};" aria-hidden="true"></span>
+                                ${escapeHtml(labels.languageLabel || "Language")} ${escapeHtml(language)}
+                            </span>
+                            <span class="trending-meta-separator" aria-hidden="true">·</span>
+                            <span class="trending-meta-item">${escapeHtml(labels.starsLabel || "Stars")} ${escapeHtml(formatNumber(Number(item.stars)))}</span>
+                            <span class="trending-meta-separator" aria-hidden="true">·</span>
+                            <span class="trending-meta-item">${escapeHtml(labels.periodStarsLabel || "Stars")} ${escapeHtml(formatNumber(Number(item.currentPeriodStars)))}</span>
+                        </p>
                     </article>
                 `;
             });
