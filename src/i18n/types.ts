@@ -23,9 +23,6 @@ export interface TrendingMessages {
     languageLabel: string;
     starsLabel: string;
     periodStarsLabel: string;
-    updatedLabel: string;
-    dateLabel: string;
-    batchLabel: string;
 }
 
 export interface SiteMessages {

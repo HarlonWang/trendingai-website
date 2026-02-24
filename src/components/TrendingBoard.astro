@@ -26,10 +26,6 @@ const config = {
     </aside>
 
     <section class="trending-content">
-        <header class="trending-content-header">
-            <p class="trending-selection" data-selection></p>
-        </header>
-
         <div class="trending-status" data-status></div>
         <section class="trending-repo-list" data-repo-list></section>
     </section>
@@ -63,9 +59,8 @@ const config = {
         const dateListElement = root.querySelector("[data-date-list]");
         const statusElement = root.querySelector("[data-status]");
         const repoListElement = root.querySelector("[data-repo-list]");
-        const selectionElement = root.querySelector("[data-selection]");
 
-        if (!(dateListElement instanceof HTMLElement) || !(statusElement instanceof HTMLElement) || !(repoListElement instanceof HTMLElement) || !(selectionElement instanceof HTMLElement)) {
+        if (!(dateListElement instanceof HTMLElement) || !(statusElement instanceof HTMLElement) || !(repoListElement instanceof HTMLElement)) {
             return;
         }
 
@@ -159,10 +154,6 @@ const config = {
             return button;
         }
 
-        function getBatchText(batch) {
-            return batch === "am" ? labels.batchAm || "AM" : labels.batchPm || "PM";
-        }
-
         function setStatus(type, message, withRetry) {
             statusElement.innerHTML = "";
             statusElement.className = "trending-status";
@@ -189,19 +180,6 @@ const config = {
                 retryButton.textContent = labels.retry || "Retry";
                 statusElement.appendChild(retryButton);
             }
-        }
-
-        function syncSelectionText(metadata) {
-            const segments = [
-                `${labels.dateLabel || "Date"}: ${state.selectedDate}`,
-                `${labels.batchLabel || "Batch"}: ${getBatchText(state.selectedBatch)}`
-            ];
-
-            if (metadata && typeof metadata.captured_at === "string" && metadata.captured_at.trim()) {
-                segments.push(`${labels.updatedLabel || "Updated"}: ${metadata.captured_at}`);
-            }
-
-            selectionElement.textContent = segments.join(" · ");
         }
 
         function syncButtonStates() {
@@ -292,8 +270,7 @@ const config = {
 
             const payload = await response.json();
             const items = Array.isArray(payload.data) ? payload.data : [];
-            const metadata = payload.metadata && typeof payload.metadata === "object" ? payload.metadata : null;
-            const result = { items, metadata };
+            const result = { items };
 
             availabilityMap.set(buildAvailabilityKey(date, batch), items.length > 0 ? "available" : "empty");
             cache.set(cacheKey, result);
@@ -422,7 +399,6 @@ const config = {
             state.controller = controller;
 
             applySelection(date, batch, syncUrl);
-            syncSelectionText(null);
             setStatus("loading", labels.loading || "Loading...", false);
 
             try {
@@ -431,7 +407,6 @@ const config = {
                     return;
                 }
 
-                syncSelectionText(payload.metadata);
                 renderRepoList(payload.items);
 
                 if (payload.items.length === 0) {
@@ -484,7 +459,6 @@ const config = {
                         }
 
                         applySelection(candidate.date, candidate.batch, true);
-                        syncSelectionText(payload.metadata);
                         renderRepoList(payload.items);
                         setStatus("", "", false);
                         return;
@@ -495,9 +469,8 @@ const config = {
                     return;
                 }
 
-                const emptyPayload = firstPayload || { items: [], metadata: null };
+                const emptyPayload = firstPayload || { items: [] };
                 applySelection(firstCandidate.date, firstCandidate.batch, true);
-                syncSelectionText(emptyPayload.metadata);
                 renderRepoList(emptyPayload.items);
                 setStatus("empty", labels.empty || "No data", false);
             } catch (error) {

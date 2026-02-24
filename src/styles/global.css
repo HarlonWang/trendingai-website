@@ -427,24 +427,6 @@ a {
     padding: 18px;
 }
 
-.trending-content-header h1 {
-    margin: 0;
-    font-size: clamp(1.48rem, 3.5vw, 2rem);
-    line-height: 1.15;
-}
-
-.trending-content-header p {
-    margin: 10px 0 0;
-    color: var(--md-sys-color-on-surface-variant);
-    font-size: 0.92rem;
-}
-
-.trending-selection {
-    margin-top: 12px;
-    font-size: 0.83rem;
-    color: var(--md-sys-color-on-surface-variant);
-}
-
 .trending-status {
     margin-top: 14px;
     border-radius: 12px;

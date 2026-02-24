@@ -74,10 +74,7 @@ export const enUS: SiteMessages = {
         repoDescriptionFallback: "No repository description.",
         languageLabel: "Language",
         starsLabel: "Stars",
-        periodStarsLabel: "Stars (Daily)",
-        updatedLabel: "Updated",
-        dateLabel: "Date",
-        batchLabel: "Batch"
+        periodStarsLabel: "Stars (Daily)"
     },
     footer: {
         copyright: "© 2026 Trending AI",

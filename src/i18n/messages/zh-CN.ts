@@ -74,10 +74,7 @@ export const zhCN: SiteMessages = {
         repoDescriptionFallback: "暂无仓库描述。",
         languageLabel: "语言",
         starsLabel: "Star",
-        periodStarsLabel: "当日新增 Star",
-        updatedLabel: "更新时间",
-        dateLabel: "日期",
-        batchLabel: "批次"
+        periodStarsLabel: "当日新增 Star"
     },
     footer: {
         copyright: "© 2026 Trending AI",
