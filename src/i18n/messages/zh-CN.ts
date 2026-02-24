@@ -60,8 +60,6 @@ export const zhCN: SiteMessages = {
         digestLabel: "SHA256"
     },
     trending: {
-        title: "GitHub AI Trending 榜单",
-        subtitle: "按日展示 AM 与 PM 批次数据。点击仓库名称可直接跳转到 GitHub 仓库页。",
         sidebarTitle: "日期与批次",
         sidebarHint: "默认展示从今天开始的过去 14 天，每天包含 AM 和 PM 两个批次。",
         todayLabel: "今天",

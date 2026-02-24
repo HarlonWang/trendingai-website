@@ -8,8 +8,6 @@ export interface FeatureItem {
 }
 
 export interface TrendingMessages {
-    title: string;
-    subtitle: string;
     sidebarTitle: string;
     sidebarHint: string;
     todayLabel: string;

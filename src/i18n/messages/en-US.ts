@@ -60,8 +60,6 @@ export const enUS: SiteMessages = {
         digestLabel: "SHA256"
     },
     trending: {
-        title: "GitHub AI Trending",
-        subtitle: "Daily list with AM and PM batches. Click any repository to open its GitHub page.",
         sidebarTitle: "Date & Batch",
         sidebarHint: "Showing the last 14 days from today. Each date has AM and PM snapshots.",
         todayLabel: "Today",
