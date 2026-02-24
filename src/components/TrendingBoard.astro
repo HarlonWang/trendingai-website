@@ -281,8 +281,7 @@ const config = {
 
             const url = new URL(config.apiUrl);
             url.searchParams.set("since", "daily");
-            url.searchParams.set("lang", "all");
-            url.searchParams.set("provider", "all");
+            url.searchParams.set("provider", "chatgpt");
             url.searchParams.set("summary_lang", config.summaryLang || "en");
             url.searchParams.set("limit", String(limit));
             url.searchParams.set("date", date);
