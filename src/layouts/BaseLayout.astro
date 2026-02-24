@@ -12,8 +12,10 @@ interface Props {
 const { locale, title, description, canonicalPath } = Astro.props;
 const siteUrl = "https://trendingai.cn";
 const canonical = `${siteUrl}${canonicalPath}`;
-const zhUrl = `${siteUrl}/zh/`;
-const enUrl = `${siteUrl}/`;
+const enPath = canonicalPath.startsWith("/zh/") ? (canonicalPath.slice(3) || "/") : canonicalPath;
+const zhPath = canonicalPath.startsWith("/zh/") ? canonicalPath : (canonicalPath === "/" ? "/zh/" : `/zh${canonicalPath}`);
+const zhUrl = `${siteUrl}${zhPath}`;
+const enUrl = `${siteUrl}${enPath}`;
 const ogImage = `${siteUrl}/android_screenshot.png`;
 ---
 
@@ -22,24 +24,26 @@ const ogImage = `${siteUrl}/android_screenshot.png`;
     <head>
         <script is:inline>
             (function() {
-                const storageKey = 'preferred-locale';
+                const storageKey = "preferred-locale";
                 const savedLocale = localStorage.getItem(storageKey);
-                
-                // 探测浏览器语言
-                let browserLocale = 'en-US';
-                if (navigator.language.toLowerCase().startsWith('zh')) {
-                    browserLocale = 'zh-CN';
-                }
-                
-                // 最终决定使用的语言 (手动选择优先)
+                const browserLocale = navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
                 const finalLocale = savedLocale || browserLocale;
                 const currentPath = window.location.pathname;
+                const currentSearch = window.location.search;
+                const currentHash = window.location.hash;
+                const isZhPath = currentPath === "/zh" || currentPath.startsWith("/zh/");
 
-                // 跳转逻辑
-                if (finalLocale === 'zh-CN' && (currentPath === '/' || currentPath === '/index.html')) {
-                    window.location.href = '/zh/';
-                } else if (finalLocale === 'en-US' && currentPath.startsWith('/zh/')) {
-                    window.location.href = '/';
+                if (finalLocale === "zh-CN" && !isZhPath) {
+                    const normalizedPath = currentPath.startsWith("/") ? currentPath : `/${currentPath}`;
+                    const targetPath = normalizedPath === "/" ? "/zh/" : `/zh${normalizedPath}`;
+                    window.location.replace(`${targetPath}${currentSearch}${currentHash}`);
+                    return;
+                }
+
+                if (finalLocale === "en-US" && isZhPath) {
+                    const strippedPath = currentPath === "/zh" ? "/" : currentPath.replace(/^\/zh/, "") || "/";
+                    const targetPath = strippedPath.startsWith("/") ? strippedPath : `/${strippedPath}`;
+                    window.location.replace(`${targetPath}${currentSearch}${currentHash}`);
                 }
             })();
         </script>

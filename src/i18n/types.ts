@@ -1,19 +1,47 @@
 export type Locale = "zh-CN" | "en-US";
 
+export type AppRoute = "trending" | "app";
+
 export interface FeatureItem {
     title: string;
     description: string;
 }
 
+export interface TrendingMessages {
+    title: string;
+    subtitle: string;
+    sidebarTitle: string;
+    sidebarHint: string;
+    todayLabel: string;
+    batchAm: string;
+    batchPm: string;
+    loading: string;
+    empty: string;
+    error: string;
+    retry: string;
+    summaryLabel: string;
+    summaryFallback: string;
+    repoDescriptionFallback: string;
+    languageLabel: string;
+    starsLabel: string;
+    periodStarsLabel: string;
+    updatedLabel: string;
+    dateLabel: string;
+    batchLabel: string;
+}
+
 export interface SiteMessages {
     meta: {
-        title: string;
-        description: string;
+        trendingTitle: string;
+        trendingDescription: string;
+        appTitle: string;
+        appDescription: string;
         keywords: string;
     };
     nav: {
+        trending: string;
+        app: string;
         github: string;
-        download: string;
         languageLabel: string;
     };
     hero: {
@@ -44,6 +72,7 @@ export interface SiteMessages {
         sizeLabel: string;
         digestLabel: string;
     };
+    trending: TrendingMessages;
     footer: {
         copyright: string;
         license: string;

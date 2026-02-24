@@ -2,13 +2,16 @@ import type { SiteMessages } from "../types";
 
 export const zhCN: SiteMessages = {
     meta: {
-        title: "Trending AI - 用 AI 快速读懂 GitHub Trending",
-        description: "Trending AI 是一个 Kotlin Multiplatform 应用，帮助你查看 GitHub 热门项目并自动生成 AI 摘要。",
+        trendingTitle: "Trending AI - 每日 GitHub Trending 榜单与 AI 摘要",
+        trendingDescription: "按日查看 GitHub Trending 榜单，支持 AM 与 PM 批次，并突出 AI 摘要内容。",
+        appTitle: "Trending AI - 用 AI 快速读懂 GitHub Trending",
+        appDescription: "Trending AI 是一个 Kotlin Multiplatform 应用，帮助你查看 GitHub 热门项目并自动生成 AI 摘要。",
         keywords: "Trending AI, GitHub Trending, AI 摘要, Kotlin Multiplatform, APK 下载"
     },
     nav: {
+        trending: "榜单",
+        app: "App",
         github: "GitHub",
-        download: "下载 APK",
         languageLabel: "EN"
     },
     hero: {
@@ -55,6 +58,28 @@ export const zhCN: SiteMessages = {
         dateLabel: "发布时间",
         sizeLabel: "安装包大小",
         digestLabel: "SHA256"
+    },
+    trending: {
+        title: "GitHub AI Trending 榜单",
+        subtitle: "按日展示 AM 与 PM 批次数据。点击仓库名称可直接跳转到 GitHub 仓库页。",
+        sidebarTitle: "日期与批次",
+        sidebarHint: "默认展示从今天开始的过去 14 天，每天包含 AM 和 PM 两个批次。",
+        todayLabel: "今天",
+        batchAm: "AM",
+        batchPm: "PM",
+        loading: "正在加载榜单数据...",
+        empty: "当前日期与批次暂无榜单数据。",
+        error: "加载榜单失败，请重试。",
+        retry: "重试",
+        summaryLabel: "AI 摘要",
+        summaryFallback: "该仓库暂时没有 AI 摘要。",
+        repoDescriptionFallback: "暂无仓库描述。",
+        languageLabel: "语言",
+        starsLabel: "Star",
+        periodStarsLabel: "当日新增 Star",
+        updatedLabel: "更新时间",
+        dateLabel: "日期",
+        batchLabel: "批次"
     },
     footer: {
         copyright: "© 2026 Trending AI",

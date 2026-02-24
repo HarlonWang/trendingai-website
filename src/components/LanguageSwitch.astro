@@ -11,7 +11,7 @@ const { href, label } = Astro.props;
 
 <script is:inline>
     document.querySelectorAll("[data-lang-switch]").forEach((element) => {
-        element.addEventListener('click', () => {
+        element.addEventListener("click", () => {
             const href = element.getAttribute("href") || "/";
             const newLocale = href.startsWith("/zh/") ? "zh-CN" : "en-US";
             localStorage.setItem("preferred-locale", newLocale);
@@ -23,9 +23,8 @@ const { href, label } = Astro.props;
         }
 
         const baseHref = anchor.getAttribute("href") || "/";
+        const query = window.location.search;
         const hash = window.location.hash;
-        if (hash) {
-            anchor.href = `${baseHref}${hash}`;
-        }
+        anchor.href = `${baseHref}${query}${hash}`;
     });
 </script>

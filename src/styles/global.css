@@ -134,6 +134,15 @@ a {
     color: var(--md-sys-color-on-primary-container);
 }
 
+.top-link.is-active {
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 86%, transparent);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.top-link.is-active:hover {
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 92%, transparent);
+}
+
 .hero-content {
     max-width: 680px;
 }
@@ -326,6 +335,264 @@ a {
     overflow-wrap: anywhere;
 }
 
+.trending-page {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: minmax(240px, 272px) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+.trending-sidebar,
+.trending-content {
+    border-radius: 18px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface-container) 92%, transparent);
+    box-shadow: var(--shadow-ambient);
+}
+
+.trending-sidebar {
+    padding: 18px 14px;
+}
+
+.trending-sidebar h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.trending-sidebar p {
+    margin: 8px 0 0;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.85rem;
+    line-height: 1.45;
+}
+
+.trending-date-list {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 9px;
+    max-height: 584px;
+    overflow-y: auto;
+}
+
+.trending-date-item {
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 20%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 84%, transparent);
+    padding: 9px;
+}
+
+.trending-date-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.trending-batch-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.trending-batch-button {
+    flex: 1 1 0;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 32%, transparent);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.trending-batch-button.is-selected {
+    border-color: color-mix(in srgb, var(--md-sys-color-primary) 52%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 82%, transparent);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.trending-batch-button.is-empty {
+    opacity: 0.58;
+}
+
+.trending-batch-button.is-available {
+    border-color: color-mix(in srgb, var(--md-sys-color-primary) 42%, transparent);
+}
+
+.trending-content {
+    padding: 18px;
+}
+
+.trending-content-header h1 {
+    margin: 0;
+    font-size: clamp(1.48rem, 3.5vw, 2rem);
+    line-height: 1.15;
+}
+
+.trending-content-header p {
+    margin: 10px 0 0;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.92rem;
+}
+
+.trending-selection {
+    margin-top: 12px;
+    font-size: 0.83rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.trending-status {
+    margin-top: 14px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+}
+
+.trending-status p {
+    margin: 0;
+    font-size: 0.88rem;
+}
+
+.trending-status.is-loading {
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.trending-status.is-empty {
+    border-color: color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
+}
+
+.trending-status.is-error {
+    border-color: color-mix(in srgb, #b3261e 40%, transparent);
+    color: #b3261e;
+}
+
+.trending-retry-button {
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 34%, transparent);
+    background: transparent;
+    color: inherit;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.trending-repo-list {
+    margin-top: 14px;
+    display: grid;
+    gap: 12px;
+}
+
+.trending-repo-card {
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+    padding: 14px;
+}
+
+.trending-repo-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trending-rank {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 2px 10px;
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 86%, transparent);
+    color: var(--md-sys-color-on-primary-container);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
+.trending-repo-link {
+    font-size: 1rem;
+    font-weight: 800;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 180ms ease, color 180ms ease;
+}
+
+.trending-repo-link:hover {
+    color: var(--md-sys-color-primary);
+    text-decoration-color: currentcolor;
+}
+
+.trending-repo-description {
+    margin: 10px 0 0;
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 0.9rem;
+}
+
+.trending-repo-meta {
+    margin: 12px 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.trending-repo-meta div {
+    border-radius: 10px;
+    padding: 8px 10px;
+    background: color-mix(in srgb, var(--md-sys-color-surface-variant) 66%, transparent);
+}
+
+.trending-repo-meta dt {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.trending-repo-meta dd {
+    margin: 3px 0 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.trending-summary {
+    margin-top: 12px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-primary-container) 78%, transparent);
+    padding: 12px;
+}
+
+.trending-summary h3 {
+    margin: 0;
+    font-size: 0.86rem;
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.trending-summary p {
+    margin: 7px 0 0;
+    color: var(--md-sys-color-on-primary-container);
+    font-size: 0.92rem;
+    line-height: 1.58;
+}
+
+.trending-empty-card {
+    border-radius: 14px;
+    border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+    background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+    padding: 16px;
+    font-size: 0.9rem;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
 .footer {
     padding: 24px 0 44px;
     display: flex;
@@ -389,6 +656,24 @@ a {
         grid-template-columns: 1fr;
     }
 
+    .trending-page {
+        grid-template-columns: 1fr;
+    }
+
+    .trending-sidebar {
+        padding: 14px;
+    }
+
+    .trending-date-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-height: none;
+        overflow: visible;
+    }
+
+    .trending-repo-meta {
+        grid-template-columns: 1fr;
+    }
+
     .footer {
         flex-direction: column;
         align-items: center;
@@ -410,5 +695,9 @@ a {
     .lang-switch {
         flex: 0 0 auto;
         text-align: left;
+    }
+
+    .trending-date-list {
+        grid-template-columns: 1fr;
     }
 }

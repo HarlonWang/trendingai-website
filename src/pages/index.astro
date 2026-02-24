@@ -1,36 +1,34 @@
 ---
 import Footer from "../components/Footer.astro";
-import Hero from "../components/Hero.astro";
-import { getMessages, getPathByLocale, getSwitchLocale } from "../lib/i18n";
+import TopNav from "../components/TopNav.astro";
+import TrendingBoard from "../components/TrendingBoard.astro";
+import { getMessages, getPathByLocale, getSwitchPath } from "../lib/i18n";
 import type { Locale } from "../i18n/types";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const locale: Locale = "en-US";
 const messages = getMessages(locale);
-const homePath = getPathByLocale(locale);
-const switchLocale = getSwitchLocale(locale);
-const switchPath = getPathByLocale(switchLocale);
+const trendingPath = getPathByLocale(locale, "trending");
+const appPath = getPathByLocale(locale, "app");
+const switchPath = getSwitchPath(locale, "trending");
 ---
 
 <BaseLayout
     locale={locale}
-    title={messages.meta.title}
-    description={messages.meta.description}
+    title={messages.meta.trendingTitle}
+    description={messages.meta.trendingDescription}
     canonicalPath="/"
 >
-    <Hero
-        homeHref={homePath}
-        title={messages.hero.title}
-        subtitle={messages.hero.subtitle}
-        features={messages.features.items}
-        previewSrc="/android_screenshot.png"
-        previewAlt={messages.preview.alt}
-        primaryCta={messages.hero.primaryCta}
-        secondaryCta={messages.hero.secondaryCta}
-        githubLabel={messages.nav.github}
-        changelogLabel={messages.footer.changelog}
-        languageLabel={messages.nav.languageLabel}
-        languageHref={switchPath}
-    />
+    <header class="hero wrap">
+        <TopNav
+            locale={locale}
+            activeRoute="trending"
+            nav={messages.nav}
+            trendingHref={trendingPath}
+            appHref={appPath}
+            languageHref={switchPath}
+        />
+    </header>
+    <TrendingBoard locale={locale} messages={messages.trending} />
     <Footer copyright={messages.footer.copyright} />
 </BaseLayout>
