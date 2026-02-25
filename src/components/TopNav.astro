@@ -6,6 +6,7 @@ interface Props {
     locale: Locale;
     activeRoute: "trending" | "app";
     nav: SiteMessages["nav"];
+    heroTitle: string;
     trendingHref: string;
     appHref: string;
     languageHref: string;
@@ -15,6 +16,7 @@ const {
     locale,
     activeRoute,
     nav,
+    heroTitle,
     trendingHref,
     appHref,
     languageHref
@@ -26,7 +28,7 @@ const homeLabel = locale === "zh-CN" ? "首页" : "Home";
 <nav class="topbar reveal">
     <a class="brand" href={trendingHref} aria-label={homeLabel}>
         <img class="brand-logo" src="/ic_launcher_round.webp" alt="Trending AI Logo" loading="eager" />
-        <span class="brand-text">Trending AI</span>
+        <span class="brand-text">{heroTitle}</span>
     </a>
     <div class="topbar-actions">
         <a class={`top-link nav-text ${activeRoute === "trending" ? "is-active" : ""}`.trim()} href={trendingHref}>{nav.trending}</a>
