@@ -15,7 +15,6 @@ export const zhCN: SiteMessages = {
         languageLabel: "EN"
     },
     hero: {
-        badge: "Material 3 风格 · 极简官网",
         title: "用 AI 快速读懂 GitHub Trending",
         subtitle: "省去翻阅冗长 README 和源码的时间，高效过滤并定位高价值的开源仓库。",
         primaryCta: "立即下载",

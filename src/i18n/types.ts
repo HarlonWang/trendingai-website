@@ -39,7 +39,6 @@ export interface SiteMessages {
         languageLabel: string;
     };
     hero: {
-        badge: string;
         title: string;
         subtitle: string;
         primaryCta: string;

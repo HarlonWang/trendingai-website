@@ -15,7 +15,6 @@ export const enUS: SiteMessages = {
         languageLabel: "中文"
     },
     hero: {
-        badge: "Material 3 aligned · Minimal landing",
         title: "Understand GitHub Trending with AI",
         subtitle: "Save time reading long READMEs and source code by efficiently filtering and locating high-value open source repositories.",
         primaryCta: "Download Now",
