@@ -419,12 +419,7 @@ const config = {
                 }
 
                 renderRepoList(payload.items);
-
-                if (payload.items.length === 0) {
-                    setStatus("empty", labels.empty || "No data", false);
-                } else {
-                    setStatus("", "", false);
-                }
+                setStatus("", "", false);
             } catch (error) {
                 if (error && typeof error === "object" && error.name === "AbortError") {
                     return;
@@ -483,7 +478,7 @@ const config = {
                 const emptyPayload = firstPayload || { items: [] };
                 applySelection(firstCandidate.date, firstCandidate.batch, true);
                 renderRepoList(emptyPayload.items);
-                setStatus("empty", labels.empty || "No data", false);
+                setStatus("", "", false);
             } catch (error) {
                 if (error && typeof error === "object" && error.name === "AbortError") {
                     return;
