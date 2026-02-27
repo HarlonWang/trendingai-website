@@ -71,7 +71,6 @@ export const enUS: SiteMessages = {
         error: "Failed to load trending data. Please retry.",
         retry: "Retry",
         summaryLabel: "AI Summary",
-        summaryFallback: "No AI summary available yet.",
         starsLabel: "Stars",
         periodStarsDaily: "Stars (Today)",
         periodStarsWeekly: "Stars (This Week)",

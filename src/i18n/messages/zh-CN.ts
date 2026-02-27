@@ -71,7 +71,6 @@ export const zhCN: SiteMessages = {
         error: "加载榜单失败，请重试。",
         retry: "重试",
         summaryLabel: "AI 摘要",
-        summaryFallback: "该仓库暂时没有 AI 摘要。",
         starsLabel: "Star",
         periodStarsDaily: "今日新增 Star",
         periodStarsWeekly: "本周新增 Star",

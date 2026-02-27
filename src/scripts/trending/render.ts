@@ -54,7 +54,7 @@ function buildRepoCard(
     const repoName = `${item.author || "unknown"}/${item.repoName || "unknown"}`;
     const url = safeUrl(item.url);
     const description = typeof item.description === "string" ? item.description.trim() : "";
-    const summary = pickSummary(item) || labels.summaryFallback;
+    const summary = pickSummary(item);
     const language = typeof item.language === "string" && item.language.trim() ? item.language.trim() : "-";
     const languageColor = sanitizeLanguageColor(item.languageColor) || "#9a8fb3";
 
@@ -88,18 +88,20 @@ function buildRepoCard(
         article.appendChild(desc);
     }
 
-    // AI Summary
-    const summarySection = document.createElement("section");
-    summarySection.className = "trending-summary";
+    // AI Summary（仅在有内容时渲染）
+    if (summary) {
+        const summarySection = document.createElement("section");
+        summarySection.className = "trending-summary";
 
-    const summaryTitle = document.createElement("h3");
-    summaryTitle.textContent = labels.summaryLabel;
-    summarySection.appendChild(summaryTitle);
+        const summaryTitle = document.createElement("h3");
+        summaryTitle.textContent = labels.summaryLabel;
+        summarySection.appendChild(summaryTitle);
 
-    const summaryText = document.createElement("p");
-    summaryText.textContent = summary;
-    summarySection.appendChild(summaryText);
-    article.appendChild(summarySection);
+        const summaryText = document.createElement("p");
+        summaryText.textContent = summary;
+        summarySection.appendChild(summaryText);
+        article.appendChild(summarySection);
+    }
 
     // Meta line: language · stars · period stars
     const metaLine = document.createElement("p");

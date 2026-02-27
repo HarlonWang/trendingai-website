@@ -18,7 +18,6 @@ export interface TrendingMessages {
     error: string;
     retry: string;
     summaryLabel: string;
-    summaryFallback: string;
     starsLabel: string;
     periodStarsDaily: string;
     periodStarsWeekly: string;
