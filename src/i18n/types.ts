@@ -19,7 +19,6 @@ export interface TrendingMessages {
     retry: string;
     summaryLabel: string;
     summaryFallback: string;
-    languageLabel: string;
     starsLabel: string;
     periodStarsLabel: string;
 }

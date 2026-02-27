@@ -71,7 +71,6 @@ export const enUS: SiteMessages = {
         retry: "Retry",
         summaryLabel: "AI Summary",
         summaryFallback: "No AI summary available yet.",
-        languageLabel: "Language",
         starsLabel: "Stars",
         periodStarsLabel: "Stars (Daily)"
     },
