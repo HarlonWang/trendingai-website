@@ -26,6 +26,9 @@ const {
 } = Astro.props;
 
 const homeLabel = locale === "zh-CN" ? "首页" : "Home";
+const githubHref = activeRoute === "app"
+    ? "https://github.com/HarlonWang/TrendingAI"
+    : "https://github.com/HarlonWang/trendingai-website";
 ---
 
 <nav class="topbar reveal">
@@ -36,7 +39,7 @@ const homeLabel = locale === "zh-CN" ? "首页" : "Home";
     <div class="topbar-actions">
         <a class={`top-link nav-text ${activeRoute === "trending" ? "is-active" : ""}`.trim()} href={trendingHref}>{nav.trending}</a>
         <a class={`top-link nav-text ${activeRoute === "app" ? "is-active" : ""}`.trim()} href={appHref}>{nav.app}</a>
-        <a class="top-link nav-text" href="https://github.com/HarlonWang/TrendingAI" target="_blank" rel="noopener noreferrer">{nav.github}</a>
+        <a class="top-link nav-text" href={githubHref} target="_blank" rel="noopener noreferrer">{nav.github}</a>
         {rssUrl && (
             <a class="top-link top-link-rss nav-text" href={rssUrl} target="_blank" rel="noopener noreferrer" title={nav.rssLabel}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
