@@ -17,6 +17,7 @@ const zhPath = canonicalPath.startsWith("/zh/") ? canonicalPath : (canonicalPath
 const zhUrl = `${siteUrl}${zhPath}`;
 const enUrl = `${siteUrl}${enPath}`;
 const ogImage = `${siteUrl}/android_screenshot.png`;
+const rssApiBase = "https://api.trendingai.cn/api/rss";
 ---
 
 <!doctype html>
@@ -57,8 +58,8 @@ const ogImage = `${siteUrl}/android_screenshot.png`;
         <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
         <link rel="alternate" hreflang="en" href={enUrl} />
         <link rel="alternate" hreflang="x-default" href={enUrl} />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - Daily GitHub Trending (EN)" href="https://api.trendingai.cn/api/rss" />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - 每日 GitHub Trending（中文）" href="https://api.trendingai.cn/api/rss?summary_lang=zh" />
+        <link rel="alternate" type="application/rss+xml" title="Trending AI - Daily GitHub Trending (EN)" href={rssApiBase} />
+        <link rel="alternate" type="application/rss+xml" title="Trending AI - 每日 GitHub Trending（中文）" href={`${rssApiBase}?summary_lang=zh`} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

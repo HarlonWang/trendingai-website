@@ -8,10 +8,12 @@ interface Props {
 
 const { locale, messages } = Astro.props;
 
+const summaryLang = locale === "zh-CN" ? "zh" : "en";
 const config = {
     locale,
-    summaryLang: locale === "zh-CN" ? "zh" : "en",
+    summaryLang,
     apiUrl: "https://api.trendingai.cn/api/trending",
+    rssUrl: `https://api.trendingai.cn/api/rss?summary_lang=${summaryLang}`,
     days: 14,
     limit: 25,
     labels: messages
@@ -25,9 +27,9 @@ const config = {
         <ul class="trending-date-list" data-date-list></ul>
         <a
             class="rss-subscribe-link"
-            href={`https://api.trendingai.cn/api/rss?summary_lang=${locale === "zh-CN" ? "zh" : "en"}`}
+            href={config.rssUrl}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             title={messages.rssLabel}
         >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
