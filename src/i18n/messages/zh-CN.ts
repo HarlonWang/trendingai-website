@@ -71,7 +71,6 @@ export const zhCN: SiteMessages = {
         retry: "重试",
         summaryLabel: "AI 摘要",
         summaryFallback: "该仓库暂时没有 AI 摘要。",
-        languageLabel: "语言",
         starsLabel: "Star",
         periodStarsLabel: "当日新增 Star"
     },

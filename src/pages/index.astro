@@ -1,36 +1,5 @@
 ---
-import Footer from "../components/Footer.astro";
-import TopNav from "../components/TopNav.astro";
-import TrendingBoard from "../components/TrendingBoard.astro";
-import { getMessages, getPathByLocale, getSwitchPath } from "../lib/i18n";
-import type { Locale } from "../i18n/types";
-import BaseLayout from "../layouts/BaseLayout.astro";
-
-const locale: Locale = "en-US";
-const messages = getMessages(locale);
-const trendingPath = getPathByLocale(locale, "trending");
-const appPath = getPathByLocale(locale, "app");
-const switchPath = getSwitchPath(locale, "trending");
+import TrendingPageLayout from "../layouts/TrendingPageLayout.astro";
 ---
 
-<BaseLayout
-    locale={locale}
-    title={messages.meta.trendingTitle}
-    description={messages.meta.trendingDescription}
-    canonicalPath="/"
->
-    <header class="hero wrap">
-        <TopNav
-            locale={locale}
-            activeRoute="trending"
-            nav={messages.nav}
-            heroTitle={messages.hero.title}
-            trendingHref={trendingPath}
-            appHref={appPath}
-            languageHref={switchPath}
-            rssUrl="https://api.trendingai.cn/api/rss"
-        />
-    </header>
-    <TrendingBoard locale={locale} messages={messages.trending} />
-    <Footer copyright={messages.footer.copyright} />
-</BaseLayout>
+<TrendingPageLayout locale="en-US" canonicalPath="/" />

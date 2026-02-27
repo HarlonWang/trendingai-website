@@ -11,10 +11,9 @@ const { locale, messages } = Astro.props;
 const config = {
     locale,
     summaryLang: locale === "zh-CN" ? "zh" : "en",
-    apiUrl: "https://api.trendingai.cn/api/trending",
     days: 14,
     limit: 25,
-    labels: messages
+    labels: messages,
 };
 ---
 
@@ -33,503 +32,279 @@ const config = {
     <script type="application/json" data-trending-config is:inline set:html={JSON.stringify(config)}></script>
 </section>
 
-<script is:inline>
-    (() => {
-        const root = document.querySelector("[data-trending-board]");
-        if (!(root instanceof HTMLElement)) {
-            return;
-        }
-
-        const configElement = root.querySelector("[data-trending-config]");
-        if (!(configElement instanceof HTMLScriptElement)) {
-            return;
-        }
-
-        let config = null;
-        try {
-            config = JSON.parse(configElement.textContent || "{}");
-        } catch (_error) {
-            return;
-        }
-
-        if (!config || typeof config !== "object") {
-            return;
-        }
-
-        const dateListElement = root.querySelector("[data-date-list]");
-        const statusElement = root.querySelector("[data-status]");
-        const repoListElement = root.querySelector("[data-repo-list]");
-
-        if (!(dateListElement instanceof HTMLElement) || !(statusElement instanceof HTMLElement) || !(repoListElement instanceof HTMLElement)) {
-            return;
-        }
-
-        const locale = config.locale === "zh-CN" ? "zh-CN" : "en-US";
-        const labels = config.labels || {};
-        const days = Number.isFinite(config.days) ? config.days : 14;
-        const limit = Number.isFinite(config.limit) ? config.limit : 25;
-
-        const dateFormatter = new Intl.DateTimeFormat(locale, {
-            month: "short",
-            day: "2-digit",
-            weekday: "short"
-        });
-
-        const numberFormatter = new Intl.NumberFormat(locale);
-        const dates = buildDates(days);
-        const cache = new Map();
-        const availabilityMap = new Map();
-
-        const state = {
-            selectedDate: dates[0],
-            selectedBatch: "pm",
-            controller: null
-        };
-
-        function buildDates(totalDays) {
-            const output = [];
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            for (let index = 0; index < totalDays; index += 1) {
-                const current = new Date(today);
-                current.setDate(today.getDate() - index);
-                output.push(formatIsoDate(current));
-            }
-
-            return output;
-        }
-
-        function formatIsoDate(date) {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-            return `${year}-${month}-${day}`;
-        }
-
-        function getDisplayDate(isoDate) {
-            const normalized = new Date(`${isoDate}T00:00:00`);
-            const dateText = dateFormatter.format(normalized);
-
-            if (isoDate === dates[0]) {
-                return `${labels.todayLabel || "Today"} · ${dateText}`;
-            }
-
-            return dateText;
-        }
-
-        function renderDateList() {
-            const fragment = document.createDocumentFragment();
-
-            for (const date of dates) {
-                const row = document.createElement("li");
-                row.className = "trending-date-item";
-
-                const dateLabel = document.createElement("div");
-                dateLabel.className = "trending-date-label";
-                dateLabel.textContent = getDisplayDate(date);
-
-                const batchGroup = document.createElement("div");
-                batchGroup.className = "trending-batch-group";
-                batchGroup.appendChild(createBatchButton(date, "am", labels.batchAm || "AM"));
-                batchGroup.appendChild(createBatchButton(date, "pm", labels.batchPm || "PM"));
-
-                row.appendChild(dateLabel);
-                row.appendChild(batchGroup);
-                fragment.appendChild(row);
-            }
-
-            dateListElement.innerHTML = "";
-            dateListElement.appendChild(fragment);
-            syncButtonStates();
-        }
-
-        function createBatchButton(date, batch, text) {
-            const button = document.createElement("button");
-            button.type = "button";
-            button.className = "trending-batch-button";
-            button.dataset.date = date;
-            button.dataset.batch = batch;
-            button.textContent = text;
-            return button;
-        }
-
-        function setStatus(type, message, withRetry) {
-            statusElement.innerHTML = "";
-            statusElement.className = "trending-status";
-
-            if (!message) {
-                return;
-            }
-
-            statusElement.classList.add("is-visible");
-            if (type) {
-                statusElement.classList.add(`is-${type}`);
-            }
-
-            const text = document.createElement("p");
-            text.textContent = message;
-            statusElement.appendChild(text);
-
-            if (withRetry) {
-                const retryButton = document.createElement("button");
-                retryButton.type = "button";
-                retryButton.className = "trending-retry-button";
-                retryButton.dataset.retry = "true";
-                retryButton.textContent = labels.retry || "Retry";
-                statusElement.appendChild(retryButton);
-            }
-        }
-
-        function syncButtonStates() {
-            const buttons = dateListElement.querySelectorAll("button[data-date][data-batch]");
-            for (const button of buttons) {
-                if (!(button instanceof HTMLButtonElement)) {
-                    continue;
-                }
-
-                const date = button.dataset.date || "";
-                const batch = button.dataset.batch || "";
-                const key = buildAvailabilityKey(date, batch);
-                const status = availabilityMap.get(key) || "unknown";
-                const selected = date === state.selectedDate && batch === state.selectedBatch;
-
-                button.classList.toggle("is-selected", selected);
-                button.classList.toggle("is-empty", status === "empty");
-                button.classList.toggle("is-available", status === "available");
-            }
-        }
-
-        function buildAvailabilityKey(date, batch) {
-            return `${date}:${batch}`;
-        }
-
-        function buildCacheKey(date, batch) {
-            return `${locale}:${date}:${batch}`;
-        }
-
-        function parseUrlState() {
-            const params = new URLSearchParams(window.location.search);
-            const queryDate = params.get("date") || "";
-            const queryBatch = params.get("batch") || "";
-            const date = dates.includes(queryDate) ? queryDate : dates[0];
-            const batch = queryBatch === "am" || queryBatch === "pm" ? queryBatch : "pm";
-            return { date, batch };
-        }
-
-        function updateUrl(date, batch) {
-            const url = new URL(window.location.href);
-            url.searchParams.set("date", date);
-            url.searchParams.set("batch", batch);
-            window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-        }
-
-        function buildInitialCandidates(initialDate, initialBatch) {
-            const candidates = [];
-            const dedupe = new Set();
-
-            const push = (date, batch) => {
-                const key = `${date}:${batch}`;
-                if (dedupe.has(key)) {
-                    return;
-                }
-
-                dedupe.add(key);
-                candidates.push({ date, batch });
-            };
-
-            push(initialDate, initialBatch);
-
-            for (const date of dates) {
-                push(date, "pm");
-                push(date, "am");
-            }
-
-            return candidates;
-        }
-
-        async function fetchTrending(date, batch, signal) {
-            const cacheKey = buildCacheKey(date, batch);
-            if (cache.has(cacheKey)) {
-                return cache.get(cacheKey);
-            }
-
-            const url = new URL(config.apiUrl);
-            url.searchParams.set("since", "daily");
-            url.searchParams.set("provider", "chatgpt");
-            url.searchParams.set("summary_lang", config.summaryLang || "en");
-            url.searchParams.set("limit", String(limit));
-            url.searchParams.set("date", date);
-            url.searchParams.set("batch", batch);
-
-            const response = await fetch(url.toString(), { signal });
-            if (!response.ok) {
-                throw new Error(`Request failed with ${response.status}`);
-            }
-
-            const payload = await response.json();
-            const items = Array.isArray(payload.data) ? payload.data : [];
-            const result = { items };
-
-            availabilityMap.set(buildAvailabilityKey(date, batch), items.length > 0 ? "available" : "empty");
-            cache.set(cacheKey, result);
-            syncButtonStates();
-            return result;
-        }
-
-        function escapeHtml(input) {
-            return String(input)
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#39;");
-        }
-
-        function safeUrl(input) {
-            if (typeof input !== "string") {
-                return "#";
-            }
-
-            try {
-                const parsed = new URL(input);
-                if (parsed.protocol === "https:" || parsed.protocol === "http:") {
-                    return parsed.toString();
-                }
-            } catch (_error) {
-                return "#";
-            }
-
-            return "#";
-        }
-
-        function sanitizeLanguageColor(input) {
-            if (typeof input !== "string") {
-                return "";
-            }
-
-            const value = input.trim();
-            const hexPattern = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/;
-            if (!hexPattern.test(value)) {
-                return "";
-            }
-
-            return value;
-        }
-
-        function pickSummary(item) {
-            if (!Array.isArray(item.aiSummaries)) {
-                return "";
-            }
-
-            const chatgpt = item.aiSummaries.find((entry) => {
-                if (!entry || typeof entry !== "object") {
-                    return false;
-                }
-
-                const provider = String(entry.provider || "").toLowerCase();
-                const content = typeof entry.content === "string" ? entry.content.trim() : "";
-                return provider === "chatgpt" && content.length > 0;
-            });
-
-            if (chatgpt && typeof chatgpt.content === "string") {
-                return chatgpt.content.trim();
-            }
-
-            return "";
-        }
-
-        function formatNumber(value) {
-            if (!Number.isFinite(value)) {
-                return "-";
-            }
-
-            return numberFormatter.format(value);
-        }
-
-        function renderRepoList(items) {
-            if (!Array.isArray(items) || items.length === 0) {
-                repoListElement.innerHTML = `<article class=\"trending-empty-card\">${escapeHtml(labels.empty || "No data")}</article>`;
-                return;
-            }
-
-            const cards = items.map((item, index) => {
-                const rank = Number(item.rank) || index + 1;
-                const repoName = `${item.author || "unknown"}/${item.repoName || "unknown"}`;
-                const url = safeUrl(item.url);
-                const description = typeof item.description === "string" ? item.description.trim() : "";
-                const summary = pickSummary(item) || (labels.summaryFallback || "No summary");
-                const language = (typeof item.language === "string" && item.language.trim()) ? item.language.trim() : "-";
-                const languageColor = sanitizeLanguageColor(item.languageColor) || "#9a8fb3";
-                const descriptionHtml = description ? `<p class=\"trending-repo-description\">${escapeHtml(description)}</p>` : "";
-
-                return `
-                    <article class="trending-repo-card">
-                        <header class="trending-repo-head">
-                            <span class="trending-rank">#${escapeHtml(rank)}</span>
-                            <a class="trending-repo-link" href="${escapeHtml(url)}" target="_blank" rel="noreferrer">${escapeHtml(repoName)}</a>
-                        </header>
-                        ${descriptionHtml}
-                        <section class="trending-summary">
-                            <h3>${escapeHtml(labels.summaryLabel || "AI Summary")}</h3>
-                            <p>${escapeHtml(summary)}</p>
-                        </section>
-                        <p class="trending-meta-line">
-                            <span class="trending-meta-item">
-                                <span class="trending-lang-dot" style="--lang-color:${escapeHtml(languageColor)};" aria-hidden="true"></span>
-                                ${escapeHtml(labels.languageLabel || "Language")} ${escapeHtml(language)}
-                            </span>
-                            <span class="trending-meta-separator" aria-hidden="true">·</span>
-                            <span class="trending-meta-item">${escapeHtml(labels.starsLabel || "Stars")} ${escapeHtml(formatNumber(Number(item.stars)))}</span>
-                            <span class="trending-meta-separator" aria-hidden="true">·</span>
-                            <span class="trending-meta-item">${escapeHtml(labels.periodStarsLabel || "Stars")} ${escapeHtml(formatNumber(Number(item.currentPeriodStars)))}</span>
-                        </p>
-                    </article>
-                `;
-            });
-
-            repoListElement.innerHTML = cards.join("");
-        }
-
-        function applySelection(date, batch, syncUrl) {
-            state.selectedDate = date;
-            state.selectedBatch = batch;
-            syncButtonStates();
-
-            if (syncUrl) {
-                updateUrl(date, batch);
-            }
-        }
-
-        async function loadSelection(date, batch, syncUrl) {
-            if (state.controller instanceof AbortController) {
-                state.controller.abort();
-            }
-
-            const controller = new AbortController();
-            state.controller = controller;
-
-            applySelection(date, batch, syncUrl);
-            setStatus("loading", labels.loading || "Loading...", false);
-
-            try {
-                const payload = await fetchTrending(date, batch, controller.signal);
-                if (state.controller !== controller) {
-                    return;
-                }
-
-                renderRepoList(payload.items);
-                setStatus("", "", false);
-            } catch (error) {
-                if (error && typeof error === "object" && error.name === "AbortError") {
-                    return;
-                }
-
-                if (state.controller !== controller) {
-                    return;
-                }
-
-                repoListElement.innerHTML = "";
-                setStatus("error", labels.error || "Failed to load", true);
-            }
-        }
-
-        async function initialize() {
-            renderDateList();
-
-            const initial = parseUrlState();
-            const candidates = buildInitialCandidates(initial.date, initial.batch);
-            setStatus("loading", labels.loading || "Loading...", false);
-
-            if (state.controller instanceof AbortController) {
-                state.controller.abort();
-            }
-
-            const controller = new AbortController();
-            state.controller = controller;
-
-            let firstPayload = null;
-            let firstCandidate = candidates[0];
-
-            try {
-                for (const candidate of candidates) {
-                    const payload = await fetchTrending(candidate.date, candidate.batch, controller.signal);
-                    if (!firstPayload) {
-                        firstPayload = payload;
-                        firstCandidate = candidate;
-                    }
-
-                    if (payload.items.length > 0) {
-                        if (state.controller !== controller) {
-                            return;
-                        }
-
-                        applySelection(candidate.date, candidate.batch, true);
-                        renderRepoList(payload.items);
-                        setStatus("", "", false);
-                        return;
-                    }
-                }
-
-                if (state.controller !== controller) {
-                    return;
-                }
-
-                const emptyPayload = firstPayload || { items: [] };
-                applySelection(firstCandidate.date, firstCandidate.batch, true);
-                renderRepoList(emptyPayload.items);
-                setStatus("", "", false);
-            } catch (error) {
-                if (error && typeof error === "object" && error.name === "AbortError") {
-                    return;
-                }
-
-                if (state.controller !== controller) {
-                    return;
-                }
-
-                setStatus("error", labels.error || "Failed to load", true);
-            }
-        }
-
-        dateListElement.addEventListener("click", (event) => {
-            const target = event.target;
-            if (!(target instanceof Element)) {
-                return;
-            }
-
-            const button = target.closest("button[data-date][data-batch]");
-            if (!(button instanceof HTMLButtonElement)) {
-                return;
-            }
-
-            const date = button.dataset.date || "";
-            const batch = button.dataset.batch || "";
-            if (!dates.includes(date)) {
-                return;
-            }
-
-            if (batch !== "am" && batch !== "pm") {
-                return;
-            }
-
-            loadSelection(date, batch, true);
-        });
-
-        statusElement.addEventListener("click", (event) => {
-            const target = event.target;
-            if (!(target instanceof Element)) {
-                return;
-            }
-
-            const retryButton = target.closest("button[data-retry]");
-            if (!(retryButton instanceof HTMLButtonElement)) {
-                return;
-            }
-
-            loadSelection(state.selectedDate, state.selectedBatch, true);
-        });
-
-        initialize();
-    })();
+<script>
+    import "../scripts/trending/board";
 </script>
+
+<style is:global>
+    .trending-page {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: minmax(240px, 272px) minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+    }
+
+    .trending-sidebar,
+    .trending-content {
+        border-radius: 18px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-surface-container) 92%, transparent);
+        box-shadow: var(--shadow-ambient);
+    }
+
+    .trending-sidebar {
+        padding: 18px 14px;
+    }
+
+    .trending-sidebar h2 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .trending-sidebar p {
+        margin: 8px 0 0;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.85rem;
+        line-height: 1.45;
+    }
+
+    .trending-date-list {
+        list-style: none;
+        margin: 14px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 9px;
+        max-height: 584px;
+        overflow-y: auto;
+    }
+
+    .trending-date-item {
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 20%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-surface) 84%, transparent);
+        padding: 9px;
+    }
+
+    .trending-date-label {
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .trending-batch-group {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .trending-batch-button {
+        flex: 1 1 0;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 32%, transparent);
+        border-radius: 9px;
+        background: transparent;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        padding: 6px 8px;
+        cursor: pointer;
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+    }
+
+    .trending-batch-button.is-selected {
+        border-color: color-mix(in srgb, var(--md-sys-color-primary) 52%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 82%, transparent);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    .trending-batch-button.is-empty {
+        opacity: 0.58;
+    }
+
+    .trending-batch-button.is-available {
+        border-color: color-mix(in srgb, var(--md-sys-color-primary) 42%, transparent);
+    }
+
+    .trending-content {
+        padding: 18px;
+    }
+
+    .trending-status {
+        margin-top: 14px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+        padding: 10px 12px;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+    }
+
+    .trending-status.is-visible {
+        display: flex;
+    }
+
+    .trending-status p {
+        margin: 0;
+        font-size: 0.88rem;
+    }
+
+    .trending-status.is-loading {
+        color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .trending-status.is-empty {
+        border-color: color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
+    }
+
+    .trending-status.is-error {
+        border-color: color-mix(in srgb, #b3261e 40%, transparent);
+        color: #b3261e;
+    }
+
+    .trending-retry-button {
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 34%, transparent);
+        background: transparent;
+        color: inherit;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .trending-repo-list {
+        margin-top: 14px;
+        display: grid;
+        gap: 12px;
+    }
+
+    .trending-repo-card {
+        border-radius: 16px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
+        padding: 14px;
+    }
+
+    .trending-repo-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .trending-rank {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 2px 10px;
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 86%, transparent);
+        color: var(--md-sys-color-on-primary-container);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+    }
+
+    .trending-repo-link {
+        font-size: 1rem;
+        font-weight: 800;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        text-underline-offset: 3px;
+        transition: text-decoration-color 180ms ease, color 180ms ease;
+    }
+
+    .trending-repo-link:hover {
+        color: var(--md-sys-color-primary);
+        text-decoration-color: currentcolor;
+    }
+
+    .trending-repo-description {
+        margin: 10px 0 0;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.9rem;
+    }
+
+    .trending-summary {
+        margin-top: 12px;
+        border-radius: 12px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 26%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 78%, transparent);
+        padding: 12px;
+    }
+
+    .trending-summary h3 {
+        margin: 0;
+        font-size: 0.86rem;
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    .trending-summary p {
+        margin: 7px 0 0;
+        color: var(--md-sys-color-on-primary-container);
+        font-size: 0.92rem;
+        line-height: 1.58;
+    }
+
+    .trending-meta-line {
+        margin: 10px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.82rem;
+        line-height: 1.45;
+    }
+
+    .trending-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .trending-meta-separator {
+        color: color-mix(in srgb, var(--md-sys-color-outline) 86%, var(--md-sys-color-on-surface-variant));
+    }
+
+    .trending-lang-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        flex: 0 0 8px;
+        background: var(--lang-color, #9a8fb3);
+    }
+
+    .trending-empty-card {
+        border-radius: 14px;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 24%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-surface) 86%, transparent);
+        padding: 16px;
+        font-size: 0.9rem;
+        color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* 响应式：移动端 */
+    @media (max-width: 860px) {
+        .trending-page {
+            grid-template-columns: 1fr;
+        }
+
+        .trending-sidebar {
+            padding: 14px;
+        }
+
+        .trending-date-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            max-height: none;
+            overflow: visible;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .trending-date-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
