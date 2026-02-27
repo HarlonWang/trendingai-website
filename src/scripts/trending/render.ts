@@ -47,7 +47,8 @@ function buildRepoCard(
     item: RepoItem,
     index: number,
     labels: TrendingMessages,
-    numberFormatter: Intl.NumberFormat
+    numberFormatter: Intl.NumberFormat,
+    periodStarsLabel: string
 ): HTMLElement {
     const rank = Number(item.rank) || index + 1;
     const repoName = `${item.author || "unknown"}/${item.repoName || "unknown"}`;
@@ -135,7 +136,7 @@ function buildRepoCard(
 
     const periodItem = document.createElement("span");
     periodItem.className = "trending-meta-item";
-    periodItem.textContent = `${labels.periodStarsLabel} ${formatNumber(item.currentPeriodStars, numberFormatter)}`;
+    periodItem.textContent = `${periodStarsLabel} ${formatNumber(item.currentPeriodStars, numberFormatter)}`;
     metaLine.appendChild(periodItem);
 
     article.appendChild(metaLine);
@@ -147,7 +148,8 @@ export function renderRepoList(
     container: HTMLElement,
     items: RepoItem[],
     labels: TrendingMessages,
-    numberFormatter: Intl.NumberFormat
+    numberFormatter: Intl.NumberFormat,
+    periodStarsLabel: string
 ): void {
     if (items.length === 0) {
         const empty = document.createElement("article");
@@ -159,7 +161,7 @@ export function renderRepoList(
 
     const fragment = document.createDocumentFragment();
     items.forEach((item, index) => {
-        fragment.appendChild(buildRepoCard(item, index, labels, numberFormatter));
+        fragment.appendChild(buildRepoCard(item, index, labels, numberFormatter, periodStarsLabel));
     });
     container.replaceChildren(fragment);
 }

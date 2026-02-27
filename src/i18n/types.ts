@@ -20,7 +20,9 @@ export interface TrendingMessages {
     summaryLabel: string;
     summaryFallback: string;
     starsLabel: string;
-    periodStarsLabel: string;
+    periodStarsDaily: string;
+    periodStarsWeekly: string;
+    periodStarsMonthly: string;
     sinceDaily: string;
     sinceWeekly: string;
     sinceMonthly: string;

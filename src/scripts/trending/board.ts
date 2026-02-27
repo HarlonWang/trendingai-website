@@ -203,6 +203,15 @@ function updateUrl(date: string, batch: Batch, since: Since): void {
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
+function getPeriodStarsLabel(): string {
+    const map: Record<Since, string> = {
+        daily: labels.periodStarsDaily,
+        weekly: labels.periodStarsWeekly,
+        monthly: labels.periodStarsMonthly,
+    };
+    return map[state.selectedSince];
+}
+
 // ─── 数据加载 ─────────────────────────────────────────────────
 
 function applySelection(date: string, batch: Batch, since: Since, syncUrl: boolean): void {
@@ -232,7 +241,7 @@ async function loadSelection(date: string, batch: Batch, since: Since, syncUrl: 
 
         availabilityMap.set(availabilityKey(date, batch), items.length > 0 ? "available" : "empty");
         syncButtonStates();
-        renderRepoList(repoListElement, items, labels, numberFormatter);
+        renderRepoList(repoListElement, items, labels, numberFormatter, getPeriodStarsLabel());
         setStatus("", "", false);
     } catch (error) {
         if (error instanceof Error && error.name === "AbortError") return;
@@ -296,7 +305,7 @@ async function initialize(): Promise<void> {
             if (items.length > 0) {
                 if (state.controller !== controller) return;
                 applySelection(candidate.date, candidate.batch, initial.since, true);
-                renderRepoList(repoListElement, items, labels, numberFormatter);
+                renderRepoList(repoListElement, items, labels, numberFormatter, getPeriodStarsLabel());
                 setStatus("", "", false);
                 return;
             }
