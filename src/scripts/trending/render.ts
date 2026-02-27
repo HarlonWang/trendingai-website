@@ -113,7 +113,7 @@ function buildRepoCard(
     langDot.setAttribute("aria-hidden", "true");
 
     langItem.appendChild(langDot);
-    langItem.appendChild(document.createTextNode(`${labels.languageLabel} ${language}`));
+    langItem.appendChild(document.createTextNode(language));
     metaLine.appendChild(langItem);
 
     const sep1 = document.createElement("span");
