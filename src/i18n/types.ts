@@ -22,6 +22,7 @@ export interface TrendingMessages {
     languageLabel: string;
     starsLabel: string;
     periodStarsLabel: string;
+    rssLabel: string;
 }
 
 export interface SiteMessages {
