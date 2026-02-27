@@ -28,6 +28,7 @@ const switchPath = getSwitchPath(locale, "trending");
             trendingHref={trendingPath}
             appHref={appPath}
             languageHref={switchPath}
+            rssUrl="https://api.trendingai.cn/api/rss?summary_lang=zh"
         />
     </header>
     <TrendingBoard locale={locale} messages={messages.trending} />

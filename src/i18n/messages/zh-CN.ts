@@ -12,7 +12,8 @@ export const zhCN: SiteMessages = {
         trending: "榜单",
         app: "App",
         github: "GitHub",
-        languageLabel: "EN"
+        languageLabel: "EN",
+        rssLabel: "RSS"
     },
     hero: {
         title: "用 AI 快速读懂 GitHub Trending",
@@ -72,8 +73,7 @@ export const zhCN: SiteMessages = {
         summaryFallback: "该仓库暂时没有 AI 摘要。",
         languageLabel: "语言",
         starsLabel: "Star",
-        periodStarsLabel: "当日新增 Star",
-        rssLabel: "RSS 订阅"
+        periodStarsLabel: "当日新增 Star"
     },
     footer: {
         copyright: "© 2026 Trending AI",

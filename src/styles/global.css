@@ -384,20 +384,8 @@ a {
     padding: 9px;
 }
 
-.rss-subscribe-link {
-    display: inline-flex;
-    align-items: center;
+.top-link-rss {
     gap: 5px;
-    margin-top: 14px;
-    font-size: 0.8rem;
-    color: var(--md-sys-color-on-surface-variant);
-    text-decoration: none;
-    opacity: 0.7;
-    transition: opacity 0.15s;
-}
-
-.rss-subscribe-link:hover {
-    opacity: 1;
 }
 
 .trending-date-label {

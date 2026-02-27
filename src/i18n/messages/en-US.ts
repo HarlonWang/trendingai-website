@@ -12,7 +12,8 @@ export const enUS: SiteMessages = {
         trending: "Trending",
         app: "App",
         github: "GitHub",
-        languageLabel: "中文"
+        languageLabel: "中文",
+        rssLabel: "RSS"
     },
     hero: {
         title: "Understand GitHub Trending with AI",
@@ -72,8 +73,7 @@ export const enUS: SiteMessages = {
         summaryFallback: "No AI summary available yet.",
         languageLabel: "Language",
         starsLabel: "Stars",
-        periodStarsLabel: "Stars (Daily)",
-        rssLabel: "Subscribe via RSS"
+        periodStarsLabel: "Stars (Daily)"
     },
     footer: {
         copyright: "© 2026 Trending AI",

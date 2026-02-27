@@ -22,7 +22,6 @@ export interface TrendingMessages {
     languageLabel: string;
     starsLabel: string;
     periodStarsLabel: string;
-    rssLabel: string;
 }
 
 export interface SiteMessages {
@@ -38,6 +37,7 @@ export interface SiteMessages {
         app: string;
         github: string;
         languageLabel: string;
+        rssLabel: string;
     };
     hero: {
         title: string;
