@@ -1,0 +1,49 @@
+---
+import Footer from "../components/Footer.astro";
+import Hero from "../components/Hero.astro";
+import TopNav from "../components/TopNav.astro";
+import { getMessages, getPathByLocale, getSwitchPath } from "../lib/i18n";
+import type { Locale } from "../i18n/types";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+    locale: Locale;
+    canonicalPath: string;
+}
+
+const { locale, canonicalPath } = Astro.props;
+const messages = getMessages(locale);
+const trendingPath = getPathByLocale(locale, "trending");
+const appPath = getPathByLocale(locale, "app");
+const switchPath = getSwitchPath(locale, "app");
+const previewSrc = locale === "zh-CN" ? "/android_screenshot_zh.png" : "/android_screenshot.png";
+---
+
+<BaseLayout
+    locale={locale}
+    title={messages.meta.appTitle}
+    description={messages.meta.appDescription}
+    canonicalPath={canonicalPath}
+>
+    <header class="hero wrap">
+        <TopNav
+            locale={locale}
+            activeRoute="app"
+            nav={messages.nav}
+            heroTitle="Trending AI"
+            trendingHref={trendingPath}
+            appHref={appPath}
+            languageHref={switchPath}
+        />
+        <Hero
+            title={messages.hero.title}
+            subtitle={messages.hero.subtitle}
+            features={messages.features.items}
+            previewSrc={previewSrc}
+            previewAlt={messages.preview.alt}
+            primaryCta={messages.hero.primaryCta}
+            secondaryCta={messages.hero.secondaryCta}
+        />
+    </header>
+    <Footer copyright={messages.footer.copyright} />
+</BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import type { Locale } from "../i18n/types";
+import { SITE_URL, RSS_URL_EN, RSS_URL_ZH } from "../config";
 
 interface Props {
     locale: Locale;
@@ -10,14 +11,14 @@ interface Props {
 }
 
 const { locale, title, description, canonicalPath } = Astro.props;
-const siteUrl = "https://trendingai.cn";
-const canonical = `${siteUrl}${canonicalPath}`;
+const canonical = `${SITE_URL}${canonicalPath}`;
 const enPath = canonicalPath.startsWith("/zh/") ? (canonicalPath.slice(3) || "/") : canonicalPath;
 const zhPath = canonicalPath.startsWith("/zh/") ? canonicalPath : (canonicalPath === "/" ? "/zh/" : `/zh${canonicalPath}`);
-const zhUrl = `${siteUrl}${zhPath}`;
-const enUrl = `${siteUrl}${enPath}`;
-const ogImage = `${siteUrl}/android_screenshot.png`;
-const rssApiBase = "https://api.trendingai.cn/api/rss";
+const zhUrl = `${SITE_URL}${zhPath}`;
+const enUrl = `${SITE_URL}${enPath}`;
+const ogImage = locale === "zh-CN"
+    ? `${SITE_URL}/android_screenshot_zh.png`
+    : `${SITE_URL}/android_screenshot.png`;
 ---
 
 <!doctype html>
@@ -26,7 +27,8 @@ const rssApiBase = "https://api.trendingai.cn/api/rss";
         <script is:inline>
             (function() {
                 const storageKey = "preferred-locale";
-                const savedLocale = localStorage.getItem(storageKey);
+                let savedLocale = null;
+                try { savedLocale = localStorage.getItem(storageKey); } catch (_) {}
                 const browserLocale = navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
                 const finalLocale = savedLocale || browserLocale;
                 const currentPath = window.location.pathname;
@@ -58,8 +60,8 @@ const rssApiBase = "https://api.trendingai.cn/api/rss";
         <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
         <link rel="alternate" hreflang="en" href={enUrl} />
         <link rel="alternate" hreflang="x-default" href={enUrl} />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - Daily GitHub Trending (EN)" href={rssApiBase} />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - 每日 GitHub Trending（中文）" href={`${rssApiBase}?summary_lang=zh`} />
+        <link rel="alternate" type="application/rss+xml" title="Trending AI - Daily GitHub Trending (EN)" href={RSS_URL_EN} />
+        <link rel="alternate" type="application/rss+xml" title="Trending AI - 每日 GitHub Trending（中文）" href={RSS_URL_ZH} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />

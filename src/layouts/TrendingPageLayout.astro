@@ -1,0 +1,43 @@
+---
+import Footer from "../components/Footer.astro";
+import TopNav from "../components/TopNav.astro";
+import TrendingBoard from "../components/TrendingBoard.astro";
+import { getMessages, getPathByLocale, getSwitchPath } from "../lib/i18n";
+import type { Locale } from "../i18n/types";
+import { RSS_URL_EN, RSS_URL_ZH } from "../config";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+    locale: Locale;
+    canonicalPath: string;
+}
+
+const { locale, canonicalPath } = Astro.props;
+const messages = getMessages(locale);
+const trendingPath = getPathByLocale(locale, "trending");
+const appPath = getPathByLocale(locale, "app");
+const switchPath = getSwitchPath(locale, "trending");
+const rssUrl = locale === "zh-CN" ? RSS_URL_ZH : RSS_URL_EN;
+---
+
+<BaseLayout
+    locale={locale}
+    title={messages.meta.trendingTitle}
+    description={messages.meta.trendingDescription}
+    canonicalPath={canonicalPath}
+>
+    <header class="hero wrap">
+        <TopNav
+            locale={locale}
+            activeRoute="trending"
+            nav={messages.nav}
+            heroTitle={messages.hero.title}
+            trendingHref={trendingPath}
+            appHref={appPath}
+            languageHref={switchPath}
+            rssUrl={rssUrl}
+        />
+    </header>
+    <TrendingBoard locale={locale} messages={messages.trending} />
+    <Footer copyright={messages.footer.copyright} />
+</BaseLayout>
