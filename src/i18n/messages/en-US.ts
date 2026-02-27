@@ -73,7 +73,10 @@ export const enUS: SiteMessages = {
         summaryLabel: "AI Summary",
         summaryFallback: "No AI summary available yet.",
         starsLabel: "Stars",
-        periodStarsLabel: "Stars (Daily)"
+        periodStarsLabel: "Stars (Daily)",
+        sinceDaily: "Daily",
+        sinceWeekly: "Weekly",
+        sinceMonthly: "Monthly"
     },
     footer: {
         copyright: "© 2026 Trending AI",

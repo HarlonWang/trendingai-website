@@ -1,6 +1,6 @@
 import type { TrendingMessages } from "../../i18n/types";
 import type { RepoItem } from "../../types/api";
-import type { Batch } from "./api";
+import type { Batch, Since } from "./api";
 import { fetchTrending } from "./api";
 import { renderRepoList } from "./render";
 
@@ -15,6 +15,7 @@ interface BoardConfig {
 interface BoardState {
     selectedDate: string;
     selectedBatch: Batch;
+    selectedSince: Since;
     controller: AbortController | null;
 }
 
@@ -45,6 +46,7 @@ const summaryLang = config.summaryLang || "en";
 const dateListElement = root.querySelector<HTMLElement>("[data-date-list]")!;
 const statusElement = root.querySelector<HTMLElement>("[data-status]")!;
 const repoListElement = root.querySelector<HTMLElement>("[data-repo-list]")!;
+const sinceSelectorElement = root.querySelector<HTMLElement>("[data-since-selector]")!;
 
 const dateFormatter = new Intl.DateTimeFormat(locale, {
     month: "short",
@@ -92,6 +94,7 @@ const availabilityMap = new Map<string, "available" | "empty" | "unknown">();
 const state: BoardState = {
     selectedDate: dates[0],
     selectedBatch: "pm",
+    selectedSince: "daily",
     controller: null,
 };
 
@@ -121,6 +124,13 @@ function syncButtonStates(): void {
         button.classList.toggle("is-selected", selected);
         button.classList.toggle("is-empty", status === "empty");
         button.classList.toggle("is-available", status === "available");
+    }
+}
+
+function syncSinceButtons(): void {
+    const buttons = sinceSelectorElement.querySelectorAll<HTMLButtonElement>("button[data-since]");
+    for (const button of buttons) {
+        button.classList.toggle("is-selected", button.dataset.since === state.selectedSince);
     }
 }
 
@@ -174,45 +184,50 @@ function setStatus(type: "loading" | "error" | "", message: string, withRetry: b
 
 // ─── URL 同步 ────────────────────────────────────────────────
 
-function parseUrlState(): { date: string; batch: Batch } {
+function parseUrlState(): { date: string; batch: Batch; since: Since } {
     const params = new URLSearchParams(window.location.search);
     const queryDate = params.get("date") ?? "";
     const queryBatch = params.get("batch") ?? "";
+    const querySince = params.get("since") ?? "";
     const date = dates.includes(queryDate) ? queryDate : dates[0];
     const batch: Batch = queryBatch === "am" || queryBatch === "pm" ? queryBatch : "pm";
-    return { date, batch };
+    const since: Since = querySince === "weekly" || querySince === "monthly" ? querySince : "daily";
+    return { date, batch, since };
 }
 
-function updateUrl(date: string, batch: Batch): void {
+function updateUrl(date: string, batch: Batch, since: Since): void {
     const url = new URL(window.location.href);
     url.searchParams.set("date", date);
     url.searchParams.set("batch", batch);
+    url.searchParams.set("since", since);
     window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
 // ─── 数据加载 ─────────────────────────────────────────────────
 
-function applySelection(date: string, batch: Batch, syncUrl: boolean): void {
+function applySelection(date: string, batch: Batch, since: Since, syncUrl: boolean): void {
     state.selectedDate = date;
     state.selectedBatch = batch;
+    state.selectedSince = since;
     syncButtonStates();
+    syncSinceButtons();
     if (syncUrl) {
-        updateUrl(date, batch);
+        updateUrl(date, batch, since);
     }
 }
 
-async function loadSelection(date: string, batch: Batch, syncUrl: boolean): Promise<void> {
+async function loadSelection(date: string, batch: Batch, since: Since, syncUrl: boolean): Promise<void> {
     if (state.controller) {
         state.controller.abort();
     }
     const controller = new AbortController();
     state.controller = controller;
 
-    applySelection(date, batch, syncUrl);
+    applySelection(date, batch, since, syncUrl);
     setStatus("loading", labels.loading, false);
 
     try {
-        const items = await fetchTrending(locale, summaryLang, date, batch, limit, controller.signal);
+        const items = await fetchTrending(locale, summaryLang, since, date, batch, limit, controller.signal);
         if (state.controller !== controller) return;
 
         availabilityMap.set(availabilityKey(date, batch), items.length > 0 ? "available" : "empty");
@@ -250,6 +265,9 @@ async function initialize(): Promise<void> {
     renderDateList();
 
     const initial = parseUrlState();
+    state.selectedSince = initial.since;
+    syncSinceButtons();
+
     const candidates = buildInitialCandidates(initial.date, initial.batch);
 
     if (state.controller) {
@@ -265,7 +283,7 @@ async function initialize(): Promise<void> {
     try {
         for (const candidate of candidates) {
             const items = await fetchTrending(
-                locale, summaryLang, candidate.date, candidate.batch, limit, controller.signal
+                locale, summaryLang, initial.since, candidate.date, candidate.batch, limit, controller.signal
             );
 
             availabilityMap.set(availabilityKey(candidate.date, candidate.batch), items.length > 0 ? "available" : "empty");
@@ -277,7 +295,7 @@ async function initialize(): Promise<void> {
 
             if (items.length > 0) {
                 if (state.controller !== controller) return;
-                applySelection(candidate.date, candidate.batch, true);
+                applySelection(candidate.date, candidate.batch, initial.since, true);
                 renderRepoList(repoListElement, items, labels, numberFormatter);
                 setStatus("", "", false);
                 return;
@@ -288,7 +306,7 @@ async function initialize(): Promise<void> {
 
         // 所有候选都没有数据，显示第一个（空状态）
         const fallback = firstItems ?? { date: candidates[0].date, batch: candidates[0].batch, items: [] };
-        applySelection(fallback.date, fallback.batch, true);
+        applySelection(fallback.date, fallback.batch, initial.since, true);
         renderRepoList(repoListElement, fallback.items, labels, numberFormatter);
         setStatus("", "", false);
     } catch (error) {
@@ -308,13 +326,27 @@ dateListElement.addEventListener("click", (event) => {
     const batch = button.dataset.batch ?? "";
     if (!dates.includes(date) || (batch !== "am" && batch !== "pm")) return;
 
-    loadSelection(date, batch as Batch, true);
+    loadSelection(date, batch as Batch, state.selectedSince, true);
+});
+
+sinceSelectorElement.addEventListener("click", (event) => {
+    const button = (event.target as Element).closest<HTMLButtonElement>("button[data-since]");
+    if (!button) return;
+
+    const since = button.dataset.since ?? "";
+    if (since !== "daily" && since !== "weekly" && since !== "monthly") return;
+    if (since === state.selectedSince) return;
+
+    // 切换 since 维度时，重置可用性状态（新维度下数据未知）
+    availabilityMap.clear();
+    syncButtonStates();
+    loadSelection(state.selectedDate, state.selectedBatch, since as Since, true);
 });
 
 statusElement.addEventListener("click", (event) => {
     const retryBtn = (event.target as Element).closest<HTMLButtonElement>("button[data-retry]");
     if (!retryBtn) return;
-    loadSelection(state.selectedDate, state.selectedBatch, true);
+    loadSelection(state.selectedDate, state.selectedBatch, state.selectedSince, true);
 });
 
 initialize();

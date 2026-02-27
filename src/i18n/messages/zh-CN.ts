@@ -73,7 +73,10 @@ export const zhCN: SiteMessages = {
         summaryLabel: "AI 摘要",
         summaryFallback: "该仓库暂时没有 AI 摘要。",
         starsLabel: "Star",
-        periodStarsLabel: "当日新增 Star"
+        periodStarsLabel: "当日新增 Star",
+        sinceDaily: "今日",
+        sinceWeekly: "本周",
+        sinceMonthly: "本月"
     },
     footer: {
         copyright: "© 2026 Trending AI",

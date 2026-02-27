@@ -21,6 +21,9 @@ export interface TrendingMessages {
     summaryFallback: string;
     starsLabel: string;
     periodStarsLabel: string;
+    sinceDaily: string;
+    sinceWeekly: string;
+    sinceMonthly: string;
 }
 
 export interface SiteMessages {

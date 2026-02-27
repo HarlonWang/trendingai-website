@@ -25,6 +25,11 @@ const config = {
     </aside>
 
     <section class="trending-content">
+        <div class="trending-since-selector" data-since-selector>
+            <button class="trending-since-button" data-since="daily">{messages.sinceDaily}</button>
+            <button class="trending-since-button" data-since="weekly">{messages.sinceWeekly}</button>
+            <button class="trending-since-button" data-since="monthly">{messages.sinceMonthly}</button>
+        </div>
         <div class="trending-status" data-status></div>
         <section class="trending-repo-list" data-repo-list></section>
     </section>
@@ -42,7 +47,8 @@ const config = {
     [data-theme-ready] .trending-repo-card,
     [data-theme-ready] .trending-summary,
     [data-theme-ready] .trending-date-item,
-    [data-theme-ready] .trending-status {
+    [data-theme-ready] .trending-status,
+    [data-theme-ready] .trending-since-button {
         transition: background-color 250ms ease, border-color 250ms ease, color 150ms ease, box-shadow 250ms ease;
     }
 
@@ -136,6 +142,37 @@ const config = {
 
     .trending-content {
         padding: 18px;
+    }
+
+    .trending-since-selector {
+        display: flex;
+        gap: 6px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+    }
+
+    .trending-since-button {
+        flex: 1 1 0;
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 28%, transparent);
+        border-radius: 10px;
+        background: transparent;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+    }
+
+    .trending-since-button.is-selected {
+        border-color: color-mix(in srgb, var(--md-sys-color-primary) 52%, transparent);
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 82%, transparent);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    .trending-since-button:not(.is-selected):hover {
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 48%, transparent);
+        color: var(--md-sys-color-on-primary-container);
     }
 
     .trending-status {
