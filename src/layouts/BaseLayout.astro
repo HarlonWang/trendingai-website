@@ -26,6 +26,17 @@ const ogImage = locale === "zh-CN"
     <head>
         <script is:inline>
             (function() {
+                const stored = (function() {
+                    try { return localStorage.getItem("preferred-theme"); } catch (_) { return null; }
+                })();
+                const theme = (stored === "dark" || stored === "light")
+                    ? stored
+                    : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            })();
+        </script>
+        <script is:inline>
+            (function() {
                 const storageKey = "preferred-locale";
                 let savedLocale = null;
                 try { savedLocale = localStorage.getItem(storageKey); } catch (_) {}
@@ -93,6 +104,8 @@ const ogImage = locale === "zh-CN"
             document.querySelectorAll(".reveal").forEach((element) => {
                 observer.observe(element);
             });
+
+            document.documentElement.setAttribute("data-theme-ready", "");
         </script>
     </body>
 </html>

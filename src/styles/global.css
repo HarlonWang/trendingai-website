@@ -14,8 +14,26 @@
     --shadow-ambient: 0 16px 48px rgba(33, 0, 93, 0.08);
 }
 
+/* 显式深色主题（JS 设置 data-theme="dark"） */
+[data-theme="dark"] {
+    --md-sys-color-primary: #cfbcff;
+    --md-sys-color-on-primary: #381e72;
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+    --md-sys-color-secondary: #cbc2db;
+    --md-sys-color-on-secondary: #332d41;
+    --md-sys-color-surface: #141218;
+    --md-sys-color-surface-container: #1d1b20;
+    --md-sys-color-surface-variant: #49454f;
+    --md-sys-color-on-surface: #e6e0e9;
+    --md-sys-color-on-surface-variant: #cac4d0;
+    --md-sys-color-outline: #938f99;
+    --shadow-ambient: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* 系统偏好回退（JS 禁用时生效） */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
         --md-sys-color-primary: #cfbcff;
         --md-sys-color-on-primary: #381e72;
         --md-sys-color-primary-container: #4f378b;
@@ -30,6 +48,19 @@
         --md-sys-color-outline: #938f99;
         --shadow-ambient: 0 24px 60px rgba(0, 0, 0, 0.35);
     }
+}
+
+/* 主题切换过渡（页面加载完成后由 JS 追加 data-theme-ready 激活） */
+[data-theme-ready] body {
+    transition: color 150ms ease;
+}
+
+[data-theme-ready] .topbar,
+[data-theme-ready] .hero-feature-item,
+[data-theme-ready] .feature-card,
+[data-theme-ready] .download-card,
+[data-theme-ready] .download-meta div {
+    transition: background-color 250ms ease, border-color 250ms ease, color 150ms ease, box-shadow 250ms ease;
 }
 
 * {

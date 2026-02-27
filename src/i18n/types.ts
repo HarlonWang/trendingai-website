@@ -37,6 +37,7 @@ export interface SiteMessages {
         github: string;
         languageLabel: string;
         rssLabel: string;
+        themeLabel: string;
     };
     hero: {
         title: string;

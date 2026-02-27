@@ -37,6 +37,15 @@ const config = {
 </script>
 
 <style is:global>
+    [data-theme-ready] .trending-sidebar,
+    [data-theme-ready] .trending-content,
+    [data-theme-ready] .trending-repo-card,
+    [data-theme-ready] .trending-summary,
+    [data-theme-ready] .trending-date-item,
+    [data-theme-ready] .trending-status {
+        transition: background-color 250ms ease, border-color 250ms ease, color 150ms ease, box-shadow 250ms ease;
+    }
+
     .wrap.trending-page {
         margin-top: 16px;
         display: grid;

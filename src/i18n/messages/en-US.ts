@@ -13,7 +13,8 @@ export const enUS: SiteMessages = {
         app: "App",
         github: "GitHub",
         languageLabel: "中文",
-        rssLabel: "RSS"
+        rssLabel: "RSS",
+        themeLabel: "Toggle theme"
     },
     hero: {
         title: "Understand GitHub Trending with AI",

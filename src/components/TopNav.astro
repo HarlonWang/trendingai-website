@@ -1,5 +1,6 @@
 ---
 import LanguageSwitch from "./LanguageSwitch.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 import type { Locale, SiteMessages } from "../i18n/types";
 
 interface Props {
@@ -44,6 +45,7 @@ const homeLabel = locale === "zh-CN" ? "首页" : "Home";
                 {nav.rssLabel}
             </a>
         )}
+        <ThemeToggle label={nav.themeLabel} />
         <LanguageSwitch href={languageHref} label={nav.languageLabel} />
     </div>
 </nav>

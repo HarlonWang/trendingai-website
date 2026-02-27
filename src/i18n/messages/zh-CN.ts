@@ -13,7 +13,8 @@ export const zhCN: SiteMessages = {
         app: "App",
         github: "GitHub",
         languageLabel: "EN",
-        rssLabel: "RSS"
+        rssLabel: "RSS",
+        themeLabel: "切换主题"
     },
     hero: {
         title: "用 AI 快速读懂 GitHub Trending",

@@ -1,0 +1,66 @@
+---
+interface Props {
+    label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<button class="theme-toggle top-link" title={label} aria-label={label}>
+    <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM4.22 5.64a1 1 0 0 1 1.42-1.42l1.41 1.42a1 1 0 0 1-1.41 1.41L4.22 5.64zm12.72 12.72a1 1 0 0 1 1.41-1.41l1.42 1.41a1 1 0 0 1-1.42 1.42l-1.41-1.42zM3 12a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm16 0a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2h-2a1 1 0 0 1-1-1zM4.22 18.36l1.41-1.42a1 1 0 0 1 1.41 1.41L5.64 19.78a1 1 0 0 1-1.42-1.42zm12.72-12.72 1.42-1.42a1 1 0 0 1 1.41 1.42l-1.41 1.41a1 1 0 0 1-1.42-1.41z"/>
+    </svg>
+    <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+    </svg>
+</button>
+
+<style is:global>
+    .theme-toggle .icon-sun {
+        display: none;
+    }
+
+    .theme-toggle .icon-moon {
+        display: block;
+    }
+
+    [data-theme="dark"] .theme-toggle .icon-sun {
+        display: block;
+    }
+
+    [data-theme="dark"] .theme-toggle .icon-moon {
+        display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .theme-toggle .icon-sun {
+            display: block;
+        }
+
+        :root:not([data-theme="light"]) .theme-toggle .icon-moon {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    const btn = document.querySelector<HTMLButtonElement>(".theme-toggle");
+    if (btn) {
+        btn.addEventListener("click", () => {
+            const current = document.documentElement.getAttribute("data-theme");
+            const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            const effectiveDark = current === "dark" || (current !== "light" && systemDark);
+            const next = effectiveDark ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            try { localStorage.setItem("preferred-theme", next); } catch (_) {}
+        });
+
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+            let stored: string | null = null;
+            try { stored = localStorage.getItem("preferred-theme"); } catch (_) {}
+            if (!stored) {
+                document.documentElement.setAttribute("data-theme", e.matches ? "dark" : "light");
+            }
+        });
+    }
+</script>
