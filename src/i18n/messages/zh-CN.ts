@@ -72,7 +72,8 @@ export const zhCN: SiteMessages = {
         summaryFallback: "该仓库暂时没有 AI 摘要。",
         languageLabel: "语言",
         starsLabel: "Star",
-        periodStarsLabel: "当日新增 Star"
+        periodStarsLabel: "当日新增 Star",
+        rssLabel: "RSS 订阅"
     },
     footer: {
         copyright: "© 2026 Trending AI",
