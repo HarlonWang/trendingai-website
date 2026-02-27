@@ -106,7 +106,7 @@ const config = {
         font-size: 0.78rem;
         font-weight: 700;
         letter-spacing: 0.01em;
-        padding: 6px 8px;
+        padding: 10px 8px;
         cursor: pointer;
         transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
     }
@@ -287,24 +287,47 @@ const config = {
 
     /* 响应式：移动端 */
     @media (max-width: 860px) {
-        .trending-page {
+        .wrap.trending-page {
             grid-template-columns: 1fr;
         }
 
         .trending-sidebar {
-            padding: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 12px 14px;
+            border-radius: 0 0 18px 18px;
+            overflow: hidden;
+        }
+
+        .trending-sidebar h2,
+        .trending-sidebar > p {
+            display: none;
         }
 
         .trending-date-list {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
             max-height: none;
-            overflow: visible;
+            margin-top: 0;
+            gap: 8px;
+            padding-bottom: 2px;
         }
-    }
 
-    @media (max-width: 520px) {
-        .trending-date-list {
-            grid-template-columns: 1fr;
+        .trending-date-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .trending-date-item {
+            flex: 0 0 auto;
+        }
+
+        .trending-batch-button {
+            padding: 12px 10px;
         }
     }
 </style>
