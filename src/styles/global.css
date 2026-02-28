@@ -150,6 +150,7 @@ a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     padding: 8px 12px;
     border-radius: 10px;
     border: 0;
@@ -459,6 +460,11 @@ body.app-page {
     .topbar {
         flex-wrap: wrap;
         gap: 10px;
+    }
+
+    .top-link-github .top-link-label,
+    .top-link-rss .top-link-label {
+        display: none;
     }
 
     .hero-main {
