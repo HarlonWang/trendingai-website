@@ -5,7 +5,7 @@
     --md-sys-color-on-primary-container: #21005d;
     --md-sys-color-secondary: #625b71;
     --md-sys-color-on-secondary: #ffffff;
-    --md-sys-color-surface: #fffbfe;
+    --md-sys-color-surface: #fffbfe; /* BaseLayout.astro 内联脚本中有同名字面量，修改时需同步 */
     --md-sys-color-surface-container: #f3edf7;
     --md-sys-color-surface-variant: #e7e0ec;
     --md-sys-color-on-surface: #1d1b20;
@@ -22,7 +22,7 @@
     --md-sys-color-on-primary-container: #eaddff;
     --md-sys-color-secondary: #cbc2db;
     --md-sys-color-on-secondary: #332d41;
-    --md-sys-color-surface: #141218;
+    --md-sys-color-surface: #141218; /* BaseLayout.astro 内联脚本中有同名字面量，修改时需同步 */
     --md-sys-color-surface-container: #1d1b20;
     --md-sys-color-surface-variant: #49454f;
     --md-sys-color-on-surface: #e6e0e9;
@@ -73,6 +73,10 @@ body {
     padding: 0;
 }
 
+html {
+    background-color: var(--md-sys-color-surface);
+}
+
 body {
     font-family: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
     color: var(--md-sys-color-on-surface);
@@ -93,9 +97,6 @@ a {
     margin: 0 auto;
 }
 
-.hero {
-    padding-top: 16px;
-}
 
 .hero-main {
     display: grid;
@@ -367,6 +368,52 @@ a {
 }
 
 /* Trending 组件样式已迁移至 src/components/TrendingBoard.astro */
+
+/* App 页面 App-Shell 布局 */
+body.app-page {
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.app-shell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-page-nav {
+    flex-shrink: 0;
+    padding-top: 16px;
+}
+
+.app-page-content {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-top: 16px;
+}
+
+/* Trending 页面 App-Shell 布局（桌面端） */
+.trending-nav {
+    padding-top: 16px;
+}
+
+@media (min-width: 861px) {
+    body.trending-app {
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .trending-shell {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .trending-nav {
+        flex-shrink: 0;
+    }
+}
 
 .footer {
     padding: 24px 0 44px;
