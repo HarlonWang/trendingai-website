@@ -34,7 +34,9 @@ const ogImage = locale === "zh-CN"
                     ? stored
                     : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
                 document.documentElement.setAttribute("data-theme", theme);
-                // 在 CSS 加载前提前设置 html 背景色，防止页面切换时白色闪烁
+                // 在 CSS 加载前提前设置 html 背景色，防止页面切换时白色闪烁。
+                // 此脚本运行时 CSS 尚未加载，无法读取 CSS 变量，因此使用字面量。
+                // 这两个值必须与 global.css 中 --md-sys-color-surface 的亮/暗色值保持一致。
                 document.documentElement.style.backgroundColor = theme === "dark" ? "#141218" : "#fffbfe";
             })();
         </script>
@@ -90,7 +92,7 @@ const ogImage = locale === "zh-CN"
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
         <title>{title}</title>
     </head>
-    <body class={bodyClass}>
+    <body class={bodyClass || undefined}>
         <slot />
         <script is:inline>
             const observer = new IntersectionObserver((entries) => {

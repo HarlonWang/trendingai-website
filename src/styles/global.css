@@ -5,7 +5,7 @@
     --md-sys-color-on-primary-container: #21005d;
     --md-sys-color-secondary: #625b71;
     --md-sys-color-on-secondary: #ffffff;
-    --md-sys-color-surface: #fffbfe;
+    --md-sys-color-surface: #fffbfe; /* BaseLayout.astro 内联脚本中有同名字面量，修改时需同步 */
     --md-sys-color-surface-container: #f3edf7;
     --md-sys-color-surface-variant: #e7e0ec;
     --md-sys-color-on-surface: #1d1b20;
@@ -22,7 +22,7 @@
     --md-sys-color-on-primary-container: #eaddff;
     --md-sys-color-secondary: #cbc2db;
     --md-sys-color-on-secondary: #332d41;
-    --md-sys-color-surface: #141218;
+    --md-sys-color-surface: #141218; /* BaseLayout.astro 内联脚本中有同名字面量，修改时需同步 */
     --md-sys-color-surface-container: #1d1b20;
     --md-sys-color-surface-variant: #49454f;
     --md-sys-color-on-surface: #e6e0e9;
