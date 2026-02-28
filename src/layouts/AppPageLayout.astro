@@ -24,26 +24,33 @@ const previewSrc = locale === "zh-CN" ? "/android_screenshot_zh.png" : "/android
     title={messages.meta.appTitle}
     description={messages.meta.appDescription}
     canonicalPath={canonicalPath}
+    bodyClass="app-page"
 >
-    <header class="hero wrap">
-        <TopNav
-            locale={locale}
-            activeRoute="app"
-            nav={messages.nav}
-            heroTitle="Trending AI"
-            trendingHref={trendingPath}
-            appHref={appPath}
-            languageHref={switchPath}
-        />
-        <Hero
-            title={messages.hero.title}
-            subtitle={messages.hero.subtitle}
-            features={messages.features.items}
-            previewSrc={previewSrc}
-            previewAlt={messages.preview.alt}
-            primaryCta={messages.hero.primaryCta}
-            secondaryCta={messages.hero.secondaryCta}
-        />
-    </header>
-    <Footer copyright={messages.footer.copyright} />
+    <div class="app-shell">
+        <header class="app-page-nav wrap">
+            <TopNav
+                locale={locale}
+                activeRoute="app"
+                nav={messages.nav}
+                heroTitle="Trending AI"
+                trendingHref={trendingPath}
+                appHref={appPath}
+                languageHref={switchPath}
+            />
+        </header>
+        <main class="app-page-content">
+            <section class="hero wrap">
+                <Hero
+                    title={messages.hero.title}
+                    subtitle={messages.hero.subtitle}
+                    features={messages.features.items}
+                    previewSrc={previewSrc}
+                    previewAlt={messages.preview.alt}
+                    primaryCta={messages.hero.primaryCta}
+                    secondaryCta={messages.hero.secondaryCta}
+                />
+            </section>
+            <Footer copyright={messages.footer.copyright} />
+        </main>
+    </div>
 </BaseLayout>

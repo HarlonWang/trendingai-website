@@ -34,6 +34,8 @@ const ogImage = locale === "zh-CN"
                     ? stored
                     : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
                 document.documentElement.setAttribute("data-theme", theme);
+                // 在 CSS 加载前提前设置 html 背景色，防止页面切换时白色闪烁
+                document.documentElement.style.backgroundColor = theme === "dark" ? "#141218" : "#fffbfe";
             })();
         </script>
         <script is:inline>

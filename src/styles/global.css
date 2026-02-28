@@ -73,6 +73,10 @@ body {
     padding: 0;
 }
 
+html {
+    background-color: var(--md-sys-color-surface);
+}
+
 body {
     font-family: "Plus Jakarta Sans", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
     color: var(--md-sys-color-on-surface);
@@ -367,6 +371,29 @@ a {
 }
 
 /* Trending 组件样式已迁移至 src/components/TrendingBoard.astro */
+
+/* App 页面 App-Shell 布局 */
+body.app-page {
+    height: 100dvh;
+    overflow: hidden;
+}
+
+.app-shell {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-page-nav {
+    flex-shrink: 0;
+    padding: 16px 0;
+}
+
+.app-page-content {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+}
 
 /* Trending 页面 App-Shell 布局（桌面端） */
 .trending-nav {
