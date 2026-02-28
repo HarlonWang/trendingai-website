@@ -368,6 +368,29 @@ a {
 
 /* Trending 组件样式已迁移至 src/components/TrendingBoard.astro */
 
+/* Trending 页面 App-Shell 布局（桌面端） */
+.trending-nav {
+    padding-top: 16px;
+}
+
+@media (min-width: 861px) {
+    body.trending-app {
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .trending-shell {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .trending-nav {
+        flex-shrink: 0;
+        padding-bottom: 16px;
+    }
+}
+
 .footer {
     padding: 24px 0 44px;
     display: flex;

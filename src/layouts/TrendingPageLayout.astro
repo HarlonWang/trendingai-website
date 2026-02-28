@@ -25,19 +25,23 @@ const rssUrl = locale === "zh-CN" ? RSS_URL_ZH : RSS_URL_EN;
     title={messages.meta.trendingTitle}
     description={messages.meta.trendingDescription}
     canonicalPath={canonicalPath}
+    bodyClass="trending-app"
 >
-    <header class="hero wrap">
-        <TopNav
-            locale={locale}
-            activeRoute="trending"
-            nav={messages.nav}
-            heroTitle={messages.hero.title}
-            trendingHref={trendingPath}
-            appHref={appPath}
-            languageHref={switchPath}
-            rssUrl={rssUrl}
-        />
-    </header>
-    <TrendingBoard locale={locale} messages={messages.trending} />
-    <Footer copyright={messages.footer.copyright} />
+    <div class="trending-shell">
+        <header class="trending-nav wrap">
+            <TopNav
+                locale={locale}
+                activeRoute="trending"
+                nav={messages.nav}
+                heroTitle={messages.hero.title}
+                trendingHref={trendingPath}
+                appHref={appPath}
+                languageHref={switchPath}
+                rssUrl={rssUrl}
+            />
+        </header>
+        <TrendingBoard locale={locale} messages={messages.trending}>
+            <Footer copyright={messages.footer.copyright} />
+        </TrendingBoard>
+    </div>
 </BaseLayout>

@@ -8,9 +8,10 @@ interface Props {
     title: string;
     description: string;
     canonicalPath: string;
+    bodyClass?: string;
 }
 
-const { locale, title, description, canonicalPath } = Astro.props;
+const { locale, title, description, canonicalPath, bodyClass } = Astro.props;
 const canonical = `${SITE_URL}${canonicalPath}`;
 const enPath = canonicalPath.startsWith("/zh/") ? (canonicalPath.slice(3) || "/") : canonicalPath;
 const zhPath = canonicalPath.startsWith("/zh/") ? canonicalPath : (canonicalPath === "/" ? "/zh/" : `/zh${canonicalPath}`);
@@ -87,7 +88,7 @@ const ogImage = locale === "zh-CN"
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
         <title>{title}</title>
     </head>
-    <body>
+    <body class={bodyClass}>
         <slot />
         <script is:inline>
             const observer = new IntersectionObserver((entries) => {

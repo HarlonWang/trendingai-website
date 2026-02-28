@@ -17,25 +17,28 @@ const config = {
 };
 ---
 
-<section class="wrap trending-page reveal" data-trending-board>
+<main class="trending-main wrap" data-trending-board>
     <aside class="trending-sidebar">
         <h2>{messages.sidebarTitle}</h2>
         <p>{messages.sidebarHint}</p>
         <ul class="trending-date-list" data-date-list></ul>
     </aside>
 
-    <section class="trending-content">
-        <div class="trending-since-selector" data-since-selector>
-            <button class="trending-since-button" data-since="daily">{messages.sinceDaily}</button>
-            <button class="trending-since-button" data-since="weekly">{messages.sinceWeekly}</button>
-            <button class="trending-since-button" data-since="monthly">{messages.sinceMonthly}</button>
-        </div>
-        <div class="trending-status" data-status></div>
-        <section class="trending-repo-list" data-repo-list></section>
-    </section>
+    <div class="trending-content-wrap">
+        <section class="trending-content">
+            <div class="trending-since-selector" data-since-selector>
+                <button class="trending-since-button" data-since="daily">{messages.sinceDaily}</button>
+                <button class="trending-since-button" data-since="weekly">{messages.sinceWeekly}</button>
+                <button class="trending-since-button" data-since="monthly">{messages.sinceMonthly}</button>
+            </div>
+            <div class="trending-status" data-status></div>
+            <section class="trending-repo-list" data-repo-list></section>
+        </section>
+        <slot />
+    </div>
 
     <script type="application/json" data-trending-config is:inline set:html={JSON.stringify(config)}></script>
-</section>
+</main>
 
 <script>
     import "../scripts/trending/board";
@@ -52,12 +55,12 @@ const config = {
         transition: background-color 250ms ease, border-color 250ms ease, color 150ms ease, box-shadow 250ms ease;
     }
 
-    .wrap.trending-page {
-        margin-top: 16px;
+    /* 基础布局：移动端单列，桌面端由 app-shell 接管 */
+    .trending-main {
         display: grid;
-        grid-template-columns: minmax(240px, 272px) minmax(0, 1fr);
+        grid-template-columns: 1fr;
         gap: 16px;
-        align-items: start;
+        margin-top: 0;
     }
 
     .trending-sidebar,
@@ -331,12 +334,42 @@ const config = {
         color: var(--md-sys-color-on-surface-variant);
     }
 
-    /* 响应式：移动端 */
-    @media (max-width: 860px) {
-        .wrap.trending-page {
-            grid-template-columns: 1fr;
+    /* 桌面端 App-Shell：两列各自独立滚动 */
+    @media (min-width: 861px) {
+        .trending-main {
+            flex: 1;
+            overflow: hidden;
+            grid-template-columns: minmax(240px, 272px) minmax(0, 1fr);
+            padding-bottom: 16px;
         }
 
+        .trending-date-list {
+            max-height: none;
+            overflow-y: visible;
+        }
+
+        .trending-sidebar {
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .trending-content-wrap {
+            overflow-y: auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* footer 在内容区底部，覆盖 .wrap 的宽度约束 */
+        .trending-content-wrap > footer.wrap {
+            width: auto;
+            margin: 0;
+        }
+    }
+
+    /* 移动端 */
+    @media (max-width: 860px) {
         .trending-sidebar {
             position: sticky;
             top: 0;

@@ -243,6 +243,7 @@ async function loadSelection(date: string, batch: Batch, since: Since, syncUrl: 
         syncButtonStates();
         renderRepoList(repoListElement, items, labels, numberFormatter, getPeriodStarsLabel());
         setStatus("", "", false);
+        repoListElement.closest<HTMLElement>(".trending-content-wrap")?.scrollTo({ top: 0 });
     } catch (error) {
         if (error instanceof Error && error.name === "AbortError") return;
         if (state.controller !== controller) return;
@@ -316,7 +317,7 @@ async function initialize(): Promise<void> {
         // 所有候选都没有数据，显示第一个（空状态）
         const fallback = firstItems ?? { date: candidates[0].date, batch: candidates[0].batch, items: [] };
         applySelection(fallback.date, fallback.batch, initial.since, true);
-        renderRepoList(repoListElement, fallback.items, labels, numberFormatter);
+        renderRepoList(repoListElement, fallback.items, labels, numberFormatter, getPeriodStarsLabel());
         setStatus("", "", false);
     } catch (error) {
         if (error instanceof Error && error.name === "AbortError") return;
