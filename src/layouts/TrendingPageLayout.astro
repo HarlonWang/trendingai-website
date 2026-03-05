@@ -1,5 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
+import Subscribe from "../components/Subscribe.astro";
 import TopNav from "../components/TopNav.astro";
 import TrendingBoard from "../components/TrendingBoard.astro";
 import { getMessages, getPathByLocale, getSwitchPath } from "../lib/i18n";
@@ -44,4 +45,5 @@ const rssUrl = locale === "zh-CN" ? RSS_URL_ZH : RSS_URL_EN;
             <Footer copyright={messages.footer.copyright} />
         </TrendingBoard>
     </div>
+    <Subscribe locale={locale} messages={messages.subscribe} />
 </BaseLayout>

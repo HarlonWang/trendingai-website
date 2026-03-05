@@ -42,6 +42,9 @@ export interface SiteMessages {
         languageLabel: string;
         rssLabel: string;
         themeLabel: string;
+        subscribeLabel: string;
+        subscribeRss: string;
+        subscribeEmail: string;
     };
     hero: {
         title: string;
@@ -71,6 +74,25 @@ export interface SiteMessages {
         digestLabel: string;
     };
     trending: TrendingMessages;
+    subscribe: {
+        badge: string;
+        title: string;
+        subtitle: string;
+        placeholder: string;
+        cta: string;
+        sending: string;
+        langLabel: string;
+        langZh: string;
+        langEn: string;
+        privacy: string;
+        successNew: string;
+        successAlready: string;
+        errorInvalid: string;
+        errorNetwork: string;
+        confirmedMessage: string;
+        alreadyMessage: string;
+        unsubscribedMessage: string;
+    };
     footer: {
         copyright: string;
         license: string;

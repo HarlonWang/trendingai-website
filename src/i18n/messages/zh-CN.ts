@@ -14,7 +14,10 @@ export const zhCN: SiteMessages = {
         github: "GitHub",
         languageLabel: "EN",
         rssLabel: "RSS",
-        themeLabel: "切换主题"
+        themeLabel: "切换主题",
+        subscribeLabel: "订阅",
+        subscribeRss: "RSS 订阅",
+        subscribeEmail: "邮件订阅"
     },
     hero: {
         title: "用 AI 快速读懂 GitHub Trending",
@@ -78,6 +81,25 @@ export const zhCN: SiteMessages = {
         sinceDaily: "日榜",
         sinceWeekly: "周榜",
         sinceMonthly: "月榜"
+    },
+    subscribe: {
+        badge: "邮件订阅",
+        title: "订阅每日趋势日报",
+        subtitle: "每天自动推送 GitHub Trending 精选仓库与 AI 摘要，随时掌握开源动态。",
+        placeholder: "your@email.com",
+        cta: "免费订阅",
+        sending: "发送中...",
+        langLabel: "AI 摘要语言：",
+        langZh: "中文",
+        langEn: "English",
+        privacy: "每天一封 · 随时退订 · 不发垃圾邮件",
+        successNew: "📬 确认邮件已发送，请查收邮箱并点击确认链接完成订阅！",
+        successAlready: "✅ 您已经成功订阅，无需重复操作。",
+        errorInvalid: "请输入有效的邮箱地址。",
+        errorNetwork: "网络错误，请稍后重试。",
+        confirmedMessage: "🎉 订阅成功！每日趋势日报将发送到您的邮箱。",
+        alreadyMessage: "✅ 您已经订阅成功，无需重复确认。",
+        unsubscribedMessage: "您已成功退订，期待将来再见。"
     },
     footer: {
         copyright: "© 2026 Trending AI",

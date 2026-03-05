@@ -116,6 +116,8 @@ a {
     border-radius: 12px;
     background: color-mix(in srgb, var(--md-sys-color-surface) 92%, transparent);
     box-shadow: 0 6px 20px color-mix(in srgb, var(--md-sys-color-outline) 14%, transparent);
+    position: relative;
+    z-index: 20;
 }
 
 .brand {

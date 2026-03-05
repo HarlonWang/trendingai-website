@@ -14,7 +14,10 @@ export const enUS: SiteMessages = {
         github: "GitHub",
         languageLabel: "中文",
         rssLabel: "RSS",
-        themeLabel: "Toggle theme"
+        themeLabel: "Toggle theme",
+        subscribeLabel: "Subscribe",
+        subscribeRss: "RSS Feed",
+        subscribeEmail: "Email Newsletter"
     },
     hero: {
         title: "Understand GitHub Trending with AI",
@@ -78,6 +81,25 @@ export const enUS: SiteMessages = {
         sinceDaily: "Daily",
         sinceWeekly: "Weekly",
         sinceMonthly: "Monthly"
+    },
+    subscribe: {
+        badge: "Newsletter",
+        title: "Get Daily Trending Updates",
+        subtitle: "Receive curated GitHub Trending repos with AI summaries, delivered to your inbox every day.",
+        placeholder: "your@email.com",
+        cta: "Subscribe Free",
+        sending: "Sending...",
+        langLabel: "Summary language:",
+        langZh: "中文",
+        langEn: "English",
+        privacy: "One email per day · Unsubscribe anytime · No spam",
+        successNew: "📬 Confirmation email sent. Please check your inbox and click the confirm link.",
+        successAlready: "✅ You are already subscribed.",
+        errorInvalid: "Please enter a valid email address.",
+        errorNetwork: "Network error. Please try again.",
+        confirmedMessage: "🎉 Subscription confirmed! You will receive daily trending updates.",
+        alreadyMessage: "✅ Your subscription is already active.",
+        unsubscribedMessage: "You have been unsubscribed. See you next time."
     },
     footer: {
         copyright: "© 2026 Trending AI",

@@ -45,15 +45,151 @@ const githubHref = activeRoute === "app"
             </svg>
             <span class="top-link-label">{nav.github}</span>
         </a>
-        {rssUrl && (
-            <a class="top-link top-link-rss nav-text" href={rssUrl} target="_blank" rel="noopener noreferrer" title={nav.rssLabel}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+
+        <!-- 订阅下拉 -->
+        <div class="sub-wrap" id="sub-wrap">
+            <button
+                class="top-link nav-text sub-trigger"
+                id="sub-trigger"
+                aria-haspopup="true"
+                aria-expanded="false"
+            >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9m-4.27 13a2 2 0 0 1-3.46 0"/>
                 </svg>
-                <span class="top-link-label">{nav.rssLabel}</span>
-            </a>
-        )}
+                <span class="top-link-label sub-label">{nav.subscribeLabel}</span>
+                <svg class="sub-chevron" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M7 10l5 5 5-5z"/>
+                </svg>
+            </button>
+            <div class="sub-menu" role="menu">
+                {rssUrl && (
+                    <a
+                        class="sub-menu-item"
+                        href={rssUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        role="menuitem"
+                    >
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+                        </svg>
+                        {nav.subscribeRss}
+                    </a>
+                )}
+                <button class="sub-menu-item" id="sub-email-btn" role="menuitem">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                    {nav.subscribeEmail}
+                </button>
+            </div>
+        </div>
+
         <ThemeToggle label={nav.themeLabel} />
         <LanguageSwitch href={languageHref} label={nav.languageLabel} />
     </div>
 </nav>
+
+<script>
+    const wrap = document.getElementById("sub-wrap");
+    const trigger = document.getElementById("sub-trigger");
+    const emailBtn = document.getElementById("sub-email-btn");
+
+    trigger?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const open = wrap.classList.toggle("is-open");
+        trigger.setAttribute("aria-expanded", String(open));
+    });
+
+    document.addEventListener("click", () => {
+        wrap?.classList.remove("is-open");
+        trigger?.setAttribute("aria-expanded", "false");
+    });
+
+    emailBtn?.addEventListener("click", () => {
+        wrap?.classList.remove("is-open");
+        trigger?.setAttribute("aria-expanded", "false");
+        (document.getElementById("subscribe-modal") as HTMLDialogElement)?.showModal();
+    });
+</script>
+
+<style>
+    .sub-wrap {
+        position: relative;
+    }
+
+    .sub-trigger {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .sub-chevron {
+        opacity: 0.7;
+        transition: transform 200ms ease;
+    }
+
+    .sub-wrap.is-open .sub-chevron {
+        transform: rotate(180deg);
+    }
+
+    .sub-menu {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        background: var(--md-sys-color-surface);
+        border: 1px solid color-mix(in srgb, var(--md-sys-color-outline) 22%, transparent);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        min-width: 148px;
+        padding: 5px;
+        z-index: 200;
+    }
+
+    .sub-wrap.is-open .sub-menu {
+        display: block;
+    }
+
+    .sub-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface-variant);
+        cursor: pointer;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        text-decoration: none;
+        transition: background 150ms ease, color 150ms ease;
+        white-space: nowrap;
+        font-family: inherit;
+    }
+
+    .sub-menu-item:hover {
+        background: color-mix(in srgb, var(--md-sys-color-primary-container) 68%, transparent);
+        color: var(--md-sys-color-on-primary-container);
+    }
+
+    @media (max-width: 860px) {
+        .sub-label {
+            display: none;
+        }
+
+        .sub-chevron {
+            display: none;
+        }
+
+        .sub-menu {
+            right: auto;
+            left: 0;
+        }
+    }
+</style>
