@@ -97,6 +97,7 @@ const githubHref = activeRoute === "app"
     const emailBtn = document.getElementById("sub-email-btn");
 
     trigger?.addEventListener("click", (e) => {
+        if (!wrap || !trigger) return;
         e.stopPropagation();
         const open = wrap.classList.toggle("is-open");
         trigger.setAttribute("aria-expanded", String(open));
