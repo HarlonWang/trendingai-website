@@ -85,7 +85,7 @@ export const zhCN: SiteMessages = {
     subscribe: {
         badge: "邮件订阅",
         title: "订阅每日趋势日报",
-        subtitle: "每天自动推送 GitHub Trending 精选仓库与 AI 摘要，随时掌握开源动态。",
+        subtitle: "每天自动推送 GitHub Trending 仓库与 AI 摘要，随时掌握开源动态。",
         placeholder: "your@email.com",
         cta: "免费订阅",
         sending: "发送中...",
