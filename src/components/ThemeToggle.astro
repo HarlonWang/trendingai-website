@@ -41,12 +41,16 @@
         if (transition) setTimeout(function() { document.documentElement.classList.remove("theme-transitioning"); }, 250);
     }
 
+    var themeTitles = { auto: "跟随系统", dark: "深色模式", light: "浅色模式" };
+
     function updateIcon(mode) {
         var btn = document.querySelector(".theme-toggle");
         if (!btn) return;
         btn.querySelector(".icon-auto").classList.toggle("hidden", mode !== "auto");
         btn.querySelector(".icon-dark").classList.toggle("hidden", mode !== "dark");
         btn.querySelector(".icon-light").classList.toggle("hidden", mode !== "light");
+        btn.title = themeTitles[mode] || "切换主题";
+        btn.setAttribute("aria-label", themeTitles[mode] || "切换主题");
     }
 
     document.addEventListener("astro:page-load", function() {
