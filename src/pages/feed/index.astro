@@ -9,10 +9,8 @@ import Footer from "../../components/Footer.astro";
     description="浏览 GitHub、Hacker News、Product Hunt 全部热门内容"
     canonicalPath="/feed/"
 >
-    <header>
-        <TopNav activeRoute="feed" />
-    </header>
-    <main class="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <TopNav activeRoute="feed" />
+    <main class="mx-auto max-w-3xl px-4 pt-20 pb-8 sm:px-6">
         <!-- Tab 栏 -->
         <div id="feed-tabs" class="mb-6 flex gap-2 border-b border-outline pb-3">
             {["全部", "GitHub", "Hacker News", "Product Hunt"].map((label, i) => (

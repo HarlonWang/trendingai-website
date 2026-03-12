@@ -14,27 +14,45 @@ const links = [
 ] as const;
 ---
 
-<nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
-    <a class="flex items-center gap-2.5" href="/" aria-label="首页">
-        <img class="size-8 rounded-full" src="/ic_launcher_round.webp" alt="TrendingAI Logo" loading="eager" />
-        <span class="text-base font-extrabold text-on-surface">TrendingAI</span>
-    </a>
-    <div class="flex items-center gap-1">
-        {links.map((link) => (
-            <a
-                class:list={[
-                    "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
-                    activeRoute === link.id
-                        ? "bg-primary text-on-primary"
-                        : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
-                ]}
-                href={link.href}
-            >
-                {link.label}
-            </a>
-        ))}
-        <div class="ml-2">
-            <ThemeToggle />
+<header class="top-bar fixed top-0 left-0 right-0 z-50 transition-shadow duration-300">
+    <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+        <a class="flex items-center gap-2.5" href="/" aria-label="首页">
+            <img class="size-8 rounded-full" src="/ic_launcher_round.webp" alt="TrendingAI Logo" loading="eager" />
+            <span class="text-base font-extrabold text-on-surface">TrendingAI</span>
+        </a>
+        <div class="flex items-center gap-1">
+            {links.map((link) => (
+                <a
+                    class:list={[
+                        "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                        activeRoute === link.id
+                            ? "bg-primary text-on-primary"
+                            : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                    ]}
+                    href={link.href}
+                >
+                    {link.label}
+                </a>
+            ))}
+            <div class="ml-2">
+                <ThemeToggle />
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</header>
+
+<script is:inline>
+    document.addEventListener("astro:page-load", function() {
+        var header = document.querySelector(".top-bar");
+        if (!header) return;
+        function onScroll() {
+            if (window.scrollY > 10) {
+                header.classList.add("scrolled");
+            } else {
+                header.classList.remove("scrolled");
+            }
+        }
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+    });
+</script>

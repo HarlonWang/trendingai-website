@@ -55,3 +55,12 @@ body {
     color: var(--color-on-surface);
     background-color: var(--color-surface);
 }
+
+/* 固定导航栏 */
+.top-bar {
+    background-color: var(--color-surface);
+}
+
+.top-bar.scrolled {
+    box-shadow: 0 1px 3px var(--color-shadow);
+}
