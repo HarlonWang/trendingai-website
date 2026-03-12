@@ -6,58 +6,77 @@
     title="切换主题"
     aria-label="切换主题"
 >
-    <svg class="icon-sun hidden size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM4.22 5.64a1 1 0 0 1 1.42-1.42l1.41 1.42a1 1 0 0 1-1.41 1.41L4.22 5.64zm12.72 12.72a1 1 0 0 1 1.41-1.41l1.42 1.41a1 1 0 0 1-1.42 1.42l-1.41-1.42zM3 12a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm16 0a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2h-2a1 1 0 0 1-1-1zM4.22 18.36l1.41-1.42a1 1 0 0 1 1.41 1.41L5.64 19.78a1 1 0 0 1-1.42-1.42zm12.72-12.72 1.42-1.42a1 1 0 0 1 1.41 1.42l-1.41 1.41a1 1 0 0 1-1.42-1.41z"/>
+    <!-- auto: monitor icon -->
+    <svg class="icon-auto size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>
     </svg>
-    <svg class="icon-moon size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <!-- dark: moon icon -->
+    <svg class="icon-dark hidden size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+    </svg>
+    <!-- light: sun icon -->
+    <svg class="icon-light hidden size-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0-5a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1zm0 16a1 1 0 0 1 1 1v2a1 1 0 0 1-2 0v-2a1 1 0 0 1 1-1zM4.22 5.64a1 1 0 0 1 1.42-1.42l1.41 1.42a1 1 0 0 1-1.41 1.41L4.22 5.64zm12.72 12.72a1 1 0 0 1 1.41-1.41l1.42 1.41a1 1 0 0 1-1.42 1.42l-1.41-1.42zM3 12a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H4a1 1 0 0 1-1-1zm16 0a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2h-2a1 1 0 0 1-1-1zM4.22 18.36l1.41-1.42a1 1 0 0 1 1.41 1.41L5.64 19.78a1 1 0 0 1-1.42-1.42zm12.72-12.72 1.42-1.42a1 1 0 0 1 1.41 1.42l-1.41 1.41a1 1 0 0 1-1.42-1.41z"/>
     </svg>
 </button>
 
-<style is:global>
-    [data-theme="dark"] .theme-toggle .icon-sun {
-        display: block;
-    }
-
-    [data-theme="dark"] .theme-toggle .icon-moon {
-        display: none;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        :root:not([data-theme="light"]) .theme-toggle .icon-sun {
-            display: block;
-        }
-
-        :root:not([data-theme="light"]) .theme-toggle .icon-moon {
-            display: none;
-        }
-    }
-</style>
-
 <script is:inline>
-    document.addEventListener("astro:page-load", () => {
-        const btn = document.querySelector(".theme-toggle");
+    function getStoredTheme() {
+        try { return localStorage.getItem("preferred-theme"); } catch (_) { return null; }
+    }
+
+    function resolveTheme(mode) {
+        if (mode === "dark") return "dark";
+        if (mode === "light") return "light";
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+
+    function applyTheme(mode, transition) {
+        var resolved = resolveTheme(mode);
+        if (transition) document.documentElement.classList.add("theme-transitioning");
+        document.documentElement.setAttribute("data-theme", resolved);
+        document.documentElement.setAttribute("data-theme-mode", mode);
+        document.documentElement.style.backgroundColor = resolved === "dark" ? "#030712" : "#ffffff";
+        try { localStorage.setItem("preferred-theme", mode); } catch (_) {}
+        if (transition) setTimeout(function() { document.documentElement.classList.remove("theme-transitioning"); }, 250);
+    }
+
+    function updateIcon(mode) {
+        var btn = document.querySelector(".theme-toggle");
         if (!btn) return;
-        btn.addEventListener("click", () => {
-            const current = document.documentElement.getAttribute("data-theme");
-            const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            const effectiveDark = current === "dark" || (current !== "light" && systemDark);
-            const next = effectiveDark ? "light" : "dark";
-            document.documentElement.classList.add("theme-transitioning");
-            document.documentElement.setAttribute("data-theme", next);
-            document.documentElement.style.backgroundColor = next === "dark" ? "#030712" : "#ffffff";
-            try { localStorage.setItem("preferred-theme", next); } catch (_) {}
-            setTimeout(function() { document.documentElement.classList.remove("theme-transitioning"); }, 250);
+        btn.querySelector(".icon-auto").classList.toggle("hidden", mode !== "auto");
+        btn.querySelector(".icon-dark").classList.toggle("hidden", mode !== "dark");
+        btn.querySelector(".icon-light").classList.toggle("hidden", mode !== "light");
+    }
+
+    document.addEventListener("astro:page-load", function() {
+        var mode = getStoredTheme() || "auto";
+        updateIcon(mode);
+
+        var btn = document.querySelector(".theme-toggle");
+        if (!btn) return;
+        btn.addEventListener("click", function() {
+            var current = getStoredTheme() || "auto";
+            var next = current === "auto" ? "dark" : current === "dark" ? "light" : "auto";
+            applyTheme(next, true);
+            updateIcon(next);
         });
     });
 
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function(e) {
-        var stored = null;
-        try { stored = localStorage.getItem("preferred-theme"); } catch (_) {}
-        if (!stored) {
-            var theme = e.matches ? "dark" : "light";
-            document.documentElement.setAttribute("data-theme", theme);
-            document.documentElement.style.backgroundColor = theme === "dark" ? "#030712" : "#ffffff";
+    // View Transitions: preserve theme on page swap
+    document.addEventListener("astro:before-swap", function(e) {
+        var mode = getStoredTheme() || "auto";
+        var resolved = resolveTheme(mode);
+        e.newDocument.documentElement.setAttribute("data-theme", resolved);
+        e.newDocument.documentElement.setAttribute("data-theme-mode", mode);
+        e.newDocument.documentElement.style.backgroundColor = resolved === "dark" ? "#030712" : "#ffffff";
+    });
+
+    // System theme change listener (only affects auto mode)
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function() {
+        var mode = getStoredTheme() || "auto";
+        if (mode === "auto") {
+            applyTheme("auto", false);
         }
     });
 </script>

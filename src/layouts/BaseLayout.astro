@@ -20,13 +20,13 @@ const ogImage = `${SITE_URL}/android_screenshot_zh.png`;
     <head>
         <script is:inline>
             (function() {
-                const stored = (function() {
+                var mode = (function() {
                     try { return localStorage.getItem("preferred-theme"); } catch (_) { return null; }
-                })();
-                const theme = (stored === "dark" || stored === "light")
-                    ? stored
+                })() || "auto";
+                var theme = mode === "dark" ? "dark" : mode === "light" ? "light"
                     : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
                 document.documentElement.setAttribute("data-theme", theme);
+                document.documentElement.setAttribute("data-theme-mode", mode);
                 document.documentElement.style.backgroundColor = theme === "dark" ? "#030712" : "#ffffff";
             })();
         </script>
