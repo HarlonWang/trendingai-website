@@ -89,8 +89,8 @@ import { API_BASE } from "../config";
 
         if (toastText) {
             var toast = document.createElement("div");
-            toast.className = "fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-lg px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 "
-                + (toastSuccess ? "bg-green-600 text-white" : "bg-red-500 text-white");
+            toast.className = "fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-lg border px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 "
+                + (toastSuccess ? "border-outline bg-surface-container text-on-surface" : "border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300");
             toast.textContent = toastText;
             toast.style.opacity = "0";
             toast.style.transform = "translateX(-50%) translateY(-8px)";
