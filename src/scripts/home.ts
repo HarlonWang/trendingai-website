@@ -29,16 +29,16 @@ function renderDeepDive(items: PickItem[]): string {
                             ${sourceTag(item)}
                             <span class="text-xs text-on-surface-variant">Score ${item.score}</span>
                         </div>
-                        <h4 class="mb-2 text-base font-bold text-on-surface group-hover:text-primary leading-snug">
-                            ${escapeHtml(item.title)}
-                        </h4>
-                        ${item.summary ? `<p class="mb-3 text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : ""}
                         ${item.analysis ? `
-                            <div class="rounded-lg bg-surface p-3 text-xs">
-                                <p class="font-semibold text-on-surface">${escapeHtml(item.analysis.core)}</p>
-                                <p class="mt-1.5 text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.why_important)}</p>
-                            </div>
+                            <h4 class="mb-2 text-base font-bold text-on-surface group-hover:text-primary leading-snug">
+                                ${escapeHtml(item.analysis.core)}
+                            </h4>
+                            <p class="mb-3 text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.why_important)}</p>
                         ` : ""}
+                        <div class="rounded-lg bg-surface p-3 text-xs">
+                            <p class="font-semibold text-on-surface">${escapeHtml(item.title)}</p>
+                            ${item.summary ? `<p class="mt-1.5 text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : ""}
+                        </div>
                     </a>
                 `).join("")}
             </div>
