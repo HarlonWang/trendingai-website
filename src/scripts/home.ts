@@ -27,7 +27,7 @@ function renderDeepDive(items: PickItem[]): string {
                        class="group rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
                         <div class="mb-3 flex items-center gap-2">
                             ${sourceTag(item)}
-                            <span class="text-xs text-on-surface-variant">Score ${item.score}</span>
+                            <span class="text-xs text-on-surface-variant"><svg class="inline-block w-3.5 h-3.5 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> ${item.score}</span>
                         </div>
                         ${item.analysis ? `
                             <h4 class="mb-2 text-base font-bold text-on-surface group-hover:text-primary leading-snug">
@@ -85,7 +85,7 @@ function renderSpeedRead(items: PickItem[]): string {
                             </h4>
                             ${item.summary ? `<p class="mt-1 text-xs text-on-surface-variant leading-relaxed line-clamp-1">${escapeHtml(item.summary)}</p>` : ""}
                         </div>
-                        <span class="shrink-0 text-xs text-on-surface-variant">${item.score}</span>
+                        <span class="shrink-0 text-xs text-on-surface-variant"><svg class="inline-block w-3.5 h-3.5 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> ${item.score}</span>
                     </a>
                 `).join("")}
             </div>
