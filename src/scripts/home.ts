@@ -75,7 +75,7 @@ function renderControversy(items: PickItem[]): string {
                         <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug">
                             ${escapeHtml(item.title)}
                         </h4>
-                        ${item.summary ? `<p class="mt-1.5 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : ""}
+                        ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-3">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
                     </a>
                 `).join("")}
             </div>
@@ -132,11 +132,11 @@ function renderGithubCard(item: FeedApiItem): string {
     const periodStars = item.extra?.period_stars as number | undefined;
     return `
         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex h-44 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
             </h4>
-            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-3">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
             <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
                 ${lang ? `<span class="flex items-center gap-1"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background-color:${langColor || '#888'}"></span>${escapeHtml(lang)}</span>` : ""}
                 ${stars != null ? `<span>&#9733; ${formatNumber(stars)}</span>` : ""}
@@ -149,11 +149,11 @@ function renderGithubCard(item: FeedApiItem): string {
 function renderHnCard(item: FeedApiItem): string {
     return `
         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex h-44 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-2">
                 ${escapeHtml(item.title)}
             </h4>
-            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-3">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
             <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
                 <span>&#9650; ${item.score}</span>
                 <span>&#128172; ${item.commentCount}</span>
@@ -166,11 +166,11 @@ function renderHnCard(item: FeedApiItem): string {
 function renderPhCard(item: FeedApiItem): string {
     return `
         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex h-44 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-2">
                 ${escapeHtml(item.title)}
             </h4>
-            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-3">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
             <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
                 <span>&#9650; ${item.score}</span>
                 ${item.tags.length > 0 ? `<span>${escapeHtml(item.tags[0])}</span>` : ""}
