@@ -26,8 +26,10 @@ export interface FeedApiResponse {
     data: FeedApiItem[];
 }
 
-export async function fetchFeed(source: string, limit = 8): Promise<FeedApiResponse> {
-    const res = await fetch(`${API_BASE}/api/feed?source=${source}&limit=${limit}&summary_lang=zh`);
+export async function fetchFeed(source: string, limit = 8, days?: number): Promise<FeedApiResponse> {
+    let url = `${API_BASE}/api/feed?source=${source}&limit=${limit}&summary_lang=zh`;
+    if (days) url += `&days=${days}`;
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`Feed API error: ${res.status}`);
     return res.json();
 }
