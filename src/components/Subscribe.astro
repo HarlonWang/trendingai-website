@@ -1,0 +1,98 @@
+---
+import { API_BASE } from "../config";
+---
+
+<section class="my-12 rounded-xl border border-outline bg-surface-container p-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h3 class="text-base font-bold text-on-surface">每日精选，一键订阅</h3>
+            <p class="mt-1 text-xs text-on-surface-variant">AI 精选技术趋势，每日一封，随时退订</p>
+        </div>
+        <form id="subscribe-form" class="flex gap-2">
+            <input
+                id="subscribe-email"
+                type="email"
+                required
+                placeholder="输入邮箱地址"
+                class="w-56 rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+            />
+            <button
+                type="submit"
+                id="subscribe-btn"
+                class="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90"
+            >
+                订阅
+            </button>
+        </form>
+    </div>
+    <p id="subscribe-msg" class="mt-3 hidden text-sm"></p>
+</section>
+
+<script is:inline define:vars={{ API_BASE }}>
+    document.addEventListener("astro:page-load", function() {
+        var form = document.getElementById("subscribe-form");
+        var input = document.getElementById("subscribe-email");
+        var btn = document.getElementById("subscribe-btn");
+        var msg = document.getElementById("subscribe-msg");
+        if (!form || !input || !btn || !msg) return;
+
+        function showMsg(text, success) {
+            msg.textContent = text;
+            msg.className = "mt-3 text-sm " + (success ? "text-green-600" : "text-red-500");
+        }
+
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            var email = input.value.trim();
+            if (!email) return;
+
+            btn.disabled = true;
+            btn.textContent = "提交中...";
+
+            try {
+                var resp = await fetch(API_BASE + "/api/subscribe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email }),
+                });
+                var data = await resp.json();
+
+                if (data.success) {
+                    if (data.message === "Already subscribed") {
+                        showMsg("该邮箱已订阅", true);
+                    } else if (data.message === "Re-subscribed successfully") {
+                        showMsg("重新订阅成功", true);
+                    } else {
+                        showMsg("确认邮件已发送，请查收邮箱", true);
+                    }
+                    input.value = "";
+                } else {
+                    showMsg(data.error || "订阅失败，请稍后重试", false);
+                }
+            } catch (_) {
+                showMsg("网络错误，请稍后重试", false);
+            }
+
+            btn.disabled = false;
+            btn.textContent = "订阅";
+        });
+
+        // 处理确认/退订回调
+        var params = new URLSearchParams(window.location.search);
+        var subscribed = params.get("subscribed");
+        var unsubscribed = params.get("unsubscribed");
+
+        if (subscribed === "1") showMsg("订阅确认成功！", true);
+        else if (subscribed === "already") showMsg("已确认订阅", true);
+        else if (subscribed === "error") showMsg("确认链接无效", false);
+
+        if (unsubscribed === "1") showMsg("已成功退订", true);
+        else if (unsubscribed === "already") showMsg("已退订", true);
+        else if (unsubscribed === "error") showMsg("退订链接无效", false);
+
+        // 清除 URL 参数
+        if (subscribed || unsubscribed) {
+            window.history.replaceState({}, "", window.location.pathname);
+        }
+    });
+</script>
