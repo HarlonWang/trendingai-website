@@ -16,6 +16,20 @@ function sourceTag(item: PickItem): string {
     return `<span class="inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${sourceColor(item.source)}">${escapeHtml(item.sourceLabel)}</span>`;
 }
 
+function formatNumber(n: number): string {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+}
+
+function sourceScore(item: PickItem): string {
+    switch (item.source) {
+        case "github": return `&#9733; ${formatNumber(item.score)}`;
+        case "hackernews": return `&#9650; ${item.score}`;
+        case "producthunt": return `&#9650; ${item.score}`;
+        default: return `${item.score}`;
+    }
+}
+
 function renderDeepDive(items: PickItem[]): string {
     if (items.length === 0) return "";
     return `
@@ -27,7 +41,7 @@ function renderDeepDive(items: PickItem[]): string {
                        class="group rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
                         <div class="mb-3 flex items-center justify-between">
                             ${sourceTag(item)}
-                            <span class="text-xs text-on-surface-variant"><svg class="inline-block w-3.5 h-3.5 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> ${item.score}</span>
+                            <span class="text-xs text-on-surface-variant">${sourceScore(item)}</span>
                         </div>
                         ${item.analysis ? `
                             <h4 class="mb-2 text-base font-bold text-on-surface group-hover:text-primary leading-snug">
@@ -69,36 +83,47 @@ function renderControversy(items: PickItem[]): string {
     `;
 }
 
+function renderSpeedReadItem(item: PickItem): string {
+    return `
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+           class="group block py-3 transition-colors">
+            <div class="flex items-start gap-3">
+                ${sourceTag(item)}
+                <h4 class="min-w-0 flex-1 text-sm font-medium text-on-surface group-hover:text-primary leading-snug">
+                    ${escapeHtml(item.title)}
+                </h4>
+                <span class="shrink-0 text-xs text-on-surface-variant">${sourceScore(item)}</span>
+            </div>
+            ${item.summary ? `<p class="mt-1 text-xs text-on-surface-variant leading-relaxed line-clamp-1">${escapeHtml(item.summary)}</p>` : ""}
+        </a>
+    `;
+}
+
+const SPEED_READ_INITIAL = 5;
+
 function renderSpeedRead(items: PickItem[]): string {
     if (items.length === 0) return "";
+    const visible = items.slice(0, SPEED_READ_INITIAL);
+    const extra = items.slice(SPEED_READ_INITIAL);
     return `
         <div>
             <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">快速浏览</h3>
             <div class="divide-y divide-outline">
-                ${items.map(item => `
-                    <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-                       class="group block py-3 transition-colors">
-                        <div class="flex items-start gap-3">
-                            ${sourceTag(item)}
-                            <h4 class="min-w-0 flex-1 text-sm font-medium text-on-surface group-hover:text-primary leading-snug">
-                                ${escapeHtml(item.title)}
-                            </h4>
-                            <span class="shrink-0 text-xs text-on-surface-variant"><svg class="inline-block w-3.5 h-3.5 -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> ${item.score}</span>
-                        </div>
-                        ${item.summary ? `<p class="mt-1 text-xs text-on-surface-variant leading-relaxed line-clamp-1">${escapeHtml(item.summary)}</p>` : ""}
-                    </a>
-                `).join("")}
+                ${visible.map(item => renderSpeedReadItem(item)).join("")}
             </div>
+            ${extra.length > 0 ? `
+                <div class="divide-y divide-outline hidden" id="speed-read-extra">
+                    ${extra.map(item => renderSpeedReadItem(item)).join("")}
+                </div>
+                <button id="speed-read-toggle" class="mt-3 w-full py-2 text-center text-sm text-on-surface-variant hover:text-on-surface transition-colors">
+                    展开更多 ↓
+                </button>
+            ` : ""}
         </div>
     `;
 }
 
 // --- Source card rendering ---
-
-function formatNumber(n: number): string {
-    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
-    return String(n);
-}
 
 function renderGithubCard(item: FeedApiItem): string {
     const lang = item.extra?.language as string | undefined;
@@ -199,11 +224,19 @@ async function loadPicks() {
         const html = [
             renderDeepDive(data.deepDive),
             renderControversy(data.controversy),
-            renderSpeedRead(data.speedRead),
+            renderSpeedRead([...data.speedRead].sort((a, b) => b.aiScore - a.aiScore)),
         ].filter(Boolean).join("");
 
         if (html) {
             container.innerHTML = html;
+            const toggle = $("#speed-read-toggle");
+            const extra = $("#speed-read-extra");
+            if (toggle && extra) {
+                toggle.addEventListener("click", () => {
+                    const hidden = extra.classList.toggle("hidden");
+                    toggle.textContent = hidden ? "展开更多 ↓" : "收起 ↑";
+                });
+            }
         } else {
             container.innerHTML = `<p class="text-sm text-on-surface-variant">今日精选暂无数据</p>`;
         }
