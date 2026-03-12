@@ -128,36 +128,42 @@ public/
 
 ## Tailwind 主题
 
+冷灰黑白基调，使用 Tailwind `gray` 色阶，数据源品牌色做点缀。
+
 `src/styles/global.css`：
 
 ```css
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #6750a4;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #eaddff;
-  --color-on-primary-container: #21005d;
-  --color-surface: #fffbfe;
-  --color-surface-container: #f3edf7;
-  --color-on-surface: #1d1b20;
-  --color-on-surface-variant: #49454f;
-  --color-outline: #79747e;
+  --color-primary: #111827;           /* gray-900 */
+  --color-on-primary: #f9fafb;        /* gray-50 */
+  --color-surface: #ffffff;
+  --color-surface-container: #f3f4f6; /* gray-100 */
+  --color-on-surface: #111827;        /* gray-900 */
+  --color-on-surface-variant: #6b7280;/* gray-500 */
+  --color-outline: #e5e7eb;           /* gray-200 */
 }
 
 [data-theme="dark"] {
-  --color-primary: #cfbcff;
-  --color-surface: #141218;
-  --color-surface-container: #1d1b20;
-  --color-on-surface: #e6e0e9;
-  --color-on-surface-variant: #cac4d0;
-  --color-outline: #938f99;
+  --color-primary: #f9fafb;           /* gray-50 */
+  --color-on-primary: #030712;        /* gray-950 */
+  --color-surface: #030712;           /* gray-950 */
+  --color-surface-container: #111827; /* gray-900 */
+  --color-on-surface: #e5e7eb;        /* gray-200 */
+  --color-on-surface-variant: #9ca3af;/* gray-400 */
+  --color-outline: #1f2937;           /* gray-800 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { /* 同 dark 值 */ }
 }
 ```
+
+数据源品牌色（固定，不随主题变化）：
+- GitHub: `#171717` / 暗色 `#e5e7eb`
+- Hacker News: `#ff6600`
+- Product Hunt: `#da552f`
 
 ## 客户端交互模式
 
