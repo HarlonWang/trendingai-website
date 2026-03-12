@@ -63,7 +63,7 @@ import { API_BASE } from "../config";
                     } else if (data.message === "Re-subscribed successfully") {
                         showMsg("重新订阅成功", true);
                     } else {
-                        showMsg("确认邮件已发送，请查收邮箱", true);
+                        showMsg("订阅成功", true);
                     }
                     input.value = "";
                 } else {
@@ -77,16 +77,11 @@ import { API_BASE } from "../config";
             btn.textContent = "订阅";
         });
 
-        // 处理确认/退订回调 — Toast 通知
+        // 处理退订回调 — Toast 通知
         var params = new URLSearchParams(window.location.search);
-        var subscribed = params.get("subscribed");
         var unsubscribed = params.get("unsubscribed");
         var toastText = null;
         var toastSuccess = true;
-
-        if (subscribed === "1") toastText = "订阅确认成功！";
-        else if (subscribed === "already") toastText = "已确认订阅";
-        else if (subscribed === "error") { toastText = "确认链接无效"; toastSuccess = false; }
 
         if (unsubscribed === "1") toastText = "已成功退订";
         else if (unsubscribed === "already") toastText = "已退订";
