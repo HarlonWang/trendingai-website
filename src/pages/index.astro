@@ -29,15 +29,19 @@ import Footer from "../components/Footer.astro";
 
         <!-- P3: 三源横滑预览 -->
         <section id="sources" class="space-y-10">
-            {["GitHub 热门", "Hacker News 热议", "Product Hunt 新品"].map((title) => (
-                <div>
+            {[
+                { key: "github", title: "GitHub 热门" },
+                { key: "hackernews", title: "Hacker News 热议" },
+                { key: "producthunt", title: "Product Hunt 新品" },
+            ].map(({ key, title }) => (
+                <div data-source={key}>
                     <div class="mb-4 flex items-baseline justify-between">
                         <h2 class="text-lg font-bold text-on-surface">{title}</h2>
                         <a class="text-sm text-on-surface-variant transition-colors hover:text-on-surface" href="/feed/">
                             查看全部 &rarr;
                         </a>
                     </div>
-                    <div class="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory">
+                    <div class="source-cards flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin">
                         {[1, 2, 3, 4].map(() => (
                             <div class="h-36 w-72 flex-shrink-0 snap-start animate-pulse rounded-xl bg-surface-container" />
                         ))}

@@ -6,3 +6,28 @@ export async function fetchPicks(): Promise<PicksResponse> {
     if (!res.ok) throw new Error(`Picks API error: ${res.status}`);
     return res.json();
 }
+
+export interface FeedApiItem {
+    source: string;
+    title: string;
+    url: string;
+    description: string | null;
+    author: string | null;
+    score: number;
+    commentCount: number;
+    tags: string[];
+    extra: Record<string, unknown> | null;
+    summary: string | null;
+}
+
+export interface FeedApiResponse {
+    success: boolean;
+    count: number;
+    data: FeedApiItem[];
+}
+
+export async function fetchFeed(source: string, limit = 8): Promise<FeedApiResponse> {
+    const res = await fetch(`${API_BASE}/api/feed?source=${source}&limit=${limit}&summary_lang=zh`);
+    if (!res.ok) throw new Error(`Feed API error: ${res.status}`);
+    return res.json();
+}

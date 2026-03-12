@@ -1,4 +1,5 @@
-import { fetchPicks } from "./lib/api";
+import { fetchPicks, fetchFeed } from "./lib/api";
+import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
 import type { PickItem } from "../types/api";
 
@@ -92,6 +93,97 @@ function renderSpeedRead(items: PickItem[]): string {
     `;
 }
 
+// --- Source card rendering ---
+
+function formatNumber(n: number): string {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+}
+
+function renderGithubCard(item: FeedApiItem): string {
+    const lang = item.extra?.language as string | undefined;
+    const langColor = item.extra?.language_color as string | undefined;
+    const stars = item.extra?.stars as number | undefined;
+    const periodStars = item.extra?.period_stars as number | undefined;
+    return `
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+            <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
+                ${escapeHtml(item.title)}
+            </h4>
+            ${item.description ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.description)}</p>` : `<div class="flex-1"></div>`}
+            <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
+                ${lang ? `<span class="flex items-center gap-1"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background-color:${langColor || '#888'}"></span>${escapeHtml(lang)}</span>` : ""}
+                ${stars != null ? `<span>&#9733; ${formatNumber(stars)}</span>` : ""}
+                ${periodStars != null ? `<span class="text-[#e8b931]">+${formatNumber(periodStars)}</span>` : ""}
+            </div>
+        </a>
+    `;
+}
+
+function renderHnCard(item: FeedApiItem): string {
+    return `
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+            <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-2">
+                ${escapeHtml(item.title)}
+            </h4>
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
+            <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
+                <span>&#9650; ${item.score}</span>
+                <span>&#128172; ${item.commentCount}</span>
+                ${item.author ? `<span>${escapeHtml(item.author)}</span>` : ""}
+            </div>
+        </a>
+    `;
+}
+
+function renderPhCard(item: FeedApiItem): string {
+    return `
+        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+           class="group flex h-36 w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+            <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-2">
+                ${escapeHtml(item.title)}
+            </h4>
+            ${item.description ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.description)}</p>` : `<div class="flex-1"></div>`}
+            <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
+                <span>&#9650; ${item.score}</span>
+                ${item.tags.length > 0 ? `<span>${escapeHtml(item.tags[0])}</span>` : ""}
+            </div>
+        </a>
+    `;
+}
+
+function renderSourceCard(source: string, item: FeedApiItem): string {
+    switch (source) {
+        case "github": return renderGithubCard(item);
+        case "hackernews": return renderHnCard(item);
+        case "producthunt": return renderPhCard(item);
+        default: return renderHnCard(item);
+    }
+}
+
+async function loadSource(source: string) {
+    const section = document.querySelector(`[data-source="${source}"]`);
+    if (!section) return;
+    const container = section.querySelector(".source-cards");
+    if (!container) return;
+
+    try {
+        const data = await fetchFeed(source, 8);
+        if (data.data.length === 0) {
+            container.innerHTML = `<p class="text-sm text-on-surface-variant">暂无数据</p>`;
+            return;
+        }
+        container.innerHTML = data.data.map(item => renderSourceCard(source, item)).join("");
+    } catch (err) {
+        console.error(`Failed to load ${source}:`, err);
+        container.innerHTML = `<p class="text-sm text-on-surface-variant">加载失败</p>`;
+    }
+}
+
+// --- Picks ---
+
 async function loadPicks() {
     const container = $("#picks-container");
     const dateEl = $("#picks-date");
@@ -124,5 +216,8 @@ async function loadPicks() {
 document.addEventListener("astro:page-load", () => {
     if ($("#picks-container")) {
         loadPicks();
+        loadSource("github");
+        loadSource("hackernews");
+        loadSource("producthunt");
     }
 });
