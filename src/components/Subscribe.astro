@@ -77,21 +77,38 @@ import { API_BASE } from "../config";
             btn.textContent = "订阅";
         });
 
-        // 处理确认/退订回调
+        // 处理确认/退订回调 — Toast 通知
         var params = new URLSearchParams(window.location.search);
         var subscribed = params.get("subscribed");
         var unsubscribed = params.get("unsubscribed");
+        var toastText = null;
+        var toastSuccess = true;
 
-        if (subscribed === "1") showMsg("订阅确认成功！", true);
-        else if (subscribed === "already") showMsg("已确认订阅", true);
-        else if (subscribed === "error") showMsg("确认链接无效", false);
+        if (subscribed === "1") toastText = "订阅确认成功！";
+        else if (subscribed === "already") toastText = "已确认订阅";
+        else if (subscribed === "error") { toastText = "确认链接无效"; toastSuccess = false; }
 
-        if (unsubscribed === "1") showMsg("已成功退订", true);
-        else if (unsubscribed === "already") showMsg("已退订", true);
-        else if (unsubscribed === "error") showMsg("退订链接无效", false);
+        if (unsubscribed === "1") toastText = "已成功退订";
+        else if (unsubscribed === "already") toastText = "已退订";
+        else if (unsubscribed === "error") { toastText = "退订链接无效"; toastSuccess = false; }
 
-        // 清除 URL 参数
-        if (subscribed || unsubscribed) {
+        if (toastText) {
+            var toast = document.createElement("div");
+            toast.className = "fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-lg px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 "
+                + (toastSuccess ? "bg-green-600 text-white" : "bg-red-500 text-white");
+            toast.textContent = toastText;
+            toast.style.opacity = "0";
+            toast.style.transform = "translateX(-50%) translateY(-8px)";
+            document.body.appendChild(toast);
+            requestAnimationFrame(function() {
+                toast.style.opacity = "1";
+                toast.style.transform = "translateX(-50%) translateY(0)";
+            });
+            setTimeout(function() {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateX(-50%) translateY(-8px)";
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 3500);
             window.history.replaceState({}, "", window.location.pathname);
         }
     });
