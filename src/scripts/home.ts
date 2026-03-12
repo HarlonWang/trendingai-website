@@ -111,7 +111,7 @@ function renderGithubCard(item: FeedApiItem): string {
             <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
             </h4>
-            ${item.description ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.description)}</p>` : `<div class="flex-1"></div>`}
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
             <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
                 ${lang ? `<span class="flex items-center gap-1"><span class="inline-block h-2.5 w-2.5 rounded-full" style="background-color:${langColor || '#888'}"></span>${escapeHtml(lang)}</span>` : ""}
                 ${stars != null ? `<span>&#9733; ${formatNumber(stars)}</span>` : ""}
