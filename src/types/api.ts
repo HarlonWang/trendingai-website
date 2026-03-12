@@ -28,17 +28,14 @@ export interface FeedItem {
     tags: string[];
     aiSummary?: string;
     createdAt: string;
-    // GitHub specific
     author?: string;
     repoName?: string;
     language?: string;
     languageColor?: string;
     stars?: number;
     currentPeriodStars?: number;
-    // HN specific
     commentCount?: number;
     hnUrl?: string;
-    // PH specific
     votesCount?: number;
     thumbnailUrl?: string;
 }
@@ -48,26 +45,36 @@ export interface FeedResponse {
 }
 
 // Daily Picks
+export interface PickAnalysis {
+    core: string;
+    why_important: string;
+    community_voice: {
+        positive: string;
+        negative: string;
+    };
+    action: string;
+    alternatives: string;
+    terms: string[];
+}
+
 export interface PickItem {
-    id: string;
+    rank: number;
     source: "github" | "hackernews" | "producthunt";
     title: string;
     url: string;
-    description: string;
-    category: "deep_dive" | "controversial" | "quick_look";
-    aiAnalysis: string;
+    description: string | null;
     score: number;
-    tags: string[];
-    // source-specific fields same as FeedItem
-    author?: string;
-    repoName?: string;
-    language?: string;
-    stars?: number;
-    commentCount?: number;
-    votesCount?: number;
+    aiScore: number;
+    sourceLabel: string;
+    alsoOn: string[];
+    summary: string | null;
+    analysis: PickAnalysis | null;
 }
 
 export interface PicksResponse {
-    date: string;
-    data: PickItem[];
+    success: boolean;
+    metadata: { date: string };
+    speedRead: PickItem[];
+    deepDive: PickItem[];
+    controversy: PickItem[];
 }

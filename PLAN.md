@@ -65,7 +65,7 @@
 ```
 
 **首页数据源：**
-- 精选区：`GET /api/picks?date=today&summary_lang=zh`
+- 精选区：`GET /api/picks?summary_lang=zh`（不传 date，后端默认当日）
 - 三源预览：`GET /api/feed?source=github&limit=10`，`source=hackernews`，`source=producthunt`
 - 共 4 个 API 请求，可并发
 
