@@ -1,83 +1,43 @@
 ---
+import { ViewTransitions } from "astro:transitions";
 import "../styles/global.css";
-import type { Locale } from "../i18n/types";
-import { SITE_URL, RSS_URL_EN, RSS_URL_ZH } from "../config";
+import { SITE_URL, RSS_URL } from "../config";
 
 interface Props {
-    locale: Locale;
     title: string;
     description: string;
     canonicalPath: string;
     bodyClass?: string;
 }
 
-const { locale, title, description, canonicalPath, bodyClass } = Astro.props;
+const { title, description, canonicalPath, bodyClass } = Astro.props;
 const canonical = `${SITE_URL}${canonicalPath}`;
-const enPath = canonicalPath.startsWith("/zh/") ? (canonicalPath.slice(3) || "/") : canonicalPath;
-const zhPath = canonicalPath.startsWith("/zh/") ? canonicalPath : (canonicalPath === "/" ? "/zh/" : `/zh${canonicalPath}`);
-const zhUrl = `${SITE_URL}${zhPath}`;
-const enUrl = `${SITE_URL}${enPath}`;
-const ogImage = locale === "zh-CN"
-    ? `${SITE_URL}/android_screenshot_zh.png`
-    : `${SITE_URL}/android_screenshot.png`;
+const ogImage = `${SITE_URL}/android_screenshot_zh.png`;
 ---
 
 <!doctype html>
-<html lang={locale === "zh-CN" ? "zh-CN" : "en"}>
+<html lang="zh-CN">
     <head>
         <script is:inline>
             (function() {
-                const stored = (function() {
+                var mode = (function() {
                     try { return localStorage.getItem("preferred-theme"); } catch (_) { return null; }
-                })();
-                const theme = (stored === "dark" || stored === "light")
-                    ? stored
+                })() || "auto";
+                var theme = mode === "dark" ? "dark" : mode === "light" ? "light"
                     : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
                 document.documentElement.setAttribute("data-theme", theme);
-                // 在 CSS 加载前提前设置 html 背景色，防止页面切换时白色闪烁。
-                // 此脚本运行时 CSS 尚未加载，无法读取 CSS 变量，因此使用字面量。
-                // 这两个值必须与 global.css 中 --md-sys-color-surface 的亮/暗色值保持一致。
-                document.documentElement.style.backgroundColor = theme === "dark" ? "#141218" : "#fffbfe";
-            })();
-        </script>
-        <script is:inline>
-            (function() {
-                const storageKey = "preferred-locale";
-                let savedLocale = null;
-                try { savedLocale = localStorage.getItem(storageKey); } catch (_) {}
-                const browserLocale = navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en-US";
-                const finalLocale = savedLocale || browserLocale;
-                const currentPath = window.location.pathname;
-                const currentSearch = window.location.search;
-                const currentHash = window.location.hash;
-                const isZhPath = currentPath === "/zh" || currentPath.startsWith("/zh/");
-
-                if (finalLocale === "zh-CN" && !isZhPath) {
-                    const normalizedPath = currentPath.startsWith("/") ? currentPath : `/${currentPath}`;
-                    const targetPath = normalizedPath === "/" ? "/zh/" : `/zh${normalizedPath}`;
-                    window.location.replace(`${targetPath}${currentSearch}${currentHash}`);
-                    return;
-                }
-
-                if (finalLocale === "en-US" && isZhPath) {
-                    const strippedPath = currentPath === "/zh" ? "/" : currentPath.replace(/^\/zh/, "") || "/";
-                    const targetPath = strippedPath.startsWith("/") ? strippedPath : `/${strippedPath}`;
-                    window.location.replace(`${targetPath}${currentSearch}${currentHash}`);
-                }
+                document.documentElement.setAttribute("data-theme-mode", mode);
+                document.documentElement.style.backgroundColor = theme === "dark" ? "#030712" : "#ffffff";
             })();
         </script>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content={description} />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
-        <link rel="icon" type="image/webp" href="/ic_launcher_round.webp" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/ic_launcher.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="canonical" href={canonical} />
-        <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
-        <link rel="alternate" hreflang="en" href={enUrl} />
-        <link rel="alternate" hreflang="x-default" href={enUrl} />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - Daily GitHub Trending (EN)" href={RSS_URL_EN} />
-        <link rel="alternate" type="application/rss+xml" title="Trending AI - 每日 GitHub Trending（中文）" href={RSS_URL_ZH} />
+        <link rel="alternate" type="application/rss+xml" title="TrendingAI - 每日技术趋势" href={RSS_URL} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
@@ -89,28 +49,11 @@ const ogImage = locale === "zh-CN"
         <meta name="twitter:image" content={ogImage} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+        <ViewTransitions />
         <title>{title}</title>
     </head>
     <body class={bodyClass || undefined}>
         <slot />
-        <script is:inline>
-            const observer = new IntersectionObserver((entries) => {
-                for (const entry of entries) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("is-visible");
-                        observer.unobserve(entry.target);
-                    }
-                }
-            }, {
-                threshold: 0
-            });
-
-            document.querySelectorAll(".reveal").forEach((element) => {
-                observer.observe(element);
-            });
-
-            document.documentElement.setAttribute("data-theme-ready", "");
-        </script>
     </body>
 </html>

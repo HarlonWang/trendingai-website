@@ -1,2 +1,3 @@
-/en/* /:splat 301
-/zh /zh/ 301
+/zh/       /       301
+/zh/app/   /app/   301
+/en/*      /       301

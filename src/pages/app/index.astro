@@ -1,5 +1,18 @@
 ---
-import AppPageLayout from "../../layouts/AppPageLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../../components/TopNav.astro";
+import AppHero from "../../components/AppHero.astro";
+import Footer from "../../components/Footer.astro";
 ---
 
-<AppPageLayout locale="en-US" canonicalPath="/app/" />
+<BaseLayout
+    title="App 下载 - Trending AI"
+    description="下载 TrendingAI App，随时随地追踪全球技术趋势"
+    canonicalPath="/app/"
+>
+    <TopNav activeRoute="app" />
+    <main class="pt-16">
+        <AppHero />
+    </main>
+    <Footer />
+</BaseLayout>

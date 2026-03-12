@@ -1,0 +1,63 @@
+---
+const DOWNLOAD_URL = "https://download.trendingai.cn/TrendingAI-latest.apk";
+const GITHUB_URL = "https://github.com/HarlonWang/TrendingAI";
+
+const features = [
+    { title: "多源聚合", desc: "GitHub Trending、Hacker News、Product Hunt 一站浏览" },
+    { title: "AI 智能摘要", desc: "每个项目自动生成 AI 分析，快速了解核心价值" },
+    { title: "每日精选", desc: "AI 从全网筛选最值得关注的技术项目" },
+    { title: "历史回溯", desc: "查看任意日期的趋势榜单，不错过每一天" },
+];
+---
+
+<section class="mx-auto max-w-5xl px-4 py-12 sm:px-6">
+    <div class="grid items-center gap-10 md:grid-cols-[1fr_320px]">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-on-surface sm:text-4xl lg:text-5xl">
+                发现技术趋势<br />比别人快一步
+            </h1>
+            <p class="mt-4 max-w-lg text-lg text-on-surface-variant">
+                TrendingAI 聚合 GitHub、Hacker News、Product Hunt 等多个技术社区的热门内容，配合 AI 智能分析，帮你高效追踪全球技术动态。
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                    class="inline-flex items-center rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-on-primary shadow-sm transition-transform hover:-translate-y-0.5"
+                    href={DOWNLOAD_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    下载 Android APK
+                </a>
+                <a
+                    class="inline-flex items-center rounded-xl border border-outline px-5 py-2.5 text-sm font-bold text-on-surface-variant transition-transform hover:-translate-y-0.5"
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    GitHub 源码
+                </a>
+            </div>
+
+            <div class="mt-10 grid gap-3 sm:grid-cols-2">
+                {features.map((f) => (
+                    <div class="rounded-xl border border-outline bg-surface-container p-4">
+                        <h3 class="text-sm font-bold text-on-surface">{f.title}</h3>
+                        <p class="mt-1 text-xs text-on-surface-variant leading-relaxed">{f.desc}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+
+        <div class="justify-self-center md:justify-self-end">
+            <img
+                src="/android_screenshot_zh.png"
+                alt="TrendingAI App 截图"
+                class="w-64 drop-shadow-xl"
+                width="320"
+                height="693"
+                loading="eager"
+                decoding="async"
+            />
+        </div>
+    </div>
+</section>

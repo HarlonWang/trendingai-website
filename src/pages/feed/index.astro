@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../../components/TopNav.astro";
+import Footer from "../../components/Footer.astro";
+---
+
+<BaseLayout
+    title="Feed - Trending AI"
+    description="浏览 GitHub、Hacker News、Product Hunt 全部热门内容"
+    canonicalPath="/feed/"
+>
+    <TopNav activeRoute="feed" />
+    <main class="mx-auto max-w-3xl px-4 pt-20 pb-8 sm:px-6">
+        <!-- Tab 栏 -->
+        <div id="feed-tabs" class="mb-6 flex gap-2 border-b border-outline pb-3">
+            {["全部", "GitHub", "Hacker News", "Product Hunt"].map((label, i) => (
+                <button
+                    class:list={[
+                        "feed-tab rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                        i === 0
+                            ? "bg-primary text-on-primary"
+                            : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                    ]}
+                    data-tab={["all", "github", "hackernews", "producthunt"][i]}
+                >
+                    {label}
+                </button>
+            ))}
+        </div>
+
+        <!-- Feed 列表 -->
+        <div id="feed-list" class="space-y-4">
+            {[1, 2, 3, 4, 5].map(() => (
+                <div class="h-28 animate-pulse rounded-xl bg-surface-container" />
+            ))}
+        </div>
+
+        <!-- 加载更多 -->
+        <div class="mt-8 text-center">
+            <button
+                id="load-more"
+                class="rounded-xl border border-outline px-6 py-2 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
+            >
+                加载更多
+            </button>
+        </div>
+    </main>
+    <Footer />
+    <script src="../../scripts/feed.ts"></script>
+</BaseLayout>
