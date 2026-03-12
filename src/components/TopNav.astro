@@ -54,17 +54,21 @@ const links = [
 </header>
 
 <script is:inline>
-    document.addEventListener("astro:page-load", function() {
-        var header = document.querySelector(".top-bar");
-        if (!header) return;
-        function onScroll() {
-            if (window.scrollY > 10) {
-                header.classList.add("scrolled");
-            } else {
-                header.classList.remove("scrolled");
-            }
-        }
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-    });
+    (function() {
+        var _onScroll = null;
+        document.addEventListener("astro:page-load", function() {
+            if (_onScroll) window.removeEventListener("scroll", _onScroll);
+            var header = document.querySelector(".top-bar");
+            if (!header) return;
+            _onScroll = function() {
+                if (window.scrollY > 10) {
+                    header.classList.add("scrolled");
+                } else {
+                    header.classList.remove("scrolled");
+                }
+            };
+            _onScroll();
+            window.addEventListener("scroll", _onScroll, { passive: true });
+        });
+    })();
 </script>
