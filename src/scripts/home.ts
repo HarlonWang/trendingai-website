@@ -145,7 +145,7 @@ function renderPhCard(item: FeedApiItem): string {
             <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-2">
                 ${escapeHtml(item.title)}
             </h4>
-            ${item.description ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.description)}</p>` : `<div class="flex-1"></div>`}
+            ${item.summary ? `<p class="mt-1.5 flex-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : `<div class="flex-1"></div>`}
             <div class="mt-auto flex items-center gap-3 text-xs text-on-surface-variant">
                 <span>&#9650; ${item.score}</span>
                 ${item.tags.length > 0 ? `<span>${escapeHtml(item.tags[0])}</span>` : ""}
