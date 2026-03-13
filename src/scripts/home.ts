@@ -52,7 +52,7 @@ function renderDeepDive(items: PickItem[]): string {
                         ${item.analysis?.action || item.analysis?.alternatives ? `
                             <div class="deep-dive-details mt-3 hidden border-t border-outline pt-3" data-deep-dive="${i}">
                                 ${item.analysis.action ? `<div class="mb-3">
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">行动建议</p>
+                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">适合场景</p>
                                     <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
                                 </div>` : ""}
                                 ${item.analysis.alternatives ? `<div>
