@@ -107,7 +107,7 @@ function renderSpeedRead(items: PickItem[]): string {
     const extra = items.slice(SPEED_READ_INITIAL);
     return `
         <div>
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">快速浏览</h3>
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">Top 10 速览</h3>
             <div class="divide-y divide-outline">
                 ${visible.map(item => renderSpeedReadItem(item)).join("")}
             </div>
