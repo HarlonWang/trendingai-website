@@ -83,15 +83,15 @@ function renderControversy(items: PickItem[]): string {
                         <div class="mb-2 flex items-center gap-2">
                             ${sourceTag(item)}
                         </div>
-                        <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug">
+                        <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                             ${escapeHtml(item.title)}
                         </h4>
-                        ${item.summary ? `<p class="mt-1.5 text-xs text-on-surface-variant leading-relaxed line-clamp-2">${escapeHtml(item.summary)}</p>` : ""}
-                        ${cv?.positive ? `<div class="mt-2 line-clamp-2">
+                        ${item.summary ? `<p class="mt-1.5 text-xs text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : ""}
+                        ${cv?.positive ? `<div class="mt-2">
                             <span class="text-xs font-semibold text-on-surface">正方：</span>
                             <span class="text-xs text-on-surface-variant">${escapeHtml(cv.positive)}</span>
                         </div>` : ""}
-                        ${cv?.negative ? `<div class="mt-1 line-clamp-2">
+                        ${cv?.negative ? `<div class="mt-1">
                             <span class="text-xs font-semibold text-on-surface">反方：</span>
                             <span class="text-xs text-on-surface-variant">${escapeHtml(cv.negative)}</span>
                         </div>` : ""}
