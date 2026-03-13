@@ -12,7 +12,7 @@ import Footer from "../../components/Footer.astro";
     <TopNav activeRoute="feed" />
     <main class="mx-auto max-w-3xl px-4 pt-20 pb-8 sm:px-6">
         <!-- Tab 栏 -->
-        <div id="feed-tabs" class="mb-6 flex gap-2 border-b border-outline pb-3">
+        <div id="feed-tabs" class="mb-6 flex gap-2 overflow-x-auto whitespace-nowrap border-b border-outline pb-3">
             {["全部", "GitHub", "Hacker News", "Product Hunt"].map((label, i) => (
                 <button
                     class:list={[

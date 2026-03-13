@@ -18,13 +18,13 @@ const links = [
     <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
         <a class="flex items-center gap-2.5" href="/" aria-label="首页">
             <img class="size-8 rounded-full" src="/ic_launcher.png" alt="TrendingAI Logo" loading="eager" />
-            <span class="text-base font-extrabold text-on-surface">Trending AI</span>
+            <span class="hidden sm:inline text-base font-extrabold text-on-surface">Trending AI</span>
         </a>
         <div class="flex items-center gap-1">
             {links.map((link) => (
                 <a
                     class:list={[
-                        "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                        "rounded-lg px-2 sm:px-3 py-1.5 text-sm font-medium transition-colors",
                         activeRoute === link.id
                             ? "bg-primary text-on-primary"
                             : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
