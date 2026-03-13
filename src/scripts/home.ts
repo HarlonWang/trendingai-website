@@ -56,7 +56,7 @@ function renderDeepDive(items: PickItem[]): string {
                                     <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
                                 </div>` : ""}
                                 ${item.analysis.alternatives ? `<div>
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">相关替代</p>
+                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
                                     <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
                                 </div>` : ""}
                             </div>
