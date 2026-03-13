@@ -143,7 +143,7 @@ async function loadFeed() {
 
     try {
         const [github, hn, ph] = await Promise.all(
-            SOURCES.map(source => fetchFeed(source, 50, 7))
+            SOURCES.map(source => fetchFeed(source, 20, 3))
         );
 
         allItems = interleave(github.data, hn.data, ph.data);
