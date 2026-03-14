@@ -118,26 +118,14 @@ function renderSpeedReadItem(item: PickItem): string {
     `;
 }
 
-const SPEED_READ_INITIAL = 5;
-
 function renderSpeedRead(items: PickItem[]): string {
     if (items.length === 0) return "";
-    const visible = items.slice(0, SPEED_READ_INITIAL);
-    const extra = items.slice(SPEED_READ_INITIAL);
     return `
         <div>
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">Top 10 速览</h3>
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">Top 5 速览</h3>
             <div class="divide-y divide-outline">
-                ${visible.map(item => renderSpeedReadItem(item)).join("")}
+                ${items.map(item => renderSpeedReadItem(item)).join("")}
             </div>
-            ${extra.length > 0 ? `
-                <div class="divide-y divide-outline hidden" id="speed-read-extra">
-                    ${extra.map(item => renderSpeedReadItem(item)).join("")}
-                </div>
-                <button id="speed-read-toggle" class="mt-3 w-full py-2 text-center text-sm text-on-surface-variant hover:text-on-surface transition-colors">
-                    展开更多 ↓
-                </button>
-            ` : ""}
         </div>
     `;
 }
@@ -251,14 +239,6 @@ async function loadPicks() {
 
         if (html) {
             container.innerHTML = html;
-            const toggle = $("#speed-read-toggle");
-            const extra = $("#speed-read-extra");
-            if (toggle && extra) {
-                toggle.addEventListener("click", () => {
-                    const hidden = extra.classList.toggle("hidden");
-                    toggle.textContent = hidden ? "展开更多 ↓" : "收起 ↑";
-                });
-            }
 
             container.querySelectorAll<HTMLButtonElement>(".deep-dive-toggle").forEach(btn => {
                 btn.addEventListener("click", () => {
