@@ -9,6 +9,8 @@
     --color-on-surface-variant: #6b7280;
     --color-outline: #e5e7eb;
     --color-shadow: rgba(0, 0, 0, 0.06);
+    --color-success: #16a34a;
+    --color-error: #ef4444;
 }
 
 /* 显式深色主题 */
@@ -21,6 +23,8 @@
     --color-on-surface-variant: #9ca3af;
     --color-outline: #1f2937;
     --color-shadow: rgba(0, 0, 0, 0.3);
+    --color-success: #4ade80;
+    --color-error: #f87171;
 }
 
 /* 系统偏好回退 */
@@ -34,6 +38,8 @@
         --color-on-surface-variant: #9ca3af;
         --color-outline: #1f2937;
         --color-shadow: rgba(0, 0, 0, 0.3);
+        --color-success: #4ade80;
+        --color-error: #f87171;
     }
 }
 

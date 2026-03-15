@@ -89,8 +89,9 @@ import { API_BASE } from "../config";
 
         toggle.addEventListener("click", function (e) {
             e.stopPropagation();
-            setOpen(!isOpen);
-            if (!isOpen) resetForm();
+            var opening = !isOpen;
+            setOpen(opening);
+            if (!opening) resetForm();
         });
 
         // Click outside to close
@@ -132,20 +133,20 @@ import { API_BASE } from "../config";
                 if (data.success) {
                     form.style.display = "none";
                     msg.textContent = "感谢反馈！";
-                    msg.className = "mt-2 text-center text-sm text-green-600";
+                    msg.className = "mt-2 text-center text-sm text-success";
                     setTimeout(function () {
                         setOpen(false);
                         resetForm();
                     }, 1500);
                 } else {
                     msg.textContent = data.error || "提交失败，请稍后重试";
-                    msg.className = "mt-2 text-center text-sm text-red-500";
+                    msg.className = "mt-2 text-center text-sm text-error";
                     submitBtn.disabled = false;
                     submitBtn.textContent = "提交反馈";
                 }
             } catch (_) {
                 msg.textContent = "网络错误，请稍后重试";
-                msg.className = "mt-2 text-center text-sm text-red-500";
+                msg.className = "mt-2 text-center text-sm text-error";
                 submitBtn.disabled = false;
                 submitBtn.textContent = "提交反馈";
             }
