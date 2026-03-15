@@ -1,0 +1,154 @@
+---
+import { API_BASE } from "../config";
+---
+
+<!-- Floating feedback button + popup -->
+<div id="feedback-widget" class="fixed bottom-6 right-6 z-[90]">
+    <!-- Popup form -->
+    <div
+        id="feedback-popup"
+        class="absolute bottom-14 right-0 w-80 rounded-xl border border-outline bg-surface-container p-4 shadow-lg"
+        style="opacity:0; transform:translateY(8px); pointer-events:none; transition: opacity 200ms ease, transform 200ms ease;"
+    >
+        <form id="feedback-form" class="space-y-3">
+            <textarea
+                id="feedback-content"
+                required
+                maxlength="2000"
+                rows="4"
+                placeholder="有什么建议或问题？"
+                class="w-full resize-none rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+            ></textarea>
+            <input
+                id="feedback-email"
+                type="email"
+                placeholder="邮箱（选填，方便回复）"
+                class="w-full rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+            />
+            <button
+                type="submit"
+                id="feedback-submit"
+                class="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90"
+            >
+                提交反馈
+            </button>
+        </form>
+        <p id="feedback-msg" class="mt-2 hidden text-center text-sm"></p>
+    </div>
+
+    <!-- Toggle button -->
+    <button
+        id="feedback-toggle"
+        aria-label="提交反馈"
+        class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary shadow-lg transition-transform hover:scale-105"
+    >
+        <!-- Chat bubble icon -->
+        <svg id="feedback-icon-open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <!-- Close icon (hidden by default) -->
+        <svg id="feedback-icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+    </button>
+</div>
+
+<script is:inline define:vars={{ API_BASE }}>
+    document.addEventListener("astro:page-load", function () {
+        var toggle = document.getElementById("feedback-toggle");
+        var popup = document.getElementById("feedback-popup");
+        var form = document.getElementById("feedback-form");
+        var content = document.getElementById("feedback-content");
+        var email = document.getElementById("feedback-email");
+        var submitBtn = document.getElementById("feedback-submit");
+        var msg = document.getElementById("feedback-msg");
+        var iconOpen = document.getElementById("feedback-icon-open");
+        var iconClose = document.getElementById("feedback-icon-close");
+        if (!toggle || !popup || !form) return;
+
+        var isOpen = false;
+
+        function setOpen(open) {
+            isOpen = open;
+            popup.style.opacity = open ? "1" : "0";
+            popup.style.transform = open ? "translateY(0)" : "translateY(8px)";
+            popup.style.pointerEvents = open ? "auto" : "none";
+            iconOpen.classList.toggle("hidden", open);
+            iconClose.classList.toggle("hidden", !open);
+        }
+
+        function resetForm() {
+            form.reset();
+            msg.className = "mt-2 hidden text-center text-sm";
+            msg.textContent = "";
+            form.style.display = "";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "提交反馈";
+        }
+
+        toggle.addEventListener("click", function (e) {
+            e.stopPropagation();
+            setOpen(!isOpen);
+            if (!isOpen) resetForm();
+        });
+
+        // Click outside to close
+        document.addEventListener("click", function (e) {
+            if (isOpen && !popup.contains(e.target) && !toggle.contains(e.target)) {
+                setOpen(false);
+                resetForm();
+            }
+        });
+
+        // Escape to close
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && isOpen) {
+                setOpen(false);
+                resetForm();
+            }
+        });
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            var text = content.value.trim();
+            if (!text) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "提交中...";
+
+            try {
+                var resp = await fetch(API_BASE + "/api/feedback", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        content: text,
+                        email: email.value.trim() || undefined,
+                        page_url: window.location.href,
+                    }),
+                });
+                var data = await resp.json();
+
+                if (data.success) {
+                    form.style.display = "none";
+                    msg.textContent = "感谢反馈！";
+                    msg.className = "mt-2 text-center text-sm text-green-600";
+                    setTimeout(function () {
+                        setOpen(false);
+                        resetForm();
+                    }, 1500);
+                } else {
+                    msg.textContent = data.error || "提交失败，请稍后重试";
+                    msg.className = "mt-2 text-center text-sm text-red-500";
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "提交反馈";
+                }
+            } catch (_) {
+                msg.textContent = "网络错误，请稍后重试";
+                msg.className = "mt-2 text-center text-sm text-red-500";
+                submitBtn.disabled = false;
+                submitBtn.textContent = "提交反馈";
+            }
+        });
+    });
+</script>

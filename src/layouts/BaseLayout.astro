@@ -2,6 +2,7 @@
 import { ViewTransitions } from "astro:transitions";
 import "../styles/global.css";
 import { SITE_URL, RSS_URL } from "../config";
+import Feedback from "../components/Feedback.astro";
 
 interface Props {
     title: string;
@@ -55,5 +56,6 @@ const ogImage = `${SITE_URL}/android_screenshot_zh.png`;
     </head>
     <body class={bodyClass || undefined}>
         <slot />
+        <Feedback />
     </body>
 </html>
