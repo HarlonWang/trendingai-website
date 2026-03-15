@@ -74,7 +74,7 @@ function renderControversy(items: PickItem[]): string {
     return `
         <div class="mb-8">
             <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">争议话题</h3>
-            <div class="grid gap-3 sm:grid-cols-2">
+            <div class="grid gap-3${items.length > 1 ? ' sm:grid-cols-2' : ''}">
                 ${items.map(item => {
                     const cv = item.analysis?.community_voice;
                     return `
