@@ -39,8 +39,10 @@ function renderDeepDive(items: PickItem[]): string {
                 ${items.map((item, i) => `
                     <div class="rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
                         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="group block">
-                            <div class="mb-3">
+                            <div class="mb-3 flex items-center gap-2">
                                 ${sourceTag(item)}
+                                <span class="min-w-0 flex-1 truncate text-xs text-on-surface-variant">${escapeHtml(item.title)}</span>
+                                <span class="shrink-0 text-xs text-on-surface-variant">${sourceScore(item)}</span>
                             </div>
                             ${item.analysis ? `
                                 <h4 class="mb-2 text-base font-bold text-on-surface group-hover:text-primary leading-snug">
