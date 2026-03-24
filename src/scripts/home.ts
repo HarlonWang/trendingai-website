@@ -51,15 +51,19 @@ function renderDeepDive(items: PickItem[]): string {
                                 ${item.analysis.why_important ? `<p class="text-sm text-on-surface-variant leading-relaxed ">${escapeHtml(item.analysis.why_important)}</p>` : ""}
                             ` : ""}
                         </a>
-                        ${item.analysis?.action || item.analysis?.alternatives ? `
+                        ${item.analysis?.action || item.analysis?.alternatives || item.analysis?.terms?.length ? `
                             <div class="mt-3 border-t border-outline pt-3">
-                                ${item.analysis.action ? `<div class="${item.analysis.alternatives ? 'mb-3' : ''}">
+                                ${item.analysis.action ? `<div class="${item.analysis.alternatives || item.analysis.terms?.length ? 'mb-3' : ''}">
                                     <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">适合场景</p>
                                     <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
                                 </div>` : ""}
-                                ${item.analysis.alternatives ? `<div>
+                                ${item.analysis.alternatives ? `<div class="${item.analysis.terms?.length ? 'mb-3' : ''}">
                                     <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
                                     <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
+                                </div>` : ""}
+                                ${item.analysis.terms?.length ? `<div>
+                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">关键词</p>
+                                    <p class="text-xs text-on-surface-variant/70 leading-relaxed">${item.analysis.terms.map((t: string) => escapeHtml(t)).join("、")}</p>
                                 </div>` : ""}
                             </div>
                         ` : ""}
