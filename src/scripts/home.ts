@@ -37,7 +37,7 @@ function renderDeepDive(items: PickItem[]): string {
             <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">深度解读</h3>
             <div class="grid gap-4 ${items.length >= 3 ? "md:grid-cols-3" : items.length === 2 ? "md:grid-cols-2" : "md:grid-cols-1"}">
                 ${items.map((item, i) => `
-                    <div class="rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
+                    <div class="overflow-hidden rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
                         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="group block">
                             <div class="mb-3 flex items-center gap-2">
                                 ${sourceTag(item)}
