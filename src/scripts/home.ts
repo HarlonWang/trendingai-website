@@ -51,19 +51,6 @@ function renderDeepDive(items: PickItem[]): string {
                                 ${item.analysis.why_important ? `<p class="text-sm text-on-surface-variant leading-relaxed ">${escapeHtml(item.analysis.why_important)}</p>` : ""}
                             ` : ""}
                         </a>
-                        ${item.analysis?.action || item.analysis?.alternatives ? `
-                            <div class="deep-dive-details mt-3 hidden border-t border-outline pt-3" data-deep-dive="${i}">
-                                ${item.analysis.action ? `<div class="mb-3">
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">适合场景</p>
-                                    <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
-                                </div>` : ""}
-                                ${item.analysis.alternatives ? `<div>
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
-                                    <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
-                                </div>` : ""}
-                            </div>
-                            <button class="deep-dive-toggle mt-3 text-xs font-medium text-primary hover:underline" data-target="${i}">展开更多</button>
-                        ` : ""}
                     </div>
                 `).join("")}
             </div>
@@ -242,14 +229,6 @@ async function loadPicks() {
         if (html) {
             container.innerHTML = html;
 
-            container.querySelectorAll<HTMLButtonElement>(".deep-dive-toggle").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    const details = container.querySelector<HTMLElement>(`.deep-dive-details[data-deep-dive="${btn.dataset.target}"]`);
-                    if (!details) return;
-                    const hidden = details.classList.toggle("hidden");
-                    btn.textContent = hidden ? "展开更多" : "收起";
-                });
-            });
         } else {
             container.innerHTML = `<p class="text-sm text-on-surface-variant">今日精选暂无数据</p>`;
         }
