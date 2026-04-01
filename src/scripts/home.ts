@@ -57,13 +57,15 @@ function renderDeepDive(items: PickItem[]): string {
                                     <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">适合场景</p>
                                     <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
                                 </div>` : ""}
-                                ${item.analysis.alternatives ? `<div class="${item.analysis.terms?.length ? 'mb-3' : ''}">
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
-                                    <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
-                                </div>` : ""}
-                                ${item.analysis.terms?.length ? `<div>
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">关键词</p>
-                                    <p class="text-xs text-on-surface-variant/70 leading-relaxed">${item.analysis.terms.map((t: string) => escapeHtml(t)).join("、")}</p>
+                                ${item.analysis.alternatives || item.analysis.terms?.length ? `<div class="flex items-baseline justify-between gap-4">
+                                    ${item.analysis.alternatives ? `<div>
+                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
+                                        <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
+                                    </div>` : ""}
+                                    ${item.analysis.terms?.length ? `<div class="shrink-0 text-right">
+                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">关键词</p>
+                                        <p class="text-xs text-on-surface-variant/70 leading-relaxed">${item.analysis.terms.map((t: string) => escapeHtml(t)).join("、")}</p>
+                                    </div>` : ""}
                                 </div>` : ""}
                             </div>
                         ` : ""}
