@@ -2,11 +2,8 @@ import { fetchFeed, fetchGithubTrending } from "./lib/api";
 import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
 
-const BATCH_SIZE = 15;
-
 let allItems: FeedApiItem[] = [];
 let filteredItems: FeedApiItem[] = [];
-let displayCount = 0;
 let currentTab = "all";
 
 function formatNumber(n: number): string {
@@ -97,31 +94,18 @@ function filterItems(): FeedApiItem[] {
 
 function render() {
     const list = $("#feed-list");
-    const btn = $("#load-more");
     if (!list) return;
 
-    const items = filteredItems.slice(0, displayCount);
-    if (items.length === 0) {
+    if (filteredItems.length === 0) {
         list.innerHTML = `<p class="text-sm text-on-surface-variant">暂无数据</p>`;
     } else {
-        list.innerHTML = items.map(renderFeedCard).join("");
-    }
-
-    if (btn) {
-        const remaining = filteredItems.length - displayCount;
-        if (remaining > 0) {
-            btn.style.display = "";
-            btn.textContent = `加载更多（剩余 ${remaining} 条）`;
-        } else {
-            btn.style.display = "none";
-        }
+        list.innerHTML = filteredItems.map(renderFeedCard).join("");
     }
 }
 
 function switchTab(tab: string) {
     currentTab = tab;
     filteredItems = filterItems();
-    displayCount = BATCH_SIZE;
 
     // Update tab styles
     document.querySelectorAll(".feed-tab").forEach(el => {
@@ -149,7 +133,6 @@ async function loadFeed() {
 
         allItems = interleave(github.data, hn.data, ph.data);
         filteredItems = filterItems();
-        displayCount = BATCH_SIZE;
         render();
     } catch (err) {
         console.error("Failed to load feed:", err);
@@ -167,15 +150,6 @@ document.addEventListener("astro:page-load", () => {
             if (t) switchTab(t);
         });
     });
-
-    // Load more
-    const btn = $("#load-more");
-    if (btn) {
-        btn.addEventListener("click", () => {
-            displayCount += BATCH_SIZE;
-            render();
-        });
-    }
 
     loadFeed();
 });
