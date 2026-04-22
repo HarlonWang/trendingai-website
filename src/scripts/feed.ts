@@ -1,8 +1,7 @@
-import { fetchFeed } from "./lib/api";
+import { fetchFeed, fetchGithubTrending } from "./lib/api";
 import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
 
-const SOURCES = ["github", "hackernews", "producthunt"] as const;
 const BATCH_SIZE = 15;
 
 let allItems: FeedApiItem[] = [];
@@ -142,9 +141,11 @@ async function loadFeed() {
     if (!list) return;
 
     try {
-        const [github, hn, ph] = await Promise.all(
-            SOURCES.map(source => fetchFeed(source, 20, 3))
-        );
+        const [github, hn, ph] = await Promise.all([
+            fetchGithubTrending(),
+            fetchFeed("hackernews", 20, 3),
+            fetchFeed("producthunt", 20, 3),
+        ]);
 
         allItems = interleave(github.data, hn.data, ph.data);
         filteredItems = filterItems();

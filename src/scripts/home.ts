@@ -1,4 +1,4 @@
-import { fetchPicks, fetchFeed } from "./lib/api";
+import { fetchPicks, fetchFeed, fetchGithubTrending } from "./lib/api";
 import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
 import type { PickItem } from "../types/api";
@@ -212,7 +212,9 @@ async function loadSource(source: string) {
     if (!container) return;
 
     try {
-        const data = await fetchFeed(source, 8);
+        const data = source === "github"
+            ? await fetchGithubTrending()
+            : await fetchFeed(source, 8);
         if (data.data.length === 0) {
             container.innerHTML = `<p class="text-sm text-on-surface-variant">暂无数据</p>`;
             return;
