@@ -53,14 +53,14 @@ import { API_BASE } from "../config";
                 var resp = await fetch(API_BASE + "/api/subscribe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: email }),
+                    body: JSON.stringify({ email: email, source: "web" }),
                 });
                 var data = await resp.json();
 
                 if (data.success) {
-                    if (data.message === "Already subscribed") {
+                    if (data.status === "already") {
                         showMsg("该邮箱已订阅", true);
-                    } else if (data.message === "Re-subscribed successfully") {
+                    } else if (data.status === "resubscribed") {
                         showMsg("重新订阅成功", true);
                     } else {
                         showMsg("订阅成功", true);
