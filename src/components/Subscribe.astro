@@ -1,61 +1,108 @@
 ---
 import { API_BASE } from "../config";
+
+interface Props {
+    /** hero: 首屏胶囊形态；full: 完整卡片（默认，用于页面底部） */
+    variant?: "hero" | "full";
+}
+const { variant = "full" } = Astro.props;
 ---
 
-<section class="my-12 rounded-xl border border-outline bg-surface-container p-6">
-    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <h3 class="text-base font-bold text-on-surface">每日精选，一键订阅</h3>
-            <p class="mt-1 text-xs text-on-surface-variant">AI 精选技术趋势，每日一封，随时退订</p>
-        </div>
-        <form id="subscribe-form" class="flex gap-2">
+{variant === "hero" ? (
+    <div
+        class="mx-auto mt-4 max-w-sm"
+        data-subscribe-root
+        data-api-base={API_BASE}
+    >
+        <form
+            data-subscribe-form
+            class="flex overflow-hidden rounded-full border border-outline bg-surface transition-colors focus-within:border-primary"
+        >
             <input
-                id="subscribe-email"
+                data-subscribe-email
                 type="email"
                 required
-                placeholder="输入邮箱地址"
-                class="w-56 rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+                aria-label="邮箱地址"
+                placeholder="输入邮箱，订阅每日精选"
+                class="min-w-0 flex-1 border-0 bg-transparent px-4 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none"
             />
             <button
+                data-subscribe-btn
                 type="submit"
-                id="subscribe-btn"
-                class="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90"
+                class="m-1 shrink-0 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-on-primary transition-colors hover:opacity-90 disabled:opacity-60"
             >
                 订阅
             </button>
         </form>
+        <p data-subscribe-msg class="mt-2 hidden text-center text-sm"></p>
     </div>
-    <p id="subscribe-msg" class="mt-3 hidden text-sm"></p>
-</section>
+) : (
+    <section
+        class="my-12 rounded-xl border border-outline bg-surface-container p-6"
+        data-subscribe-root
+        data-api-base={API_BASE}
+    >
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h3 class="text-base font-bold text-on-surface">每日精选，一键订阅</h3>
+                <p class="mt-1 text-xs text-on-surface-variant">AI 精选技术趋势，每日一封，随时退订</p>
+            </div>
+            <form data-subscribe-form class="flex gap-2">
+                <input
+                    data-subscribe-email
+                    type="email"
+                    required
+                    aria-label="邮箱地址"
+                    placeholder="输入邮箱地址"
+                    class="w-56 rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
+                />
+                <button
+                    data-subscribe-btn
+                    type="submit"
+                    class="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90 disabled:opacity-60"
+                >
+                    订阅
+                </button>
+            </form>
+        </div>
+        <p data-subscribe-msg class="mt-3 hidden text-sm"></p>
+    </section>
+)}
 
-<script is:inline define:vars={{ API_BASE }}>
-    document.addEventListener("astro:page-load", function() {
-        var form = document.getElementById("subscribe-form");
-        var input = document.getElementById("subscribe-email");
-        var btn = document.getElementById("subscribe-btn");
-        var msg = document.getElementById("subscribe-msg");
+<script>
+    function bindSubscribe(root: HTMLElement) {
+        if (root.dataset.bound) return;
+        root.dataset.bound = "1";
+
+        const apiBase = root.dataset.apiBase || "";
+        const form = root.querySelector<HTMLFormElement>("[data-subscribe-form]");
+        const input = root.querySelector<HTMLInputElement>("[data-subscribe-email]");
+        const btn = root.querySelector<HTMLButtonElement>("[data-subscribe-btn]");
+        const msg = root.querySelector<HTMLElement>("[data-subscribe-msg]");
         if (!form || !input || !btn || !msg) return;
 
-        function showMsg(text, success) {
-            msg.textContent = text;
-            msg.className = "mt-3 text-sm " + (success ? "text-green-600" : "text-red-500");
+        const baseMsgClass = msg.className.replace(/\bhidden\b/, "").trim();
+        function showMsg(text: string, success: boolean) {
+            msg!.textContent = text;
+            msg!.className = baseMsgClass + " " + (success ? "text-green-600" : "text-red-500");
         }
 
-        form.addEventListener("submit", async function(e) {
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
-            var email = input.value.trim();
+            const email = input.value.trim();
             if (!email) return;
 
             btn.disabled = true;
+            const originalText = btn.textContent;
             btn.textContent = "提交中...";
 
             try {
-                var resp = await fetch(API_BASE + "/api/subscribe", {
+                const resp = await fetch(apiBase + "/api/subscribe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: email, source: "web" }),
+                    body: JSON.stringify({ email, source: "web" }),
                 });
-                var data = await resp.json();
+                const data = await resp.json();
 
                 if (data.success) {
                     if (data.status === "already") {
@@ -74,37 +121,43 @@ import { API_BASE } from "../config";
             }
 
             btn.disabled = false;
-            btn.textContent = "订阅";
+            btn.textContent = originalText;
         });
+    }
 
-        // 处理退订回调 — Toast 通知
-        var params = new URLSearchParams(window.location.search);
-        var unsubscribed = params.get("unsubscribed");
-        var toastText = null;
-        var toastSuccess = true;
+    function showUnsubscribeToast() {
+        const params = new URLSearchParams(window.location.search);
+        const unsubscribed = params.get("unsubscribed");
+        if (!unsubscribed) return;
 
+        let toastText: string | null = null;
+        let toastSuccess = true;
         if (unsubscribed === "1") toastText = "已成功退订";
         else if (unsubscribed === "already") toastText = "已退订";
         else if (unsubscribed === "error") { toastText = "退订链接无效"; toastSuccess = false; }
+        if (!toastText) return;
 
-        if (toastText) {
-            var toast = document.createElement("div");
-            toast.className = "fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-lg border px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 "
-                + (toastSuccess ? "border-outline bg-surface-container text-on-surface" : "border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300");
-            toast.textContent = toastText;
+        const toast = document.createElement("div");
+        toast.className = "fixed top-20 left-1/2 z-[100] -translate-x-1/2 rounded-lg border px-5 py-3 text-sm font-medium shadow-lg transition-all duration-300 "
+            + (toastSuccess ? "border-outline bg-surface-container text-on-surface" : "border-red-300 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300");
+        toast.textContent = toastText;
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(-50%) translateY(-8px)";
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+            toast.style.opacity = "1";
+            toast.style.transform = "translateX(-50%) translateY(0)";
+        });
+        setTimeout(() => {
             toast.style.opacity = "0";
             toast.style.transform = "translateX(-50%) translateY(-8px)";
-            document.body.appendChild(toast);
-            requestAnimationFrame(function() {
-                toast.style.opacity = "1";
-                toast.style.transform = "translateX(-50%) translateY(0)";
-            });
-            setTimeout(function() {
-                toast.style.opacity = "0";
-                toast.style.transform = "translateX(-50%) translateY(-8px)";
-                setTimeout(function() { toast.remove(); }, 300);
-            }, 3500);
-            window.history.replaceState({}, "", window.location.pathname);
-        }
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+        window.history.replaceState({}, "", window.location.pathname);
+    }
+
+    document.addEventListener("astro:page-load", () => {
+        document.querySelectorAll<HTMLElement>("[data-subscribe-root]").forEach(bindSubscribe);
+        showUnsubscribeToast();
     });
 </script>
