@@ -100,7 +100,7 @@ const { variant = "full" } = Astro.props;
                 const resp = await fetch(apiBase + "/api/subscribe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, source: "web" }),
+                    body: JSON.stringify({ email, source: "web", lang: "zh" }),
                 });
                 const data = await resp.json();
 
