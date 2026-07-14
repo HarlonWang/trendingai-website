@@ -30,11 +30,22 @@ import Footer from "../components/Footer.astro";
                 <span class="text-sm text-on-surface-variant" id="picks-date"></span>
             </div>
             <div id="picks-container" class="space-y-6">
-                <!-- 骨架屏 -->
-                <div class="grid gap-4 md:grid-cols-3">
-                    {[1, 2, 3].map(() => (
-                        <div class="h-48 animate-pulse rounded-xl bg-surface-container" />
-                    ))}
+                <!-- 骨架屏：GitHub 上新（2 列小卡）+ 深度解读（3 列大卡） -->
+                <div class="mb-8">
+                    <div class="mb-4 h-4 w-24 animate-pulse rounded bg-surface-container" />
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        {[1, 2].map(() => (
+                            <div class="h-32 animate-pulse rounded-xl bg-surface-container" />
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-4 h-4 w-24 animate-pulse rounded bg-surface-container" />
+                    <div class="grid gap-4 md:grid-cols-3">
+                        {[1, 2, 3].map(() => (
+                            <div class="h-48 animate-pulse rounded-xl bg-surface-container" />
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
