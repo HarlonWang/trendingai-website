@@ -48,13 +48,13 @@ export interface FeedResponse {
 export interface PickAnalysis {
     core: string;
     why_important: string;
-    community_voice: {
-        positive: string;
-        negative: string;
-    };
-    action: string;
-    alternatives: string;
-    terms: string[];
+    community_voice?: {
+        positive: string | null;
+        negative: string | null;
+    } | null;
+    action?: string | null;
+    alternatives?: string | null;
+    terms?: string[] | null;
 }
 
 export interface PickItem {
@@ -74,6 +74,7 @@ export interface PickItem {
 export interface PicksResponse {
     success: boolean;
     metadata: { date: string };
+    debut: PickItem[];
     speedRead: PickItem[];
     deepDive: PickItem[];
     controversy: PickItem[];

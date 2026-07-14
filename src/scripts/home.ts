@@ -76,62 +76,28 @@ function renderDeepDive(items: PickItem[]): string {
     `;
 }
 
-function renderControversy(items: PickItem[]): string {
+function renderDebut(items: PickItem[]): string {
     if (items.length === 0) return "";
     return `
         <div class="mb-8">
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">争议话题</h3>
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">GitHub 上新</h3>
             <div class="grid gap-3${items.length > 1 ? ' sm:grid-cols-2' : ''}">
-                ${items.map(item => {
-                    const cv = item.analysis?.community_voice;
-                    return `
+                ${items.map(item => `
                     <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
                        class="group rounded-xl border border-outline p-4 transition-colors hover:border-on-surface-variant">
                         <div class="mb-2 flex items-center gap-2">
                             ${sourceTag(item)}
+                            <span class="min-w-0 flex-1 truncate text-xs text-on-surface-variant">${escapeHtml(item.title)}</span>
+                            <span class="shrink-0 text-xs text-on-surface-variant">${sourceScore(item)}</span>
                         </div>
-                        <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
-                            ${escapeHtml(item.title)}
-                        </h4>
-                        ${item.summary ? `<p class="mt-1.5 text-xs text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : ""}
-                        ${cv?.positive ? `<div class="mt-2">
-                            <span class="text-xs font-semibold text-on-surface">正方：</span>
-                            <span class="text-xs text-on-surface-variant">${escapeHtml(cv.positive)}</span>
-                        </div>` : ""}
-                        ${cv?.negative ? `<div class="mt-1">
-                            <span class="text-xs font-semibold text-on-surface">反方：</span>
-                            <span class="text-xs text-on-surface-variant">${escapeHtml(cv.negative)}</span>
-                        </div>` : ""}
-                    </a>`;
-                }).join("")}
-            </div>
-        </div>
-    `;
-}
-
-function renderSpeedReadItem(item: PickItem): string {
-    return `
-        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group block py-3 transition-colors">
-            <div class="flex items-start gap-3">
-                ${sourceTag(item)}
-                <h4 class="min-w-0 flex-1 text-sm font-medium text-on-surface group-hover:text-primary leading-snug">
-                    ${escapeHtml(item.title)}
-                </h4>
-                <span class="shrink-0 text-xs text-on-surface-variant">${sourceScore(item)}</span>
-            </div>
-            ${item.summary ? `<p class="mt-1 text-xs text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : ""}
-        </a>
-    `;
-}
-
-function renderSpeedRead(items: PickItem[]): string {
-    if (items.length === 0) return "";
-    return `
-        <div>
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">Top 5 速览</h3>
-            <div class="divide-y divide-outline">
-                ${items.map(item => renderSpeedReadItem(item)).join("")}
+                        ${item.analysis ? `
+                            <h4 class="text-sm font-bold text-on-surface group-hover:text-primary leading-snug">
+                                ${escapeHtml(item.analysis.core)}
+                            </h4>
+                            ${item.analysis.why_important ? `<p class="mt-1.5 text-xs text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.why_important)}</p>` : ""}
+                            ${item.analysis.action ? `<p class="mt-1.5 text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.action)}</p>` : ""}
+                        ` : (item.summary ? `<p class="text-xs text-on-surface-variant leading-relaxed">${escapeHtml(item.summary)}</p>` : "")}
+                    </a>`).join("")}
             </div>
         </div>
     `;
@@ -241,9 +207,8 @@ async function loadPicks() {
         }
 
         const html = [
+            renderDebut(data.debut ?? []),
             renderDeepDive(data.deepDive),
-            renderControversy(data.controversy),
-            renderSpeedRead([...data.speedRead].sort((a, b) => b.aiScore - a.aiScore)),
         ].filter(Boolean).join("");
 
         if (html) {
