@@ -81,7 +81,7 @@ function renderDebut(items: PickItem[]): string {
     return `
         <div class="mb-8">
             <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">GitHub 上新</h3>
-            <div class="grid gap-3${items.length > 1 ? ' sm:grid-cols-2' : ''}">
+            <div class="grid gap-3${items.length === 3 ? " md:grid-cols-3" : items.length > 1 ? " sm:grid-cols-2" : ""}">
                 ${items.map(item => `
                     <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
                        class="group rounded-xl border border-outline p-4 transition-colors hover:border-on-surface-variant">
