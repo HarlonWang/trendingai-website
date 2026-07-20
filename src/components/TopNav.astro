@@ -45,6 +45,7 @@ const switchHref = locale === "zh" ? basePath : `/zh${basePath}`;
                 class="rounded-lg px-2 sm:px-3 py-1.5 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
                 href={switchHref}
                 title={t(locale, "nav.langSwitchTitle")}
+                data-lang-switch={locale === "zh" ? "en" : "zh"}
             >
                 {t(locale, "nav.langSwitch")}
             </a>
@@ -66,6 +67,16 @@ const switchHref = locale === "zh" ? basePath : `/zh${basePath}`;
         </div>
     </nav>
 </header>
+
+<script is:inline>
+    // 记录显式语言选择，配合 BaseLayout 的首访自动重定向（有偏好则不再自动跳）。
+    // 事件委托 + 脚本内容跨语言一致，避免 ClientRouter 跨语言导航时重复注册监听器
+    document.addEventListener("click", function (e) {
+        var a = e.target && e.target.closest ? e.target.closest("[data-lang-switch]") : null;
+        if (!a) return;
+        try { localStorage.setItem("preferred-lang", a.getAttribute("data-lang-switch")); } catch (_) {}
+    });
+</script>
 
 <script is:inline>
     (function() {
