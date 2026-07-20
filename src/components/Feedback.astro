@@ -3,18 +3,20 @@ import { API_BASE } from "../config";
 import { resolveLocale, t } from "../i18n";
 
 const locale = resolveLocale(Astro.currentLocale);
-// is:inline 脚本无法 import 模块，文案经 define:vars 注入
-const FEEDBACK_T = {
-    submit: t(locale, "feedback.submit"),
-    submitting: t(locale, "feedback.submitting"),
-    thanks: t(locale, "feedback.thanks"),
-    fail: t(locale, "feedback.fail"),
-    network: t(locale, "feedback.network"),
-};
 ---
 
 <!-- Floating feedback button + popup -->
-<div id="feedback-widget" class="fixed bottom-6 right-6 z-[90]">
+<!-- 动态文案放 data 属性由脚本运行时读取，保证脚本内容跨语言一致：
+     ClientRouter 跨语言导航时内容不同的内联脚本会再次执行，导致监听器重复注册 -->
+<div
+    id="feedback-widget"
+    class="fixed bottom-6 right-6 z-[90]"
+    data-txt-submit={t(locale, "feedback.submit")}
+    data-txt-submitting={t(locale, "feedback.submitting")}
+    data-txt-thanks={t(locale, "feedback.thanks")}
+    data-txt-fail={t(locale, "feedback.fail")}
+    data-txt-network={t(locale, "feedback.network")}
+>
     <!-- Popup form -->
     <div
         id="feedback-popup"
@@ -65,8 +67,16 @@ const FEEDBACK_T = {
     </button>
 </div>
 
-<script is:inline define:vars={{ API_BASE, FEEDBACK_T }}>
+<script is:inline define:vars={{ API_BASE }}>
     document.addEventListener("astro:page-load", function () {
+        var widget = document.getElementById("feedback-widget");
+        var FEEDBACK_T = widget ? {
+            submit: widget.dataset.txtSubmit,
+            submitting: widget.dataset.txtSubmitting,
+            thanks: widget.dataset.txtThanks,
+            fail: widget.dataset.txtFail,
+            network: widget.dataset.txtNetwork,
+        } : {};
         var toggle = document.getElementById("feedback-toggle");
         var popup = document.getElementById("feedback-popup");
         var form = document.getElementById("feedback-form");
