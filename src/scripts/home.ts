@@ -1,7 +1,12 @@
 import { fetchPicks, fetchFeed, fetchGithubTrending } from "./lib/api";
 import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
+import { t, getClientLocale, type UIKey } from "../i18n/ui";
 import type { PickItem } from "../types/api";
+
+function tt(key: UIKey): string {
+    return t(getClientLocale(), key);
+}
 
 function sourceColor(source: string): string {
     switch (source) {
@@ -34,7 +39,7 @@ function renderDeepDive(items: PickItem[]): string {
     if (items.length === 0) return "";
     return `
         <div class="mb-8">
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">深度解读</h3>
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">${tt("home.deepDive")}</h3>
             <div class="grid gap-4 ${items.length >= 3 ? "md:grid-cols-3" : items.length === 2 ? "md:grid-cols-2" : "md:grid-cols-1"}">
                 ${items.map((item, i) => `
                     <div class="overflow-hidden rounded-xl border border-outline bg-surface-container p-5 transition-colors hover:border-on-surface-variant">
@@ -54,17 +59,17 @@ function renderDeepDive(items: PickItem[]): string {
                         ${item.analysis?.action || item.analysis?.alternatives || item.analysis?.terms?.length ? `
                             <div class="mt-3 border-t border-outline pt-3">
                                 ${item.analysis.action ? `<div class="${item.analysis.alternatives || item.analysis.terms?.length ? 'mb-3' : ''}">
-                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">适合场景</p>
+                                    <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">${tt("home.useCases")}</p>
                                     <p class="text-sm text-on-surface-variant leading-relaxed">${escapeHtml(item.analysis.action)}</p>
                                 </div>` : ""}
                                 ${item.analysis.alternatives || item.analysis.terms?.length ? `<div class="flex items-baseline justify-between gap-4">
                                     ${item.analysis.alternatives ? `<div>
-                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">类似产品</p>
+                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">${tt("home.alternatives")}</p>
                                         <p class="text-xs text-on-surface-variant/70 leading-relaxed">${escapeHtml(item.analysis.alternatives)}</p>
                                     </div>` : ""}
                                     ${item.analysis.terms?.length ? `<div class="shrink-0 text-right">
-                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">关键词</p>
-                                        <p class="text-xs text-on-surface-variant/70 leading-relaxed">${item.analysis.terms.map((t: string) => escapeHtml(t)).join("、")}</p>
+                                        <p class="mb-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant">${tt("home.keywords")}</p>
+                                        <p class="text-xs text-on-surface-variant/70 leading-relaxed">${item.analysis.terms.map((term: string) => escapeHtml(term)).join(tt("home.termsSeparator"))}</p>
                                     </div>` : ""}
                                 </div>` : ""}
                             </div>
@@ -80,7 +85,7 @@ function renderDebut(items: PickItem[]): string {
     if (items.length === 0) return "";
     return `
         <div class="mb-8">
-            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">GitHub 上新</h3>
+            <h3 class="mb-4 text-sm font-semibold uppercase tracking-wider text-on-surface-variant">${tt("home.debut")}</h3>
             <div class="grid gap-3${items.length === 3 ? " md:grid-cols-3" : items.length > 1 ? " sm:grid-cols-2" : ""}">
                 ${items.map(item => `
                     <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
@@ -186,13 +191,13 @@ async function loadSource(source: string) {
             ? await fetchGithubTrending()
             : await fetchFeed(source, 8);
         if (data.data.length === 0) {
-            container.innerHTML = `<p class="text-sm text-on-surface-variant">暂无数据</p>`;
+            container.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("common.noData")}</p>`;
             return;
         }
         container.innerHTML = data.data.map(item => renderSourceCard(source, item)).join("");
     } catch (err) {
         console.error(`Failed to load ${source}:`, err);
-        container.innerHTML = `<p class="text-sm text-on-surface-variant">加载失败</p>`;
+        container.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("common.loadFailed")}</p>`;
     }
 }
 
@@ -219,11 +224,11 @@ async function loadPicks() {
             container.innerHTML = html;
 
         } else {
-            container.innerHTML = `<p class="text-sm text-on-surface-variant">今日精选暂无数据</p>`;
+            container.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("home.noPicks")}</p>`;
         }
     } catch (err) {
         console.error("Failed to load picks:", err);
-        container.innerHTML = `<p class="text-sm text-on-surface-variant">加载失败，请稍后刷新重试</p>`;
+        container.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("common.loadFailed")}</p>`;
     }
 }
 

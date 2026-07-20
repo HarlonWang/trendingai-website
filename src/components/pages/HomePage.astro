@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Subscribe from "../Subscribe.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, localizePath, t } from "../../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+
+const sources = [
+    { key: "github", title: t(locale, "home.sourceGithub") },
+    { key: "hackernews", title: t(locale, "home.sourceHackernews") },
+    { key: "producthunt", title: t(locale, "home.sourceProducthunt") },
+];
+---
+
+<BaseLayout
+    title={t(locale, "site.title")}
+    description={t(locale, "site.description")}
+    canonicalPath="/"
+>
+    <TopNav activeRoute="home" />
+    <main class="mx-auto max-w-5xl px-4 pt-20 pb-8 sm:px-6">
+        <!-- Hero -->
+        <section class="mb-6 py-3 text-center sm:py-4">
+            <h1 class="text-2xl font-extrabold tracking-tight text-on-surface sm:text-3xl">
+                {t(locale, "home.heroTitle")}
+            </h1>
+            <p class="mt-2 text-sm text-on-surface-variant sm:text-base">
+                {t(locale, "home.heroSubtitle")}
+            </p>
+            <Subscribe variant="hero" />
+        </section>
+
+        <!-- P2: Picks 精选区 -->
+        <section id="picks" class="mb-12">
+            <div class="mb-6 flex items-baseline justify-between">
+                <h2 class="text-xl font-bold text-on-surface">{t(locale, "home.picksTitle")}</h2>
+                <span class="text-sm text-on-surface-variant" id="picks-date"></span>
+            </div>
+            <div id="picks-container" class="space-y-6">
+                <!-- 骨架屏：GitHub 上新（2 列小卡）+ 深度解读（3 列大卡） -->
+                <div class="mb-8">
+                    <div class="mb-4 h-4 w-24 animate-pulse rounded bg-surface-container" />
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        {[1, 2].map(() => (
+                            <div class="h-32 animate-pulse rounded-xl bg-surface-container" />
+                        ))}
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-4 h-4 w-24 animate-pulse rounded bg-surface-container" />
+                    <div class="grid gap-4 md:grid-cols-3">
+                        {[1, 2, 3].map(() => (
+                            <div class="h-48 animate-pulse rounded-xl bg-surface-container" />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- P3: 三源横滑预览 -->
+        <section id="sources" class="space-y-10">
+            {sources.map(({ key, title }) => (
+                <div data-source={key}>
+                    <div class="mb-4 flex items-baseline justify-between">
+                        <h2 class="text-lg font-bold text-on-surface">{title}</h2>
+                        <a class="text-sm text-on-surface-variant transition-colors hover:text-on-surface" href={localizePath(locale, "/feed/")}>
+                            {t(locale, "home.viewAll")} &rarr;
+                        </a>
+                    </div>
+                    <div class="source-cards flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin">
+                        {[1, 2, 3, 4].map(() => (
+                            <div class="h-36 w-72 flex-shrink-0 snap-start animate-pulse rounded-xl bg-surface-container" />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </section>
+
+        <Subscribe />
+    </main>
+    <Footer />
+    <script src="../../scripts/home.ts"></script>
+</BaseLayout>

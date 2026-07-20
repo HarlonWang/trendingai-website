@@ -1,8 +1,14 @@
 import { API_BASE } from "../../config";
+import { getClientLocale } from "../../i18n/ui";
 import type { PicksResponse } from "../../types/api";
 
+/** 摘要语言跟随页面语言 */
+function summaryLang(): string {
+    return getClientLocale();
+}
+
 export async function fetchPicks(): Promise<PicksResponse> {
-    const res = await fetch(`${API_BASE}/api/picks?summary_lang=zh`);
+    const res = await fetch(`${API_BASE}/api/picks?summary_lang=${summaryLang()}`);
     if (!res.ok) throw new Error(`Picks API error: ${res.status}`);
     return res.json();
 }
@@ -27,7 +33,7 @@ export interface FeedApiResponse {
 }
 
 export async function fetchFeed(source: string, limit = 8, days?: number): Promise<FeedApiResponse> {
-    let url = `${API_BASE}/api/feed?source=${source}&limit=${limit}&summary_lang=zh`;
+    let url = `${API_BASE}/api/feed?source=${source}&limit=${limit}&summary_lang=${summaryLang()}`;
     if (days) url += `&days=${days}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Feed API error: ${res.status}`);
@@ -48,7 +54,7 @@ interface TrendingApiItem {
 }
 
 export async function fetchGithubTrending(): Promise<FeedApiResponse> {
-    const url = `${API_BASE}/api/trending?since=daily&lang=all&summary_lang=zh`;
+    const url = `${API_BASE}/api/trending?since=daily&lang=all&summary_lang=${summaryLang()}`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Trending API error: ${res.status}`);
     const raw = await res.json();

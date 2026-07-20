@@ -1,5 +1,16 @@
 ---
 import { API_BASE } from "../config";
+import { resolveLocale, t } from "../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+// is:inline 脚本无法 import 模块，文案经 define:vars 注入
+const FEEDBACK_T = {
+    submit: t(locale, "feedback.submit"),
+    submitting: t(locale, "feedback.submitting"),
+    thanks: t(locale, "feedback.thanks"),
+    fail: t(locale, "feedback.fail"),
+    network: t(locale, "feedback.network"),
+};
 ---
 
 <!-- Floating feedback button + popup -->
@@ -16,13 +27,13 @@ import { API_BASE } from "../config";
                 required
                 maxlength="2000"
                 rows="4"
-                placeholder="有什么建议或问题？"
+                placeholder={t(locale, "feedback.placeholder")}
                 class="w-full resize-none rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
             ></textarea>
             <input
                 id="feedback-email"
                 type="email"
-                placeholder="邮箱（选填，方便回复）"
+                placeholder={t(locale, "feedback.emailPlaceholder")}
                 class="w-full rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
             />
             <button
@@ -30,7 +41,7 @@ import { API_BASE } from "../config";
                 id="feedback-submit"
                 class="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90"
             >
-                提交反馈
+                {t(locale, "feedback.submit")}
             </button>
         </form>
         <p id="feedback-msg" class="mt-2 hidden text-center text-sm"></p>
@@ -39,7 +50,7 @@ import { API_BASE } from "../config";
     <!-- Toggle button -->
     <button
         id="feedback-toggle"
-        aria-label="提交反馈"
+        aria-label={t(locale, "feedback.aria")}
         class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary shadow-lg transition-transform hover:scale-105"
     >
         <!-- Chat bubble icon -->
@@ -54,7 +65,7 @@ import { API_BASE } from "../config";
     </button>
 </div>
 
-<script is:inline define:vars={{ API_BASE }}>
+<script is:inline define:vars={{ API_BASE, FEEDBACK_T }}>
     document.addEventListener("astro:page-load", function () {
         var toggle = document.getElementById("feedback-toggle");
         var popup = document.getElementById("feedback-popup");
@@ -84,7 +95,7 @@ import { API_BASE } from "../config";
             msg.textContent = "";
             form.style.display = "";
             submitBtn.disabled = false;
-            submitBtn.textContent = "提交反馈";
+            submitBtn.textContent = FEEDBACK_T.submit;
         }
 
         toggle.addEventListener("click", function (e) {
@@ -116,7 +127,7 @@ import { API_BASE } from "../config";
             if (!text) return;
 
             submitBtn.disabled = true;
-            submitBtn.textContent = "提交中...";
+            submitBtn.textContent = FEEDBACK_T.submitting;
 
             try {
                 var resp = await fetch(API_BASE + "/api/feedback", {
@@ -132,23 +143,23 @@ import { API_BASE } from "../config";
 
                 if (data.success) {
                     form.style.display = "none";
-                    msg.textContent = "感谢反馈！";
+                    msg.textContent = FEEDBACK_T.thanks;
                     msg.className = "mt-2 text-center text-sm text-success";
                     setTimeout(function () {
                         setOpen(false);
                         resetForm();
                     }, 1500);
                 } else {
-                    msg.textContent = data.error || "提交失败，请稍后重试";
+                    msg.textContent = data.error || FEEDBACK_T.fail;
                     msg.className = "mt-2 text-center text-sm text-error";
                     submitBtn.disabled = false;
-                    submitBtn.textContent = "提交反馈";
+                    submitBtn.textContent = FEEDBACK_T.submit;
                 }
             } catch (_) {
-                msg.textContent = "网络错误，请稍后重试";
+                msg.textContent = FEEDBACK_T.network;
                 msg.className = "mt-2 text-center text-sm text-error";
                 submitBtn.disabled = false;
-                submitBtn.textContent = "提交反馈";
+                submitBtn.textContent = FEEDBACK_T.submit;
             }
         });
     });

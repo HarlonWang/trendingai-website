@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import AppHero from "../AppHero.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, t } from "../../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+---
+
+<BaseLayout
+    title={t(locale, "app.title")}
+    description={t(locale, "app.description")}
+    canonicalPath="/app/"
+>
+    <TopNav activeRoute="app" />
+    <main class="pt-16">
+        <AppHero />
+    </main>
+    <Footer />
+</BaseLayout>

@@ -5,7 +5,23 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
     site: "https://trendingai.cn",
     trailingSlash: "always",
-    integrations: [sitemap()],
+    i18n: {
+        locales: ["en", "zh"],
+        defaultLocale: "en",
+        routing: {
+            prefixDefaultLocale: false,
+            fallbackType: "rewrite",
+        },
+        fallback: { zh: "en" },
+    },
+    integrations: [
+        sitemap({
+            i18n: {
+                defaultLocale: "en",
+                locales: { en: "en", zh: "zh-CN" },
+            },
+        }),
+    ],
     vite: {
         plugins: [tailwindcss()]
     }
