@@ -1,0 +1,8 @@
+# 带内容哈希的构建产物：内容不变则 URL 不变，可永久缓存
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 其余（HTML 等无哈希路径）：每次使用前须回源校验，
+# 避免部署后边缘/浏览器继续使用旧 HTML 引用已删除的旧哈希资源
+/*
+  Cache-Control: public, max-age=0, must-revalidate
