@@ -1,9 +1,22 @@
 ---
 import { API_BASE } from "../config";
+import { resolveLocale, t } from "../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
 ---
 
 <!-- Floating feedback button + popup -->
-<div id="feedback-widget" class="fixed bottom-6 right-6 z-[90]">
+<!-- 动态文案放 data 属性由脚本运行时读取，保证脚本内容跨语言一致：
+     ClientRouter 跨语言导航时内容不同的内联脚本会再次执行，导致监听器重复注册 -->
+<div
+    id="feedback-widget"
+    class="fixed bottom-6 right-6 z-[90]"
+    data-txt-submit={t(locale, "feedback.submit")}
+    data-txt-submitting={t(locale, "feedback.submitting")}
+    data-txt-thanks={t(locale, "feedback.thanks")}
+    data-txt-fail={t(locale, "feedback.fail")}
+    data-txt-network={t(locale, "feedback.network")}
+>
     <!-- Popup form -->
     <div
         id="feedback-popup"
@@ -16,13 +29,13 @@ import { API_BASE } from "../config";
                 required
                 maxlength="2000"
                 rows="4"
-                placeholder="有什么建议或问题？"
+                placeholder={t(locale, "feedback.placeholder")}
                 class="w-full resize-none rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
             ></textarea>
             <input
                 id="feedback-email"
                 type="email"
-                placeholder="邮箱（选填，方便回复）"
+                placeholder={t(locale, "feedback.emailPlaceholder")}
                 class="w-full rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
             />
             <button
@@ -30,7 +43,7 @@ import { API_BASE } from "../config";
                 id="feedback-submit"
                 class="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90"
             >
-                提交反馈
+                {t(locale, "feedback.submit")}
             </button>
         </form>
         <p id="feedback-msg" class="mt-2 hidden text-center text-sm"></p>
@@ -39,7 +52,7 @@ import { API_BASE } from "../config";
     <!-- Toggle button -->
     <button
         id="feedback-toggle"
-        aria-label="提交反馈"
+        aria-label={t(locale, "feedback.aria")}
         class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-on-primary shadow-lg transition-transform hover:scale-105"
     >
         <!-- Chat bubble icon -->
@@ -56,6 +69,14 @@ import { API_BASE } from "../config";
 
 <script is:inline define:vars={{ API_BASE }}>
     document.addEventListener("astro:page-load", function () {
+        var widget = document.getElementById("feedback-widget");
+        var FEEDBACK_T = widget ? {
+            submit: widget.dataset.txtSubmit,
+            submitting: widget.dataset.txtSubmitting,
+            thanks: widget.dataset.txtThanks,
+            fail: widget.dataset.txtFail,
+            network: widget.dataset.txtNetwork,
+        } : {};
         var toggle = document.getElementById("feedback-toggle");
         var popup = document.getElementById("feedback-popup");
         var form = document.getElementById("feedback-form");
@@ -84,7 +105,7 @@ import { API_BASE } from "../config";
             msg.textContent = "";
             form.style.display = "";
             submitBtn.disabled = false;
-            submitBtn.textContent = "提交反馈";
+            submitBtn.textContent = FEEDBACK_T.submit;
         }
 
         toggle.addEventListener("click", function (e) {
@@ -116,7 +137,7 @@ import { API_BASE } from "../config";
             if (!text) return;
 
             submitBtn.disabled = true;
-            submitBtn.textContent = "提交中...";
+            submitBtn.textContent = FEEDBACK_T.submitting;
 
             try {
                 var resp = await fetch(API_BASE + "/api/feedback", {
@@ -132,23 +153,23 @@ import { API_BASE } from "../config";
 
                 if (data.success) {
                     form.style.display = "none";
-                    msg.textContent = "感谢反馈！";
+                    msg.textContent = FEEDBACK_T.thanks;
                     msg.className = "mt-2 text-center text-sm text-success";
                     setTimeout(function () {
                         setOpen(false);
                         resetForm();
                     }, 1500);
                 } else {
-                    msg.textContent = data.error || "提交失败，请稍后重试";
+                    msg.textContent = data.error || FEEDBACK_T.fail;
                     msg.className = "mt-2 text-center text-sm text-error";
                     submitBtn.disabled = false;
-                    submitBtn.textContent = "提交反馈";
+                    submitBtn.textContent = FEEDBACK_T.submit;
                 }
             } catch (_) {
-                msg.textContent = "网络错误，请稍后重试";
+                msg.textContent = FEEDBACK_T.network;
                 msg.className = "mt-2 text-center text-sm text-error";
                 submitBtn.disabled = false;
-                submitBtn.textContent = "提交反馈";
+                submitBtn.textContent = FEEDBACK_T.submit;
             }
         });
     });

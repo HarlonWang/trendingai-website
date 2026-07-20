@@ -1,6 +1,11 @@
 import { fetchFeed, fetchGithubTrending } from "./lib/api";
 import type { FeedApiItem } from "./lib/api";
 import { escapeHtml, $ } from "./lib/dom";
+import { t, getClientLocale, type UIKey } from "../i18n/ui";
+
+function tt(key: UIKey): string {
+    return t(getClientLocale(), key);
+}
 
 let allItems: FeedApiItem[] = [];
 let filteredItems: FeedApiItem[] = [];
@@ -105,7 +110,7 @@ function render() {
     if (!list) return;
 
     if (filteredItems.length === 0) {
-        list.innerHTML = `<p class="text-sm text-on-surface-variant">暂无数据</p>`;
+        list.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("common.noData")}</p>`;
     } else {
         list.innerHTML = filteredItems.map(renderFeedCard).join("");
     }
@@ -144,7 +149,7 @@ async function loadFeed() {
         render();
     } catch (err) {
         console.error("Failed to load feed:", err);
-        list.innerHTML = `<p class="text-sm text-on-surface-variant">加载失败，请稍后刷新重试</p>`;
+        list.innerHTML = `<p class="text-sm text-on-surface-variant">${tt("common.loadFailed")}</p>`;
     }
 }
 

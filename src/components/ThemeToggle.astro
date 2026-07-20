@@ -1,10 +1,13 @@
 ---
+import { resolveLocale, t } from "../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
 ---
 
 <button
     class="theme-toggle flex size-8 items-center justify-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
-    title="切换主题"
-    aria-label="切换主题"
+    title={t(locale, "theme.toggle")}
+    aria-label={t(locale, "theme.toggle")}
 >
     <!-- auto: monitor icon -->
     <svg class="icon-auto size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -41,16 +44,22 @@
         if (transition) setTimeout(function() { document.documentElement.classList.remove("theme-transitioning"); }, 250);
     }
 
-    var themeTitles = { auto: "跟随系统", dark: "深色模式", light: "浅色模式" };
+    // 双语文案内联并按 data-locale 运行时取值，不用 define:vars 注入：
+    // 保证脚本内容跨语言一致，避免 ClientRouter 跨语言导航时脚本再次执行、重复注册监听器
+    var themeTitles = {
+        zh: { auto: "跟随系统", dark: "深色模式", light: "浅色模式", fallback: "切换主题" },
+        en: { auto: "Follow system", dark: "Dark mode", light: "Light mode", fallback: "Toggle theme" },
+    };
 
     function updateIcon(mode) {
         var btn = document.querySelector(".theme-toggle");
         if (!btn) return;
+        var titles = themeTitles[document.documentElement.dataset.locale] || themeTitles.en;
         btn.querySelector(".icon-auto").classList.toggle("hidden", mode !== "auto");
         btn.querySelector(".icon-dark").classList.toggle("hidden", mode !== "dark");
         btn.querySelector(".icon-light").classList.toggle("hidden", mode !== "light");
-        btn.title = themeTitles[mode] || "切换主题";
-        btn.setAttribute("aria-label", themeTitles[mode] || "切换主题");
+        btn.title = titles[mode] || titles.fallback;
+        btn.setAttribute("aria-label", titles[mode] || titles.fallback);
     }
 
     document.addEventListener("astro:page-load", function() {

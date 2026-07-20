@@ -1,11 +1,13 @@
 ---
 import { API_BASE } from "../config";
+import { resolveLocale, t } from "../i18n";
 
 interface Props {
     /** hero: 首屏胶囊形态；full: 完整卡片（默认，用于页面底部） */
     variant?: "hero" | "full";
 }
 const { variant = "full" } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
 ---
 
 {variant === "hero" ? (
@@ -22,8 +24,8 @@ const { variant = "full" } = Astro.props;
                 data-subscribe-email
                 type="email"
                 required
-                aria-label="邮箱地址"
-                placeholder="输入邮箱，订阅每日精选"
+                aria-label={t(locale, "subscribe.emailAria")}
+                placeholder={t(locale, "subscribe.heroPlaceholder")}
                 class="min-w-0 flex-1 border-0 bg-transparent px-4 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none"
             />
             <button
@@ -31,7 +33,7 @@ const { variant = "full" } = Astro.props;
                 type="submit"
                 class="m-1 shrink-0 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-on-primary transition-colors hover:opacity-90 disabled:opacity-60"
             >
-                订阅
+                {t(locale, "subscribe.button")}
             </button>
         </form>
         <p data-subscribe-msg class="mt-2 hidden text-center text-sm"></p>
@@ -44,16 +46,16 @@ const { variant = "full" } = Astro.props;
     >
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <h3 class="text-base font-bold text-on-surface">每日精选，一键订阅</h3>
-                <p class="mt-1 text-xs text-on-surface-variant">AI 精选技术趋势，每日一封，随时退订</p>
+                <h3 class="text-base font-bold text-on-surface">{t(locale, "subscribe.fullTitle")}</h3>
+                <p class="mt-1 text-xs text-on-surface-variant">{t(locale, "subscribe.fullDesc")}</p>
             </div>
             <form data-subscribe-form class="flex gap-2">
                 <input
                     data-subscribe-email
                     type="email"
                     required
-                    aria-label="邮箱地址"
-                    placeholder="输入邮箱地址"
+                    aria-label={t(locale, "subscribe.emailAria")}
+                    placeholder={t(locale, "subscribe.placeholder")}
                     class="w-56 rounded-lg border border-outline bg-surface px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:outline-none"
                 />
                 <button
@@ -61,7 +63,7 @@ const { variant = "full" } = Astro.props;
                     type="submit"
                     class="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary transition-colors hover:opacity-90 disabled:opacity-60"
                 >
-                    订阅
+                    {t(locale, "subscribe.button")}
                 </button>
             </form>
         </div>
@@ -70,6 +72,8 @@ const { variant = "full" } = Astro.props;
 )}
 
 <script>
+    import { t, getClientLocale } from "../i18n/ui";
+
     function bindSubscribe(root: HTMLElement) {
         if (root.dataset.bound) return;
         root.dataset.bound = "1";
@@ -89,35 +93,36 @@ const { variant = "full" } = Astro.props;
 
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
+            const locale = getClientLocale();
             const email = input.value.trim();
             if (!email) return;
 
             btn.disabled = true;
             const originalText = btn.textContent;
-            btn.textContent = "提交中...";
+            btn.textContent = t(locale, "subscribe.submitting");
 
             try {
                 const resp = await fetch(apiBase + "/api/subscribe", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, source: "web", lang: "zh" }),
+                    body: JSON.stringify({ email, source: "web", lang: locale }),
                 });
                 const data = await resp.json();
 
                 if (data.success) {
                     if (data.status === "already") {
-                        showMsg("该邮箱已订阅", true);
+                        showMsg(t(locale, "subscribe.already"), true);
                     } else if (data.status === "resubscribed") {
-                        showMsg("重新订阅成功", true);
+                        showMsg(t(locale, "subscribe.resubscribed"), true);
                     } else {
-                        showMsg("订阅成功", true);
+                        showMsg(t(locale, "subscribe.success"), true);
                     }
                     input.value = "";
                 } else {
-                    showMsg(data.error || "订阅失败，请稍后重试", false);
+                    showMsg(data.error || t(locale, "subscribe.fail"), false);
                 }
             } catch (_) {
-                showMsg("网络错误，请稍后重试", false);
+                showMsg(t(locale, "subscribe.network"), false);
             }
 
             btn.disabled = false;
@@ -130,11 +135,12 @@ const { variant = "full" } = Astro.props;
         const unsubscribed = params.get("unsubscribed");
         if (!unsubscribed) return;
 
+        const locale = getClientLocale();
         let toastText: string | null = null;
         let toastSuccess = true;
-        if (unsubscribed === "1") toastText = "已成功退订";
-        else if (unsubscribed === "already") toastText = "已退订";
-        else if (unsubscribed === "error") { toastText = "退订链接无效"; toastSuccess = false; }
+        if (unsubscribed === "1") toastText = t(locale, "subscribe.unsubOk");
+        else if (unsubscribed === "already") toastText = t(locale, "subscribe.unsubAlready");
+        else if (unsubscribed === "error") { toastText = t(locale, "subscribe.unsubError"); toastSuccess = false; }
         if (!toastText) return;
 
         const toast = document.createElement("div");

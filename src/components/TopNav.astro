@@ -1,22 +1,29 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
+import { resolveLocale, localizePath, t } from "../i18n";
 
 interface Props {
-    activeRoute: "home" | "feed" | "app";
+    activeRoute?: "home" | "feed" | "app";
 }
 
 const { activeRoute } = Astro.props;
+const locale = resolveLocale(Astro.currentLocale);
 
 const links = [
-    { id: "home", label: "首页", href: "/" },
-    { id: "feed", label: "Feed", href: "/feed/" },
-    { id: "app", label: "App", href: "/app/" },
+    { id: "home", label: t(locale, "nav.home"), href: localizePath(locale, "/") },
+    { id: "feed", label: t(locale, "nav.feed"), href: localizePath(locale, "/feed/") },
+    { id: "app", label: t(locale, "nav.app"), href: localizePath(locale, "/app/") },
 ] as const;
+
+// 语言切换：当前路径去掉/加上 /zh 前缀，落在对端语言的同一页面
+const pathname = Astro.url.pathname;
+const basePath = pathname.startsWith("/zh/") ? pathname.slice(3) : pathname;
+const switchHref = locale === "zh" ? basePath : `/zh${basePath}`;
 ---
 
 <header class="top-bar fixed top-0 left-0 right-0 z-50 transition-shadow duration-300">
     <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
-        <a class="flex items-center gap-2.5" href="/" aria-label="首页">
+        <a class="flex items-center gap-2.5" href={localizePath(locale, "/")} aria-label={t(locale, "nav.home")}>
             <img class="size-8 rounded-full" src="/ic_launcher.png" alt="TrendingAI Logo" loading="eager" />
             <span class="hidden sm:inline text-base font-extrabold text-on-surface">Trending AI</span>
         </a>
@@ -35,6 +42,14 @@ const links = [
                 </a>
             ))}
             <a
+                class="rounded-lg px-2 sm:px-3 py-1.5 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
+                href={switchHref}
+                title={t(locale, "nav.langSwitchTitle")}
+                data-lang-switch={locale === "zh" ? "en" : "zh"}
+            >
+                {t(locale, "nav.langSwitch")}
+            </a>
+            <a
                 class="ml-1 flex size-8 items-center justify-center rounded-lg text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
                 href="https://github.com/HarlonWang/trendingai-website"
                 target="_blank"
@@ -52,6 +67,16 @@ const links = [
         </div>
     </nav>
 </header>
+
+<script is:inline>
+    // 记录显式语言选择，配合 BaseLayout 的首访自动重定向（有偏好则不再自动跳）。
+    // 事件委托 + 脚本内容跨语言一致，避免 ClientRouter 跨语言导航时重复注册监听器
+    document.addEventListener("click", function (e) {
+        var a = e.target && e.target.closest ? e.target.closest("[data-lang-switch]") : null;
+        if (!a) return;
+        try { localStorage.setItem("preferred-lang", a.getAttribute("data-lang-switch")); } catch (_) {}
+    });
+</script>
 
 <script is:inline>
     (function() {

@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, t } from "../../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+
+const tabs = [
+    { id: "all", label: t(locale, "feed.tabAll") },
+    { id: "github", label: "GitHub" },
+    { id: "hackernews", label: "Hacker News" },
+    { id: "producthunt", label: "Product Hunt" },
+];
+---
+
+<BaseLayout
+    title={t(locale, "feed.title")}
+    description={t(locale, "feed.description")}
+    canonicalPath="/feed/"
+>
+    <TopNav activeRoute="feed" />
+    <main class="mx-auto max-w-3xl px-4 pt-20 pb-8 sm:px-6">
+        <!-- Tab 栏 -->
+        <div id="feed-tabs" class="mb-6 flex gap-2 overflow-x-auto whitespace-nowrap border-b border-outline pb-3">
+            {tabs.map((tab, i) => (
+                <button
+                    class:list={[
+                        "feed-tab rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                        i === 0
+                            ? "bg-primary text-on-primary"
+                            : "text-on-surface-variant hover:bg-surface-container hover:text-on-surface",
+                    ]}
+                    data-tab={tab.id}
+                >
+                    {tab.label}
+                </button>
+            ))}
+        </div>
+
+        <!-- Feed 列表 -->
+        <div id="feed-list" class="space-y-4">
+            {[1, 2, 3, 4, 5].map(() => (
+                <div class="h-28 animate-pulse rounded-xl bg-surface-container" />
+            ))}
+        </div>
+    </main>
+    <Footer />
+    <script src="../../scripts/feed.ts"></script>
+</BaseLayout>
