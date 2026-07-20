@@ -146,8 +146,11 @@ function renderHnCard(item: FeedApiItem): string {
 }
 
 function renderPhCard(item: FeedApiItem): string {
+    const phUrl = item.extra?.ph_url as string | undefined;
+    // PH 条目主跳转直达 PH 原帖（缺 ph_url 的旧数据回退产品官网）
+    const cardUrl = phUrl?.startsWith("https://") ? phUrl : item.url;
     return `
-        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+        <a href="${escapeHtml(cardUrl)}" target="_blank" rel="noopener noreferrer"
            class="group flex w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="shrink-0 text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
@@ -156,6 +159,7 @@ function renderPhCard(item: FeedApiItem): string {
             <div class="flex-1"></div>
             <div class="mt-3 flex items-center gap-3 text-xs text-on-surface-variant">
                 <span>&#9650; ${item.score}</span>
+                <span>&#128172; ${item.commentCount}</span>
                 ${item.tags.length > 0 ? `<span>${escapeHtml(item.tags[0])}</span>` : ""}
             </div>
         </a>

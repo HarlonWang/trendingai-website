@@ -45,9 +45,12 @@ function renderFeedCard(item: FeedApiItem): string {
     const lang = item.source === "github" ? item.extra?.language as string | undefined : undefined;
     const langColor = item.source === "github" ? item.extra?.language_color as string | undefined : undefined;
     const periodStars = item.source === "github" ? item.extra?.period_stars as number | undefined : undefined;
+    const phUrl = item.source === "producthunt" ? item.extra?.ph_url as string | undefined : undefined;
+    // PH 条目主跳转直达 PH 原帖（缺 ph_url 的旧数据回退产品官网）
+    const cardUrl = phUrl?.startsWith("https://") ? phUrl : item.url;
 
     return `
-        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
+        <a href="${escapeHtml(cardUrl)}" target="_blank" rel="noopener noreferrer"
            class="group block rounded-xl border border-outline p-4 transition-colors hover:border-on-surface-variant">
             <div class="mb-2 flex items-center justify-between">
                 <div class="flex items-center gap-2">
@@ -70,6 +73,11 @@ function renderFeedCard(item: FeedApiItem): string {
                 <div class="mt-2 flex items-center gap-3 text-xs text-on-surface-variant">
                     <span>&#128172; ${item.commentCount}</span>
                     ${item.author ? `<span>${escapeHtml(item.author)}</span>` : ""}
+                </div>
+            ` : ""}
+            ${item.source === "producthunt" ? `
+                <div class="mt-2 flex items-center gap-3 text-xs text-on-surface-variant">
+                    <span>&#128172; ${item.commentCount}</span>
                 </div>
             ` : ""}
         </a>
