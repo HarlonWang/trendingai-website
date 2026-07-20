@@ -9,9 +9,9 @@ const en = {
     "nav.home": "Home",
     "nav.feed": "Feed",
     "nav.app": "App",
-    // 语言切换器展示目标语言的名称，故 en 站显示中文、zh 站显示英文
-    "nav.langSwitch": "中文",
-    "nav.langSwitchTitle": "切换到中文版",
+    // 语言选择器按钮展示当前语言，点击弹出语言列表
+    "nav.langCurrent": "EN",
+    "nav.langMenuTitle": "Language",
 
     "home.heroTitle": "Global Tech Trends, Curated by AI",
     "home.heroSubtitle": "Trending from GitHub, Hacker News and Product Hunt — AI-curated picks, every day",
@@ -99,8 +99,8 @@ const zh: Record<UIKey, string> = {
     "nav.home": "首页",
     "nav.feed": "Feed",
     "nav.app": "App",
-    "nav.langSwitch": "English",
-    "nav.langSwitchTitle": "Switch to English",
+    "nav.langCurrent": "中文",
+    "nav.langMenuTitle": "语言",
 
     "home.heroTitle": "全球技术热点，AI 精选速递",
     "home.heroSubtitle": "聚合 GitHub、Hacker News、Product Hunt 热门项目，每日 AI 精选推荐",
