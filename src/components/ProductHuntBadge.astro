@@ -1,0 +1,36 @@
+---
+const PH_URL =
+    "https://www.producthunt.com/products/trending-ai?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-trending-ai";
+const BADGE_BASE = "https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1201270";
+const BADGE_T = "1784618655365";
+const BADGE_ALT = "Trending AI - Global tech trends, fast-picked by AI. | Product Hunt";
+
+interface Props {
+    width?: number;
+    class?: string;
+}
+
+const { width = 250, class: className } = Astro.props;
+const height = Math.round((width / 250) * 54);
+---
+
+<a class={className} href={PH_URL} target="_blank" rel="noreferrer">
+    <img
+        class="ph-badge-light"
+        src={`${BADGE_BASE}&theme=light&t=${BADGE_T}`}
+        alt={BADGE_ALT}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+    />
+    <img
+        class="ph-badge-dark"
+        src={`${BADGE_BASE}&theme=dark&t=${BADGE_T}`}
+        alt={BADGE_ALT}
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+    />
+</a>

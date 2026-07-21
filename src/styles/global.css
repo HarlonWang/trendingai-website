@@ -43,6 +43,25 @@
     }
 }
 
+/* Product Hunt badge 深浅色两张图按主题显隐，判定与上方主题变量同套 */
+.ph-badge-dark {
+    display: none;
+}
+[data-theme="dark"] .ph-badge-light {
+    display: none;
+}
+[data-theme="dark"] .ph-badge-dark {
+    display: inline;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .ph-badge-light {
+        display: none;
+    }
+    :root:not([data-theme="light"]) .ph-badge-dark {
+        display: inline;
+    }
+}
+
 /* 主题切换过渡：仅在手动切换主题时生效，避免页面加载闪动 */
 html.theme-transitioning,
 html.theme-transitioning *,
