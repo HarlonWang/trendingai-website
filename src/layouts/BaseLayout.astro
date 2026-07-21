@@ -23,16 +23,18 @@ const ogImage = `${SITE_URL}/android_screenshot_zh.png`;
 <html lang={htmlLang(locale)} data-locale={locale}>
     <head>
         <script is:inline>
-            // 首次访问（无 preferred-lang）且系统语言为中文时，把英文页跳到 /zh/ 对应页；
-            // 点过语言切换器即写入偏好、永久关闭自动跳转。仅 en → zh 单向，英文保持默认。
+            // 英文页 → /zh/ 对应页的自动跳转（仅 en → zh 单向，英文保持默认）：
+            // 偏好为 zh 时始终跳；无偏好时按系统语言判断；显式选过英文则不跳。
             (function () {
                 var pref = null;
                 try { pref = localStorage.getItem("preferred-lang"); } catch (_) {}
-                if (pref) return;
                 var path = location.pathname;
                 if (path === "/zh" || path.indexOf("/zh/") === 0) return;
-                var sys = (navigator.languages && navigator.languages[0]) || navigator.language || "";
-                if (sys.toLowerCase().indexOf("zh") !== 0) return;
+                if (pref !== "zh") {
+                    if (pref) return;
+                    var sys = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+                    if (sys.toLowerCase().indexOf("zh") !== 0) return;
+                }
                 location.replace("/zh" + path + location.search + location.hash);
             })();
         </script>
