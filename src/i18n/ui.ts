@@ -12,6 +12,7 @@ const en = {
     // 语言选择器按钮展示当前语言，点击弹出语言列表
     "nav.langCurrent": "EN",
     "nav.langMenuTitle": "Language",
+    "nav.langSystem": "System",
 
     "home.heroTitle": "Global Tech Trends, Curated by AI",
     "home.heroSubtitle": "Trending from GitHub, Hacker News and Product Hunt — AI-curated picks, every day",
@@ -101,6 +102,7 @@ const zh: Record<UIKey, string> = {
     "nav.app": "App",
     "nav.langCurrent": "中文",
     "nav.langMenuTitle": "语言",
+    "nav.langSystem": "跟随系统",
 
     "home.heroTitle": "全球技术热点，AI 精选速递",
     "home.heroSubtitle": "聚合 GitHub、Hacker News、Product Hunt 热门项目，每日 AI 精选推荐",

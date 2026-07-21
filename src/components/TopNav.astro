@@ -15,10 +15,13 @@ const links = [
     { id: "app", label: t(locale, "nav.app"), href: localizePath(locale, "/app/") },
 ] as const;
 
-// 语言选择：当前路径去掉 /zh 前缀得到语言无关路径，菜单项各自指向同一页面的两种语言版本
+// 语言选择：当前路径去掉 /zh 前缀得到语言无关路径，菜单项各自指向同一页面的两种语言版本。
+// "跟随系统"= 清除偏好后按 navigator.language 跳转（点击时由脚本计算目标），href 仅作无 JS 兜底。
+// 勾选标记反映 localStorage 里的偏好（构建期拿不到），由脚本在运行时标记，无偏好时勾"跟随系统"。
 const pathname = Astro.url.pathname;
 const basePath = pathname.startsWith("/zh/") ? pathname.slice(3) : pathname;
 const langOptions = [
+    { code: "auto", label: t(locale, "nav.langSystem"), href: basePath },
     { code: "en", label: "English", href: basePath },
     { code: "zh", label: "中文", href: `/zh${basePath}` },
 ] as const;
@@ -67,24 +70,18 @@ const langOptions = [
                     data-lang-menu
                     class="hidden absolute right-0 top-full z-50 mt-1 min-w-28 rounded-lg border border-outline bg-surface-container py-1 shadow-lg"
                 >
-                    {langOptions.map((opt) =>
-                        opt.code === locale ? (
-                            <span class="flex items-center justify-between gap-3 px-3 py-1.5 text-sm font-medium text-on-surface">
-                                {opt.label}
-                                <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M20 6 9 17l-5-5"></path>
-                                </svg>
-                            </span>
-                        ) : (
-                            <a
-                                class="block px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:bg-surface hover:text-on-surface"
-                                href={opt.href}
-                                data-lang-switch={opt.code}
-                            >
-                                {opt.label}
-                            </a>
-                        )
-                    )}
+                    {langOptions.map((opt) => (
+                        <a
+                            class="flex items-center justify-between gap-3 px-3 py-1.5 text-sm text-on-surface-variant transition-colors hover:bg-surface hover:text-on-surface"
+                            href={opt.href}
+                            data-lang-switch={opt.code}
+                        >
+                            {opt.label}
+                            <svg class="size-3.5 hidden" data-lang-check viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 6 9 17l-5-5"></path>
+                            </svg>
+                        </a>
+                    ))}
                 </div>
             </div>
             <a
@@ -107,7 +104,8 @@ const langOptions = [
 </header>
 
 <script is:inline>
-    // 语言菜单开合 + 记录显式语言选择（配合 BaseLayout 的首访自动重定向，有偏好则不再自动跳）。
+    // 语言菜单开合 + 记录显式语言选择（配合 BaseLayout 的自动重定向：偏好 zh 强制跳，偏好 en 不跳）。
+    // "跟随系统"清除偏好并按系统语言即时跳转；勾选标记按 localStorage 运行时标注。
     // 事件委托 + 脚本内容跨语言一致，避免 ClientRouter 跨语言导航时重复注册监听器
     (function () {
         function closeMenus() {
@@ -119,13 +117,39 @@ const langOptions = [
             });
         }
 
+        function markActiveLang() {
+            var pref = null;
+            try { pref = localStorage.getItem("preferred-lang"); } catch (_) {}
+            var active = pref === "en" || pref === "zh" ? pref : "auto";
+            document.querySelectorAll("[data-lang-switch]").forEach(function (item) {
+                var check = item.querySelector("[data-lang-check]");
+                if (check) check.classList.toggle("hidden", item.getAttribute("data-lang-switch") !== active);
+            });
+        }
+
+        markActiveLang();
+        document.addEventListener("astro:page-load", markActiveLang);
+
         document.addEventListener("click", function (e) {
             var target = e.target;
             if (!target || !target.closest) return;
 
             var a = target.closest("[data-lang-switch]");
             if (a) {
-                try { localStorage.setItem("preferred-lang", a.getAttribute("data-lang-switch")); } catch (_) {}
+                var code = a.getAttribute("data-lang-switch");
+                if (code === "auto") {
+                    e.preventDefault();
+                    try { localStorage.removeItem("preferred-lang"); } catch (_) {}
+                    markActiveLang();
+                    closeMenus();
+                    var path = location.pathname;
+                    var base = path === "/zh" ? "/" : path.indexOf("/zh/") === 0 ? path.slice(3) : path;
+                    var sys = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+                    var dest = sys.toLowerCase().indexOf("zh") === 0 ? "/zh" + base : base;
+                    if (dest !== path) location.href = dest + location.search + location.hash;
+                    return;
+                }
+                try { localStorage.setItem("preferred-lang", code); } catch (_) {}
                 closeMenus();
                 return;
             }
