@@ -117,7 +117,7 @@ function renderGithubCard(item: FeedApiItem): string {
     const periodStars = item.extra?.period_stars as number | undefined;
     return `
         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group flex w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex w-72 flex-shrink-0 flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="shrink-0 text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
             </h4>
@@ -135,7 +135,7 @@ function renderGithubCard(item: FeedApiItem): string {
 function renderHnCard(item: FeedApiItem): string {
     return `
         <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"
-           class="group flex w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex w-72 flex-shrink-0 flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="shrink-0 text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
             </h4>
@@ -156,7 +156,7 @@ function renderPhCard(item: FeedApiItem): string {
     const cardUrl = phUrl?.startsWith("https://") ? phUrl : item.url;
     return `
         <a href="${escapeHtml(cardUrl)}" target="_blank" rel="noopener noreferrer"
-           class="group flex w-72 flex-shrink-0 snap-start flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
+           class="group flex w-72 flex-shrink-0 flex-col rounded-xl border border-outline bg-surface-container p-4 transition-colors hover:border-on-surface-variant">
             <h4 class="shrink-0 text-sm font-bold text-on-surface group-hover:text-primary leading-snug line-clamp-1">
                 ${escapeHtml(item.title)}
             </h4>
