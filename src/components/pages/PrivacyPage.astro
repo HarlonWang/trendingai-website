@@ -18,7 +18,7 @@ const locale = resolveLocale(Astro.currentLocale);
             {locale === "zh" ? (
                 <>
                     <h1>隐私政策</h1>
-                    <p class="text-secondary">最后更新：2026 年 3 月 23 日</p>
+                    <p class="text-secondary">最后更新：2026 年 8 月 7 日</p>
 
                     <p>
                         Trending AI（以下简称"我们"）重视您的隐私。本政策说明我们在您使用 Trending AI
@@ -29,14 +29,17 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>基础使用数据</h3>
                     <p>
-                        我们通过 Aptabase（一款注重隐私的分析工具）收集匿名使用统计，包括：
+                        我们通过 Aptabase（一款注重隐私的分析工具）收集使用统计，包括：
                     </p>
                     <ul>
                         <li>应用启动次数</li>
                         <li>会话时长</li>
                         <li>功能使用情况（如筛选条件的选择）</li>
                     </ul>
-                    <p>这些数据不包含任何可识别个人身份的信息。</p>
+                    <p>
+                        这些统计不包含您的姓名、邮箱等直接身份信息，但会附带下方所述的安装标识，
+                        因此可以关联同一台设备在不同时间的使用记录。
+                    </p>
 
                     <h3>用户偏好设置</h3>
                     <p>
@@ -53,24 +56,74 @@ const locale = resolveLocale(Astro.currentLocale);
                         用于返回您需要的数据。这些参数不与任何用户身份关联。
                     </p>
 
+                    <h3>账号信息</h3>
+                    <p>
+                        登录是可选的 —— 不登录仍可浏览全部榜单内容，但无法使用 AI 对话与 Pro 功能。
+                        当您选择登录时，我们通过 Logto 处理认证流程，并存储：邮箱地址，以及第三方账号的
+                        公开资料（如 GitHub 用户名、显示名、头像、简介）。
+                    </p>
+
+                    <h3>安装标识</h3>
+                    <p>
+                        应用首次启动时会生成一个随机的安装标识（install_id），用于区分不同安装、进行留存
+                        分析和配额控制。它不读取任何设备硬件信息（不涉及 IMEI、ANDROID_ID 等），卸载重装后
+                        会重新生成 —— 但在此之前保持不变，因此可用于关联您在不同时间的使用记录。
+                    </p>
+
+                    <h3>AI 功能使用记录</h3>
+                    <p>
+                        当您使用 AI 对话、详细解读或深度调研功能时，我们会记录所用模型、消耗的额度与时间，
+                        用于计费和配额控制。深度调研功能还会保存您提交的调研主题与生成的报告，以便您后续查看。
+                    </p>
+
+                    <h3>反馈信息</h3>
+                    <p>
+                        当您提交反馈时，我们会记录反馈内容，以及您选填的邮箱、页面地址和浏览器标识。
+                        我们不记录您的 IP 地址。
+                    </p>
+
                     <h2>我们不收集的信息</h2>
                     <ul>
-                        <li>个人身份信息（姓名、邮箱、手机号等）</li>
-                        <li>设备唯一标识符（Device ID、IMEI、ANDROID_ID 等）</li>
-                        <li>地理位置信息</li>
-                        <li>联系人、日历、文件等敏感数据</li>
-                        <li>应用不要求注册或登录账号</li>
+                        <li>精确地理位置信息</li>
+                        <li>通讯录、日历、文件等设备敏感数据</li>
+                        <li>支付信息（Pro 通过 GitHub Sponsors 处理，我们不接触您的支付资料）</li>
                     </ul>
 
                     <h2>数据共享</h2>
                     <p>
-                        我们不会出售、出租或以其他方式向第三方分享您的个人数据。匿名使用统计通过 Aptabase
-                        处理，Aptabase 遵循严格的数据保护标准。
+                        我们不出售或出租您的个人数据。为提供服务，我们会与以下第三方共享必要数据：
                     </p>
+                    <h3>AI 服务提供商（OpenAI）</h3>
+                    <p>
+                        您在 AI 功能中发送的内容会传输至 OpenAI 以生成回复。我们目前参与了 OpenAI 的数据
+                        共享计划，这意味着<strong>您的输入与输出会被 OpenAI 用于改进和训练其模型</strong>，
+                        并在其服务器上留存约 30 天。<strong>请不要在对话中输入敏感、机密或个人信息。</strong>
+                    </p>
+                    <h3>其他服务商</h3>
+                    <ul>
+                        <li>Logto：登录认证</li>
+                        <li>Aptabase：使用统计</li>
+                        <li>Resend：订阅邮件发送（含打开情况统计）</li>
+                        <li>Cloudflare：服务器与数据库托管</li>
+                    </ul>
 
                     <h2>数据安全</h2>
                     <p>
-                        所有网络通信均使用 HTTPS 加密。用户偏好数据仅存储在您的设备本地。
+                        所有网络通信均使用 HTTPS 加密。主题、语言等偏好设置仅存储在您的设备本地；
+                        账号信息与使用记录存储在 Cloudflare 的数据库中。
+                    </p>
+
+                    <h2>数据保留</h2>
+                    <ul>
+                        <li>账号信息：保留至您注销账号</li>
+                        <li>AI 功能使用记录与深度调研报告：保留至您注销账号</li>
+                        <li>反馈信息：保留 12 个月</li>
+                        <li>使用统计：由 Aptabase 按其策略保留</li>
+                    </ul>
+
+                    <h2>您的权利</h2>
+                    <p>
+                        您可以通过 GitHub Issue 或应用内反馈入口联系我们，请求查询、导出或删除您的个人数据。
                     </p>
 
                     <h2>儿童隐私</h2>
@@ -94,7 +147,7 @@ const locale = resolveLocale(Astro.currentLocale);
             ) : (
                 <>
                     <h1>Privacy Policy</h1>
-                    <p class="text-secondary">Last Updated: March 23, 2026</p>
+                    <p class="text-secondary">Last Updated: August 7, 2026</p>
 
                     <p>
                         Trending AI ("we") values your privacy. This policy explains how we collect, use, and
@@ -105,7 +158,7 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>Basic Usage Data</h3>
                     <p>
-                        We collect anonymous usage statistics through Aptabase, a privacy-focused analytics tool,
+                        We collect usage statistics through Aptabase, a privacy-focused analytics tool,
                         including:
                     </p>
                     <ul>
@@ -113,7 +166,11 @@ const locale = resolveLocale(Astro.currentLocale);
                         <li>Session duration</li>
                         <li>Feature usage (e.g., filter selections)</li>
                     </ul>
-                    <p>This data does not contain any personally identifiable information.</p>
+                    <p>
+                        These statistics do not contain direct identifiers such as your name or email, but they
+                        do carry the installation identifier described below, which allows usage from the same
+                        device to be linked across time.
+                    </p>
 
                     <h3>User Preferences</h3>
                     <p>
@@ -132,26 +189,82 @@ const locale = resolveLocale(Astro.currentLocale);
                         parameters are not associated with any user identity.
                     </p>
 
+                    <h3>Account Information</h3>
+                    <p>
+                        Signing in is optional — you can browse all rankings without an account, though AI chat
+                        and Pro features require one. When you choose to sign in, we handle authentication through
+                        Logto and store your email address along with public profile data from the third-party
+                        account (such as GitHub username, display name, avatar, and bio).
+                    </p>
+
+                    <h3>Installation Identifier</h3>
+                    <p>
+                        On first launch, the app generates a random installation identifier (install_id) used to
+                        distinguish installations, analyze retention, and enforce quotas. It reads no device
+                        hardware information (no IMEI, ANDROID_ID, etc.) and is regenerated after reinstalling —
+                        but until then it stays constant, so it can link your usage across time.
+                    </p>
+
+                    <h3>AI Feature Usage Records</h3>
+                    <p>
+                        When you use AI chat, detailed analysis, or deep research, we record the model used,
+                        credits consumed, and timestamps for billing and quota control. Deep research also saves
+                        the topic you submitted and the generated report so you can revisit it later.
+                    </p>
+
+                    <h3>Feedback</h3>
+                    <p>
+                        When you submit feedback, we record its content along with the email you optionally
+                        provide, the page URL, and your browser identifier. We do not record your IP address.
+                    </p>
+
                     <h2>Information We Do Not Collect</h2>
                     <ul>
-                        <li>Personal identity information (name, email, phone number, etc.)</li>
-                        <li>Device identifiers (Device ID, IMEI, ANDROID_ID, etc.)</li>
-                        <li>Geographic location</li>
-                        <li>Contacts, calendar, files, or other sensitive data</li>
-                        <li>The app does not require registration or login</li>
+                        <li>Precise geographic location</li>
+                        <li>Contacts, calendar, files, or other sensitive device data</li>
+                        <li>Payment information (Pro is handled via GitHub Sponsors; we never see your payment details)</li>
                     </ul>
 
                     <h2>Data Sharing</h2>
                     <p>
-                        We do not sell, rent, or otherwise share your personal data with third parties. Anonymous
-                        usage statistics are processed through Aptabase, which follows strict data protection
-                        standards.
+                        We do not sell or rent your personal data. To provide our service, we share necessary data
+                        with the following third parties:
                     </p>
+                    <h3>AI Service Provider (OpenAI)</h3>
+                    <p>
+                        Content you send through AI features is transmitted to OpenAI to generate responses. We
+                        currently participate in OpenAI's data sharing program, which means
+                        <strong>your inputs and outputs are used by OpenAI to improve and train their models</strong>,
+                        and are retained on their servers for about 30 days.
+                        <strong>Please do not enter sensitive, confidential, or personal information in conversations.</strong>
+                    </p>
+                    <h3>Other Service Providers</h3>
+                    <ul>
+                        <li>Logto: authentication</li>
+                        <li>Aptabase: usage statistics</li>
+                        <li>Resend: newsletter delivery (including open tracking)</li>
+                        <li>Cloudflare: server and database hosting</li>
+                    </ul>
 
                     <h2>Data Security</h2>
                     <p>
-                        All network communications are encrypted using HTTPS. User preference data is stored only
-                        on your device.
+                        All network communications are encrypted using HTTPS. Preferences such as theme and
+                        language are stored only on your device; account information and usage records are stored
+                        in Cloudflare's database.
+                    </p>
+
+                    <h2>Data Retention</h2>
+                    <ul>
+                        <li>Account information: retained until you delete your account</li>
+                        <li>AI feature usage records and deep research reports: retained until you delete your account</li>
+                        <li>Feedback: retained for 12 months</li>
+                        <li>Usage statistics: retained per Aptabase's own policy</li>
+                    </ul>
+
+                    <h2>Your Rights</h2>
+                    <p>
+                        You may contact us via GitHub Issues or the in-app feedback form to request access to,
+                        export of, or deletion of your personal data.
                     </p>
 
                     <h2>Children's Privacy</h2>
