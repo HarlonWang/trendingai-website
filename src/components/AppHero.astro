@@ -97,3 +97,23 @@ const features = [
         </div>
     </div>
 </section>
+
+<script is:inline>
+    // ClientRouter 换页换入的 <video autoplay> 不会自动播放（浏览器只对解析期插入的元素触发 autoplay，
+    // 表现为首页点导航进来时预览图静止、地址栏回车整页加载才动），手动补一次 play。
+    // 脚本内容跨语言一致 + 全局标记防重复注册，同 TopNav 的约定
+    (function () {
+        if (window.__appDemoAutoplayFix) return;
+        window.__appDemoAutoplayFix = true;
+        function kick() {
+            document.querySelectorAll("video[autoplay]").forEach(function (v) {
+                if (v.paused) {
+                    var p = v.play();
+                    if (p && p.catch) p.catch(function () {});
+                }
+            });
+        }
+        document.addEventListener("astro:page-load", kick);
+        kick();
+    })();
+</script>
