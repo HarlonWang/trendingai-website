@@ -82,15 +82,18 @@ const features = [
         </div>
 
         <div class="justify-self-center md:justify-self-end">
-            <img
-                src="/android_screenshot_zh.png"
-                alt={t(locale, "app.screenshotAlt")}
-                class="w-64 drop-shadow-xl"
-                width="320"
-                height="693"
-                loading="eager"
-                decoding="async"
-            />
+            <video
+                src="/app-demo.mp4"
+                poster="/app-demo-poster.jpg"
+                class="w-64 rounded-3xl border-8 border-neutral-900 bg-neutral-900 shadow-2xl"
+                width="720"
+                height="1616"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+                aria-label={t(locale, "app.screenshotAlt")}></video>
         </div>
     </div>
 </section>
