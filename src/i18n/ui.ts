@@ -60,6 +60,15 @@ const en = {
     "privacy.title": "Privacy Policy - Trending AI",
     "privacy.description": "Trending AI privacy policy",
 
+    "terms.title": "Terms of Service - Trending AI",
+    "terms.description": "Trending AI terms of service, subscription and billing terms",
+    "refund.title": "Refund Policy - Trending AI",
+    "refund.description": "Trending AI refund policy for Pro subscriptions",
+
+    "footer.privacy": "Privacy",
+    "footer.terms": "Terms",
+    "footer.refund": "Refunds",
+
     "subscribe.emailAria": "Email address",
     "subscribe.heroPlaceholder": "Your email — get daily picks",
     "subscribe.button": "Subscribe",
@@ -149,6 +158,15 @@ const zh: Record<UIKey, string> = {
 
     "privacy.title": "隐私政策 - Trending AI",
     "privacy.description": "Trending AI 隐私政策",
+
+    "terms.title": "服务条款 - Trending AI",
+    "terms.description": "Trending AI 服务条款、订阅与计费规则",
+    "refund.title": "退款政策 - Trending AI",
+    "refund.description": "Trending AI Pro 订阅退款政策",
+
+    "footer.privacy": "隐私政策",
+    "footer.terms": "服务条款",
+    "footer.refund": "退款政策",
 
     "subscribe.emailAria": "邮箱地址",
     "subscribe.heroPlaceholder": "输入邮箱，订阅每日精选",

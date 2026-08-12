@@ -1,0 +1,327 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, t } from "../../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+---
+
+<BaseLayout
+    title={t(locale, "terms.title")}
+    description={t(locale, "terms.description")}
+    canonicalPath="/terms/"
+>
+    <TopNav />
+    <main class="pt-20 pb-16 px-4">
+        <article class="max-w-3xl mx-auto prose">
+            {locale === "zh" ? (
+                <>
+                    <h1>服务条款</h1>
+                    <p class="text-secondary">最后更新：2026 年 8 月 12 日</p>
+
+                    <p>
+                        本服务条款（以下简称"本条款"）是您与 <strong>WANG HAILONG</strong>（Trending AI 的运营者，
+                        个人开发者，以下简称"我们"）之间就使用 Trending AI 应用程序及网站（trendingai.cn，
+                        以下合称"本服务"）达成的协议。使用本服务即表示您同意本条款。
+                    </p>
+
+                    <h2>一、服务说明</h2>
+                    <p>
+                        Trending AI 聚合 GitHub Trending、Hacker News、Product Hunt 三个来源的公开技术内容，
+                        并通过 AI 生成摘要、翻译与结构化解读，每日提供精选推荐。
+                    </p>
+                    <p>本服务分为两部分：</p>
+                    <ul>
+                        <li><strong>免费功能</strong>：浏览全部榜单内容、每日精选、内容摘要，无需登录</li>
+                        <li><strong>Pro 订阅</strong>：更高的 AI 功能额度，详见下方"Pro 订阅"章节</li>
+                    </ul>
+
+                    <h2>二、账号</h2>
+                    <p>
+                        登录是可选的。不登录仍可浏览全部榜单内容，但无法使用 AI 对话与 Pro 功能。
+                        登录通过第三方认证服务提供，您需对账号安全及账号下的活动负责。
+                    </p>
+
+                    <h2>三、Pro 订阅</h2>
+
+                    <h3>权益内容</h3>
+                    <p>
+                        Pro 订阅提供显著更高的每日 AI 功能额度，可用于 AI 对话、详细解读与深度调研等功能。
+                        具体额度与可用功能以购买页面及应用内说明为准，我们可能随功能迭代调整，
+                        重大调整会提前通知。
+                    </p>
+
+                    <h3>价格与计费</h3>
+                    <ul>
+                        <li>价格、计费周期与适用货币以购买页面展示为准</li>
+                        <li>价格可能因您所在地区而不同，税费（如适用）会在结账页明确列示</li>
+                        <li>订阅费用在每个计费周期开始时收取</li>
+                    </ul>
+
+                    <h3>自动续费</h3>
+                    <p>
+                        <strong>Pro 订阅为自动续费服务。</strong>除非您在当前计费周期结束前取消，
+                        订阅将按相同周期自动续订，并按届时有效的价格收取费用。
+                        每期扣费金额与扣费时间会在您购买时明确展示，续费前我们或支付服务商会向您发送通知。
+                    </p>
+
+                    <h3>取消订阅</h3>
+                    <p>
+                        您可以随时取消订阅，取消后当前计费周期内仍可继续使用 Pro 权益，到期后不再续费。
+                        取消入口位于应用内的订阅管理页面，或通过下方"联系我们"与我们取得联系。
+                        取消订阅本身不产生退款，退款规则请见 <a href="/zh/refund/">退款政策</a>。
+                    </p>
+
+                    <h2>四、付款处理</h2>
+                    <p>
+                        我们的订单服务由 <strong>Paddle.com</strong> 提供。Paddle.com 是我们产品的
+                        <strong>授权经销商（Merchant of Record）</strong>，也是您本次交易的销售方。
+                        这意味着：
+                    </p>
+                    <ul>
+                        <li>Paddle 负责收款、开具收据，并处理适用的销售税 / 增值税</li>
+                        <li>您的银行账单或支付记录中显示的商户名称为 <strong>Paddle</strong>，而非 Trending AI</li>
+                        <li>付款流程另受 <a href="https://www.paddle.com/legal/checkout-buyer-terms" target="_blank" rel="noopener">Paddle 买家条款</a>约束</li>
+                    </ul>
+
+                    <h2>五、可接受使用</h2>
+                    <p>使用本服务时，您同意不进行以下行为：</p>
+                    <ul>
+                        <li>以自动化方式批量抓取本服务的内容或接口，或规避额度限制</li>
+                        <li>共享、转售账号或订阅权益</li>
+                        <li>利用 AI 功能生成违法、侵权或有害内容</li>
+                        <li>干扰、破坏本服务的正常运行或安全机制</li>
+                    </ul>
+                    <p>违反上述规定的，我们可能限制或终止您的账号，情节严重的不予退款。</p>
+
+                    <h2>六、内容与知识产权</h2>
+                    <p>
+                        本服务展示的原始内容（仓库信息、帖子、产品信息等）来自第三方公开来源，
+                        其知识产权归原作者或平台所有，我们仅作聚合与呈现。
+                    </p>
+                    <p>
+                        AI 生成的摘要、翻译与解读仅供参考，可能存在不准确或过时之处，
+                        不构成任何专业建议。请在依赖相关信息前自行核实。
+                    </p>
+
+                    <h2>七、服务变更与终止</h2>
+                    <p>
+                        我们可能随时调整、暂停或终止本服务的全部或部分功能。
+                        若因我们主动终止服务导致您已付费的订阅无法继续使用，我们将按未使用的剩余周期按比例退款。
+                    </p>
+
+                    <h2>八、免责声明与责任限制</h2>
+                    <p>
+                        本服务按"现状"提供，我们不对内容的准确性、完整性或可用性作出保证。
+                        在法律允许的最大范围内，我们对因使用或无法使用本服务而产生的间接、附带或后果性损失不承担责任；
+                        我们的累计责任上限为您在索赔发生前十二个月内就本服务实际支付的金额。
+                    </p>
+
+                    <h2>九、条款变更</h2>
+                    <p>
+                        我们可能不时更新本条款。更新后的条款将在本页面发布并更新"最后更新"日期。
+                        涉及您权利义务的重大变更，我们会通过应用内通知或邮件告知。
+                        变更生效后继续使用本服务，即视为您接受更新后的条款。
+                    </p>
+
+                    <h2>十、联系我们</h2>
+                    <p>如果您对本条款有任何疑问，请通过以下方式联系我们：</p>
+                    <ul>
+                        <li>运营者：WANG HAILONG（个人开发者）</li>
+                        <li>邮箱：<a href="mailto:81813780@qq.com">81813780@qq.com</a></li>
+                        <li>GitHub：<a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener">提交 Issue</a></li>
+                    </ul>
+                </>
+            ) : (
+                <>
+                    <h1>Terms of Service</h1>
+                    <p class="text-secondary">Last Updated: August 12, 2026</p>
+
+                    <p>
+                        These Terms of Service ("Terms") form an agreement between you and
+                        <strong> WANG HAILONG</strong>, the individual operator of Trending AI ("we", "us"),
+                        regarding your use of the Trending AI application and website (trendingai.cn, together
+                        the "Service"). By using the Service, you agree to these Terms.
+                    </p>
+
+                    <h2>1. About the Service</h2>
+                    <p>
+                        Trending AI aggregates public technology content from GitHub Trending, Hacker News and
+                        Product Hunt, then uses AI to generate summaries, translations and structured analysis,
+                        delivering curated picks every day.
+                    </p>
+                    <p>The Service has two tiers:</p>
+                    <ul>
+                        <li><strong>Free</strong>: browse all trending content, daily picks and summaries, no sign-in required</li>
+                        <li><strong>Pro subscription</strong>: significantly higher AI feature quotas, see "Pro Subscription" below</li>
+                    </ul>
+
+                    <h2>2. Accounts</h2>
+                    <p>
+                        Signing in is optional. Without an account you can still browse all trending content, but
+                        AI chat and Pro features are unavailable. Authentication is provided by a third-party
+                        service. You are responsible for keeping your account secure and for activity under it.
+                    </p>
+
+                    <h2>3. Pro Subscription</h2>
+
+                    <h3>What you get</h3>
+                    <p>
+                        A Pro subscription provides significantly higher daily quotas for AI features, including
+                        AI chat, detailed analysis and deep research. Exact quotas and included features are as
+                        shown on the purchase page and in the app. We may adjust them as the product evolves and
+                        will give notice of material changes.
+                    </p>
+
+                    <h3>Pricing and billing</h3>
+                    <ul>
+                        <li>Price, billing period and currency are as shown on the purchase page</li>
+                        <li>Prices may vary by region; taxes, where applicable, are shown at checkout</li>
+                        <li>Subscription fees are charged at the start of each billing period</li>
+                    </ul>
+
+                    <h3>Automatic renewal</h3>
+                    <p>
+                        <strong>Pro subscriptions renew automatically.</strong> Unless you cancel before the end
+                        of the current billing period, your subscription renews for the same period at the
+                        then-current price. The amount and timing of each charge are disclosed at purchase, and
+                        you will receive a notice from us or our payment provider before renewal.
+                    </p>
+
+                    <h3>Cancellation</h3>
+                    <p>
+                        You may cancel at any time. After cancelling you keep Pro access for the remainder of the
+                        current billing period, and no further charges are made. You can cancel from the
+                        subscription management page in the app, or by contacting us using the details below.
+                        Cancelling does not by itself create a refund — see our <a href="/refund/">Refund Policy</a>.
+                    </p>
+
+                    <h2>4. Payment Processing</h2>
+                    <p>
+                        Our order process is conducted by our online reseller <strong>Paddle.com</strong>.
+                        Paddle.com is the <strong>Merchant of Record</strong> for all our orders and the seller
+                        of record for your purchase. This means:
+                    </p>
+                    <ul>
+                        <li>Paddle collects payment, issues receipts, and handles applicable sales tax / VAT</li>
+                        <li>Your bank or card statement will show <strong>Paddle</strong> as the merchant, not Trending AI</li>
+                        <li>Checkout is additionally governed by the <a href="https://www.paddle.com/legal/checkout-buyer-terms" target="_blank" rel="noopener">Paddle Buyer Terms</a></li>
+                    </ul>
+
+                    <h2>5. Acceptable Use</h2>
+                    <p>When using the Service, you agree not to:</p>
+                    <ul>
+                        <li>Scrape our content or APIs in bulk, or circumvent quota limits</li>
+                        <li>Share, resell or transfer your account or subscription benefits</li>
+                        <li>Use AI features to generate unlawful, infringing or harmful content</li>
+                        <li>Interfere with the operation or security of the Service</li>
+                    </ul>
+                    <p>
+                        We may restrict or terminate accounts that violate these rules; serious violations are not
+                        eligible for a refund.
+                    </p>
+
+                    <h2>6. Content and Intellectual Property</h2>
+                    <p>
+                        Source content displayed in the Service (repositories, posts, product listings) comes from
+                        public third-party sources and remains the property of its original authors or platforms.
+                        We aggregate and present it only.
+                    </p>
+                    <p>
+                        AI-generated summaries, translations and analysis are provided for reference only. They may
+                        be inaccurate or outdated and do not constitute professional advice. Please verify before
+                        relying on them.
+                    </p>
+
+                    <h2>7. Changes and Termination</h2>
+                    <p>
+                        We may modify, suspend or discontinue any part of the Service. If we discontinue the
+                        Service and you have an active paid subscription, we will refund the unused portion on a
+                        pro-rata basis.
+                    </p>
+
+                    <h2>8. Disclaimer and Limitation of Liability</h2>
+                    <p>
+                        The Service is provided "as is" without warranties as to accuracy, completeness or
+                        availability. To the maximum extent permitted by law, we are not liable for indirect,
+                        incidental or consequential damages arising from your use of or inability to use the
+                        Service. Our aggregate liability is limited to the amount you actually paid for the
+                        Service in the twelve months preceding the claim.
+                    </p>
+
+                    <h2>9. Changes to These Terms</h2>
+                    <p>
+                        We may update these Terms from time to time. Updated Terms will be posted on this page with
+                        a revised "Last Updated" date. For material changes affecting your rights, we will notify
+                        you in the app or by email. Continuing to use the Service after changes take effect means
+                        you accept the updated Terms.
+                    </p>
+
+                    <h2>10. Contact Us</h2>
+                    <p>If you have questions about these Terms, please contact us:</p>
+                    <ul>
+                        <li>Operator: WANG HAILONG (individual developer)</li>
+                        <li>Email: <a href="mailto:81813780@qq.com">81813780@qq.com</a></li>
+                        <li>GitHub: <a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener">open an issue</a></li>
+                    </ul>
+                </>
+            )}
+        </article>
+    </main>
+    <Footer />
+</BaseLayout>
+
+<style>
+    .prose {
+        color: var(--color-on-surface-variant);
+        line-height: 1.75;
+    }
+    .prose h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--color-on-surface);
+    }
+    .prose h1:first-child {
+        margin-top: 0;
+    }
+    .prose h2 {
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--color-on-surface);
+    }
+    .prose h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-on-surface);
+    }
+    .prose p {
+        margin-bottom: 1rem;
+    }
+    .prose ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .prose li {
+        margin-bottom: 0.25rem;
+    }
+    .prose strong {
+        color: var(--color-on-surface);
+        font-weight: 600;
+    }
+    .prose a {
+        color: var(--color-primary);
+        text-decoration: underline;
+    }
+    .text-secondary {
+        color: var(--color-on-surface-variant);
+        font-size: 0.875rem;
+    }
+</style>

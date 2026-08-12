@@ -1,0 +1,216 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, t } from "../../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+---
+
+<BaseLayout
+    title={t(locale, "refund.title")}
+    description={t(locale, "refund.description")}
+    canonicalPath="/refund/"
+>
+    <TopNav />
+    <main class="pt-20 pb-16 px-4">
+        <article class="max-w-3xl mx-auto prose">
+            {locale === "zh" ? (
+                <>
+                    <h1>退款政策</h1>
+                    <p class="text-secondary">最后更新：2026 年 8 月 12 日</p>
+
+                    <p>
+                        本政策适用于您通过 Trending AI 购买的 Pro 订阅。我们希望您满意，
+                        因此提供下述明确的退款规则。本政策是 <a href="/zh/terms/">服务条款</a> 的一部分。
+                    </p>
+
+                    <h2>14 天无理由退款</h2>
+                    <p>
+                        <strong>首次购买 Pro 订阅后 14 天内，您可以申请全额退款，无需说明理由。</strong>
+                        退款后 Pro 权益立即终止。
+                    </p>
+
+                    <h2>续费的退款</h2>
+                    <p>
+                        对于自动续费产生的扣款，<strong>自扣款之日起 14 天内</strong>，
+                        若您在该计费周期内尚未大量使用 Pro 功能，可申请全额退款。
+                    </p>
+                    <p>
+                        我们会在每次续费前向您发送提醒。如果您不希望继续订阅，
+                        也可以随时在到期前取消，避免产生新的扣款。
+                    </p>
+
+                    <h2>不适用退款的情形</h2>
+                    <ul>
+                        <li>超过上述 14 天期限的订单</li>
+                        <li>在当期已大量使用 AI 额度（例如已消耗当期大部分配额）后申请退款</li>
+                        <li>因违反<a href="/zh/terms/">服务条款</a>（如共享账号、批量抓取、滥用 AI 功能）导致账号被限制或终止</li>
+                        <li>通过非官方渠道购买的订阅</li>
+                    </ul>
+                    <p>
+                        即使不符合上述条件，如果您遇到了服务故障、重复扣款或其他异常情况，
+                        请直接联系我们 —— 我们会按实际情况处理。
+                    </p>
+
+                    <h2>如何申请退款</h2>
+                    <p>您可以通过以下任一方式申请：</p>
+                    <ul>
+                        <li>在应用内的订阅管理页面发起</li>
+                        <li>通过下方"联系我们"与我们取得联系，请提供订单邮箱与购买时间</li>
+                        <li>直接联系我们的支付服务商 Paddle：<a href="https://paddle.net" target="_blank" rel="noopener">paddle.net</a></li>
+                    </ul>
+
+                    <h2>退款处理</h2>
+                    <ul>
+                        <li>我们会在收到申请后的 <strong>5 个工作日</strong>内答复</li>
+                        <li>退款由我们的授权经销商 <strong>Paddle</strong> 原路退回至您的原支付方式</li>
+                        <li>资金到账时间取决于您的发卡行或支付渠道，通常为 <strong>5–10 个工作日</strong></li>
+                        <li>退款以购买时的实付金额与币种计算</li>
+                    </ul>
+
+                    <h2>取消订阅与退款的区别</h2>
+                    <p>
+                        <strong>取消订阅</strong>意味着到期后不再自动续费，当前已付费的周期内您仍可继续使用 Pro 权益，
+                        不会退还已付款项。<strong>退款</strong>则会终止权益并退回款项。
+                        如果您只是不想继续付费，取消订阅即可。
+                    </p>
+
+                    <h2>联系我们</h2>
+                    <p>如果您对本政策有任何疑问，或需要申请退款：</p>
+                    <ul>
+                        <li>运营者：WANG HAILONG（个人开发者）</li>
+                        <li>邮箱：<a href="mailto:81813780@qq.com">81813780@qq.com</a></li>
+                        <li>GitHub：<a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener">提交 Issue</a></li>
+                    </ul>
+                </>
+            ) : (
+                <>
+                    <h1>Refund Policy</h1>
+                    <p class="text-secondary">Last Updated: August 12, 2026</p>
+
+                    <p>
+                        This policy applies to Pro subscriptions purchased from Trending AI. We want you to be
+                        satisfied, so we offer the clear refund terms below. This policy forms part of our
+                        <a href="/terms/"> Terms of Service</a>.
+                    </p>
+
+                    <h2>14-Day Money-Back Guarantee</h2>
+                    <p>
+                        <strong>You may request a full refund within 14 days of your first Pro purchase, no
+                        reason required.</strong> Pro access ends immediately once the refund is issued.
+                    </p>
+
+                    <h2>Refunds on Renewals</h2>
+                    <p>
+                        For automatic renewal charges, you may request a full refund <strong>within 14 days of
+                        the charge</strong>, provided you have not made substantial use of Pro features during
+                        that billing period.
+                    </p>
+                    <p>
+                        We send a reminder before each renewal. If you no longer wish to subscribe, you can also
+                        cancel at any time before renewal to avoid further charges.
+                    </p>
+
+                    <h2>When Refunds Are Not Available</h2>
+                    <ul>
+                        <li>Orders outside the 14-day window described above</li>
+                        <li>Requests made after substantial use of AI quota in the current period</li>
+                        <li>Accounts restricted or terminated for breaching our <a href="/terms/">Terms of Service</a> (e.g. account sharing, bulk scraping, abuse of AI features)</li>
+                        <li>Subscriptions purchased through unofficial channels</li>
+                    </ul>
+                    <p>
+                        Even if your request falls outside these terms, please contact us if you experienced a
+                        service failure, duplicate charge or other problem — we will review it on the merits.
+                    </p>
+
+                    <h2>How to Request a Refund</h2>
+                    <p>You can request a refund in any of these ways:</p>
+                    <ul>
+                        <li>From the subscription management page in the app</li>
+                        <li>By contacting us using the details below, including your order email and purchase date</li>
+                        <li>By contacting our payment provider Paddle directly at <a href="https://paddle.net" target="_blank" rel="noopener">paddle.net</a></li>
+                    </ul>
+
+                    <h2>Processing</h2>
+                    <ul>
+                        <li>We respond to refund requests within <strong>5 business days</strong></li>
+                        <li>Refunds are issued by our authorised reseller <strong>Paddle</strong> to your original payment method</li>
+                        <li>Funds typically arrive in <strong>5–10 business days</strong>, depending on your bank or payment provider</li>
+                        <li>Refunds are calculated on the amount and currency actually paid</li>
+                    </ul>
+
+                    <h2>Cancellation vs. Refund</h2>
+                    <p>
+                        <strong>Cancelling</strong> stops future renewals; you keep Pro access until the end of the
+                        period you already paid for, and no money is returned. A <strong>refund</strong> ends access
+                        and returns your payment. If you simply don't want to be charged again, cancelling is enough.
+                    </p>
+
+                    <h2>Contact Us</h2>
+                    <p>If you have questions about this policy or want to request a refund:</p>
+                    <ul>
+                        <li>Operator: WANG HAILONG (individual developer)</li>
+                        <li>Email: <a href="mailto:81813780@qq.com">81813780@qq.com</a></li>
+                        <li>GitHub: <a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener">open an issue</a></li>
+                    </ul>
+                </>
+            )}
+        </article>
+    </main>
+    <Footer />
+</BaseLayout>
+
+<style>
+    .prose {
+        color: var(--color-on-surface-variant);
+        line-height: 1.75;
+    }
+    .prose h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--color-on-surface);
+    }
+    .prose h1:first-child {
+        margin-top: 0;
+    }
+    .prose h2 {
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--color-on-surface);
+    }
+    .prose h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-on-surface);
+    }
+    .prose p {
+        margin-bottom: 1rem;
+    }
+    .prose ul {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .prose li {
+        margin-bottom: 0.25rem;
+    }
+    .prose strong {
+        color: var(--color-on-surface);
+        font-weight: 600;
+    }
+    .prose a {
+        color: var(--color-primary);
+        text-decoration: underline;
+    }
+    .text-secondary {
+        color: var(--color-on-surface-variant);
+        font-size: 0.875rem;
+    }
+</style>

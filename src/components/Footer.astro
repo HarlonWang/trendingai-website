@@ -1,8 +1,23 @@
 ---
 import ProductHuntBadge from "./ProductHuntBadge.astro";
+import { resolveLocale, t, localizePath } from "../i18n";
+
+const locale = resolveLocale(Astro.currentLocale);
+
+// 法律页面链接：支付服务商（Paddle）的域名审核要求这三页在站内可直达
+const legalLinks = [
+    { label: t(locale, "footer.privacy"), href: localizePath(locale, "/privacy/") },
+    { label: t(locale, "footer.terms"), href: localizePath(locale, "/terms/") },
+    { label: t(locale, "footer.refund"), href: localizePath(locale, "/refund/") },
+];
 ---
 
 <footer class="mx-auto flex max-w-5xl flex-col items-center gap-3 px-4 py-8 text-sm text-on-surface-variant sm:flex-row sm:justify-center sm:gap-4">
     <ProductHuntBadge width={180} class="inline-flex items-center" />
+    <nav class="flex items-center gap-4">
+        {legalLinks.map((link) => (
+            <a class="hover:text-on-surface hover:underline" href={link.href}>{link.label}</a>
+        ))}
+    </nav>
     <p>&copy; {new Date().getFullYear()} Trending AI</p>
 </footer>
