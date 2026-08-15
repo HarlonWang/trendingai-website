@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, localizePath, t } from "../../i18n";
+
+// 支付成功页（调研 D.4.1）。权益以 webhook 为准、此刻已落库（D.0），
+// 本页只做确认与引导；App 回跳 deeplink 等订阅入口随 loginbase 客户端落地时再补。
+const locale = resolveLocale(Astro.currentLocale);
+const homeHref = localizePath(locale, "/");
+---
+
+<BaseLayout
+    title={t(locale, "paySuccess.title")}
+    description={t(locale, "paySuccess.description")}
+    canonicalPath="/pay/success/"
+>
+    <TopNav />
+    <main class="pt-32 pb-24 px-4">
+        <div class="max-w-md mx-auto text-center">
+            <div class="pay-check mx-auto mb-6" aria-hidden="true">✓</div>
+            <h1 class="text-2xl font-bold mb-3">{t(locale, "paySuccess.heading")}</h1>
+            <p class="text-secondary mb-2">{t(locale, "paySuccess.body")}</p>
+            <p class="text-secondary text-sm">{t(locale, "paySuccess.note")}</p>
+            <p class="mt-8"><a class="underline" href={homeHref}>{t(locale, "pay.backHome")}</a></p>
+        </div>
+    </main>
+    <Footer />
+</BaseLayout>
+
+<style>
+    .pay-check {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #fff;
+        background: #16a34a;
+    }
+</style>

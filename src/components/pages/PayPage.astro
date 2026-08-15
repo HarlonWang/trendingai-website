@@ -1,0 +1,81 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { SITE_URL } from "../../config";
+import { resolveLocale, localizePath, t } from "../../i18n";
+
+// Paddle 收银台承接页（设计见 TrendingProjects/订阅支付接入-调研.md D.4.1）：
+// 后端 /api/billing/checkout 返回的 URL 即「本页 + ?_ptxn=txn_xxx」，
+// Paddle.js 初始化后自动识别该参数弹出收银台 overlay，本页只提供加载态与兜底。
+const locale = resolveLocale(Astro.currentLocale);
+// client-side token 是前端公开凭据（非机密，见调研 D.11.2）
+const PADDLE_CLIENT_TOKEN = "live_d5927ce435a898d285689b37d9b";
+const successUrl = `${SITE_URL}${localizePath(locale, "/pay/success/")}`;
+const homeHref = localizePath(locale, "/");
+---
+
+<BaseLayout
+    title={t(locale, "pay.title")}
+    description={t(locale, "pay.description")}
+    canonicalPath="/pay/"
+>
+    <TopNav />
+    <main class="pt-32 pb-24 px-4">
+        <div class="max-w-md mx-auto text-center">
+            <div id="pay-loading">
+                <div class="pay-spinner mx-auto mb-6" aria-hidden="true"></div>
+                <h1 class="text-xl font-semibold mb-2">{t(locale, "pay.opening")}</h1>
+                <p class="text-secondary text-sm">{t(locale, "pay.openingHint")}</p>
+            </div>
+            <div id="pay-missing" hidden>
+                <h1 class="text-xl font-semibold mb-2">{t(locale, "pay.missing")}</h1>
+                <p class="mt-6"><a class="underline" href={homeHref}>{t(locale, "pay.backHome")}</a></p>
+            </div>
+            <div id="pay-failed" hidden>
+                <h1 class="text-xl font-semibold mb-2">{t(locale, "pay.failed")}</h1>
+                <p class="mt-6"><a class="underline" href={homeHref}>{t(locale, "pay.backHome")}</a></p>
+            </div>
+        </div>
+    </main>
+    <Footer />
+</BaseLayout>
+
+<style>
+    .pay-spinner {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 9999px;
+        border: 3px solid color-mix(in srgb, currentColor 15%, transparent);
+        border-top-color: currentColor;
+        animation: pay-spin 0.8s linear infinite;
+    }
+    @keyframes pay-spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+
+<script is:inline src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script is:inline define:vars={{ PADDLE_CLIENT_TOKEN, successUrl }}>
+    (function () {
+        var loading = document.getElementById("pay-loading");
+        var missing = document.getElementById("pay-missing");
+        var failed = document.getElementById("pay-failed");
+        if (!new URLSearchParams(location.search).has("_ptxn")) {
+            loading.hidden = true;
+            missing.hidden = false;
+            return;
+        }
+        if (!window.Paddle) {
+            // cdn.paddle.com 加载失败（网络/拦截）：给出可操作的提示而非白屏
+            loading.hidden = true;
+            failed.hidden = false;
+            return;
+        }
+        // 初始化后 Paddle.js 自动识别 ?_ptxn= 并打开收银台；成功后跳 successUrl
+        Paddle.Initialize({
+            token: PADDLE_CLIENT_TOKEN,
+            checkout: { settings: { successUrl: successUrl } },
+        });
+    })();
+</script>
