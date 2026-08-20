@@ -18,7 +18,7 @@ const locale = resolveLocale(Astro.currentLocale);
             {locale === "zh" ? (
                 <>
                     <h1>隐私政策</h1>
-                    <p class="text-secondary">最后更新：2026 年 8 月 7 日</p>
+                    <p class="text-secondary">最后更新：2026 年 8 月 20 日</p>
 
                     <p>
                         Trending AI（以下简称"我们"）重视您的隐私。本政策说明我们在您使用 Trending AI
@@ -29,16 +29,27 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>基础使用数据</h3>
                     <p>
-                        我们通过 Aptabase（一款注重隐私的分析工具）收集使用统计，包括：
+                        我们收集使用统计以了解功能的使用情况并改进产品，包括：
                     </p>
                     <ul>
-                        <li>应用启动次数</li>
-                        <li>会话时长</li>
-                        <li>功能使用情况（如筛选条件的选择）</li>
+                        <li>应用启动次数与会话时长</li>
+                        <li>功能使用情况（如筛选条件的选择、内容的打开）</li>
+                        <li>应用版本、平台（Android / iOS）、分发渠道、系统语言</li>
+                        <li>由 Cloudflare 边缘网络给出的粗略国家或地区（非精确位置）</li>
                     </ul>
                     <p>
+                        这些统计由我们自己搭建的统计服务处理，直接存入我们自有的 Cloudflare 数据库，
+                        <strong>不再交由第三方分析服务</strong>。我们不记录您的 IP 地址，也不记录浏览器或
+                        设备的 User-Agent；统计事件中不包含您输入的内容（如对话正文、搜索词）。
+                    </p>
+                    <p>
                         这些统计不包含您的姓名、邮箱等直接身份信息，但会附带下方所述的安装标识，
-                        因此可以关联同一台设备在不同时间的使用记录。
+                        因此可以关联同一台设备在不同时间的使用记录；若您登录了账号，这些记录还会与
+                        您的账号关联。
+                    </p>
+                    <p class="text-secondary">
+                        过渡说明：应用 1.3.0 及更早版本使用第三方分析服务 Aptabase 收集上述统计，
+                        自其后的版本起已全部改由上述自有服务处理。
                     </p>
 
                     <h3>用户偏好设置</h3>
@@ -102,7 +113,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>其他服务商</h3>
                     <ul>
                         <li>Logto：登录认证</li>
-                        <li>Aptabase：使用统计</li>
+                        <li>Aptabase：使用统计（仅限应用 1.3.0 及更早版本，正在退出）</li>
                         <li>Resend：订阅邮件发送（含打开情况统计）</li>
                         <li>Cloudflare：服务器与数据库托管</li>
                     </ul>
@@ -118,7 +129,10 @@ const locale = resolveLocale(Astro.currentLocale);
                         <li>账号信息：保留至您注销账号</li>
                         <li>AI 功能使用记录与深度调研报告：保留至您注销账号</li>
                         <li>反馈信息：保留 12 个月</li>
-                        <li>使用统计：由 Aptabase 按其策略保留</li>
+                        <li>
+                            使用统计：暂不设固定删除期限，长期保留用于跨年度的趋势与留存分析
+                            （不含直接身份信息）；1.3.0 及更早版本产生的统计由 Aptabase 按其策略保留
+                        </li>
                     </ul>
 
                     <h2>您的权利</h2>
@@ -149,7 +163,7 @@ const locale = resolveLocale(Astro.currentLocale);
             ) : (
                 <>
                     <h1>Privacy Policy</h1>
-                    <p class="text-secondary">Last Updated: August 7, 2026</p>
+                    <p class="text-secondary">Last Updated: August 20, 2026</p>
 
                     <p>
                         Trending AI ("we") values your privacy. This policy explains how we collect, use, and
@@ -160,18 +174,31 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>Basic Usage Data</h3>
                     <p>
-                        We collect usage statistics through Aptabase, a privacy-focused analytics tool,
-                        including:
+                        We collect usage statistics to understand how features are used and to improve the
+                        product, including:
                     </p>
                     <ul>
-                        <li>App launch count</li>
-                        <li>Session duration</li>
-                        <li>Feature usage (e.g., filter selections)</li>
+                        <li>App launch count and session duration</li>
+                        <li>Feature usage (e.g., filter selections, items opened)</li>
+                        <li>App version, platform (Android / iOS), distribution channel, system language</li>
+                        <li>A coarse country or region derived by Cloudflare's edge network (not a precise location)</li>
                     </ul>
+                    <p>
+                        These statistics are processed by our own analytics service and stored directly in our
+                        own Cloudflare database — <strong>no third-party analytics provider is involved</strong>.
+                        We do not record your IP address or your browser/device User-Agent, and the events never
+                        include content you type (such as chat messages or search queries).
+                    </p>
                     <p>
                         These statistics do not contain direct identifiers such as your name or email, but they
                         do carry the installation identifier described below, which allows usage from the same
-                        device to be linked across time.
+                        device to be linked across time; if you are signed in, they are also linked to your
+                        account.
+                    </p>
+                    <p class="text-secondary">
+                        Transition note: app versions 1.3.0 and earlier collected these statistics through the
+                        third-party analytics service Aptabase. Later versions use our own service described
+                        above.
                     </p>
 
                     <h3>User Preferences</h3>
@@ -243,7 +270,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>Other Service Providers</h3>
                     <ul>
                         <li>Logto: authentication</li>
-                        <li>Aptabase: usage statistics</li>
+                        <li>Aptabase: usage statistics (app 1.3.0 and earlier only; being retired)</li>
                         <li>Resend: newsletter delivery (including open tracking)</li>
                         <li>Cloudflare: server and database hosting</li>
                     </ul>
@@ -260,7 +287,11 @@ const locale = resolveLocale(Astro.currentLocale);
                         <li>Account information: retained until you delete your account</li>
                         <li>AI feature usage records and deep research reports: retained until you delete your account</li>
                         <li>Feedback: retained for 12 months</li>
-                        <li>Usage statistics: retained per Aptabase's own policy</li>
+                        <li>
+                            Usage statistics: no fixed deletion period for now — retained long term for
+                            multi-year trend and retention analysis (no direct identifiers); statistics
+                            produced by app 1.3.0 and earlier are retained per Aptabase's own policy
+                        </li>
                     </ul>
 
                     <h2>Your Rights</h2>
