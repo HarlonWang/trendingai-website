@@ -1,0 +1,247 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopNav from "../TopNav.astro";
+import Footer from "../Footer.astro";
+import { resolveLocale, t } from "../../i18n";
+
+const RELEASES_URL = "https://github.com/HarlonWang/TrendingAI/releases/latest";
+const SIDELOADLY_URL = "https://sideloadly.io/";
+const ALTSTORE_URL = "https://altstore.io/";
+
+const locale = resolveLocale(Astro.currentLocale);
+---
+
+<BaseLayout
+    title={t(locale, "iosInstall.title")}
+    description={t(locale, "iosInstall.description")}
+    canonicalPath="/app/ios/"
+>
+    <TopNav activeRoute="app" />
+    <main class="pt-20 pb-16 px-4">
+        <article class="max-w-3xl mx-auto prose">
+            {locale === "zh" ? (
+                <>
+                    <h1>iOS 安装指南</h1>
+
+                    <p>
+                        TrendingAI 的 iOS 版不通过 App Store 分发，需要用「侧载」（Sideload）方式安装。
+                        本文介绍两种方案：<strong>Sideloadly</strong>（步骤最少，推荐）和 <strong>AltStore</strong>。
+                    </p>
+                    <p class="notice">
+                        iOS 版目前处于早期阶段，功能仍在完善中，遇到问题欢迎
+                        <a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener">提交反馈</a>。
+                    </p>
+
+                    <h2>开始前须知</h2>
+                    <p>两种方案都借助 Apple 提供的免费开发者签名，存在以下限制：</p>
+                    <ul>
+                        <li><strong>签名 7 天有效</strong>，到期后 App 无法打开，需重新续签（应用数据不会丢失；两种工具都支持同一 Wi-Fi 下自动续签）</li>
+                        <li>单个 Apple ID 最多同时安装 <strong>3 个</strong>侧载应用</li>
+                        <li>首次安装需要一台 macOS 或 Windows 电脑</li>
+                        <li>iOS 16 及以上需开启「开发者模式」（见下文）</li>
+                    </ul>
+
+                    <h2>准备工作</h2>
+                    <ul>
+                        <li>一台 macOS 或 Windows 电脑、iPhone / iPad、一根稳定的数据线</li>
+                        <li>一个 Apple ID</li>
+                        <li>安装包：前往 <a href={RELEASES_URL} target="_blank" rel="noopener">GitHub Releases</a> 下载最新版本的 <code>TrendingAI-x.y.z.ipa</code> 附件</li>
+                        <li>Windows 用户须安装<strong>官网版 iTunes</strong>（Microsoft Store 版不行，需卸载后从 Apple 官网重装）</li>
+                    </ul>
+
+                    <h2>方法一：Sideloadly</h2>
+                    <ol>
+                        <li>从 <a href={SIDELOADLY_URL} target="_blank" rel="noopener">sideloadly.io</a> 下载并安装 Sideloadly</li>
+                        <li>打开 Sideloadly，在 Apple ID 栏输入你的账号邮箱</li>
+                        <li>用数据线连接设备，手机上弹出「要信任此电脑吗？」时点信任；连接成功后设备名会出现在 iDevice 栏</li>
+                        <li>点击左侧 IPA 图标，选择下载好的 IPA 文件，点 <strong>Start</strong></li>
+                        <li>首次使用需输入 Apple ID 密码；开启双重认证的账号在弹窗中输入 6 位验证码</li>
+                        <li>进度条显示 <strong>Done.</strong> 即安装成功</li>
+                    </ol>
+                    <p>
+                        提示：Start 左侧的「刷新」图标保持开启（默认开启），设备与电脑在同一 Wi-Fi 时会每 7 天自动续签。
+                    </p>
+
+                    <h2>方法二：AltStore</h2>
+                    <ol>
+                        <li>（仅 Windows）除 iTunes 外，还需安装<strong>官网版 iCloud</strong>（同样不能用 Microsoft Store 版）</li>
+                        <li>从 <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a> 下载 AltServer：macOS 解压后将 AltServer.app 拖入「应用程序」；Windows 解压运行 Setup.exe，之后以管理员身份运行</li>
+                        <li>数据线连接设备并信任，开启 Wi-Fi 同步（macOS：访达侧边栏选中设备，勾选「在 Wi-Fi 下显示此 iPhone」；Windows：iTunes 设备摘要页勾选「通过 Wi-Fi 与此 iPhone 同步」）</li>
+                        <li>点击电脑上的 AltServer 图标 → <strong>Install AltStore</strong> → 选择设备，输入 Apple ID 与密码，等手机桌面出现 AltStore 图标（没出现可重启设备）</li>
+                        <li>iOS 16 及以上先开启「开发者模式」（见下文）</li>
+                        <li>把 IPA 文件传到手机（AirDrop 或文件 App），打开 AltStore → <strong>My Apps</strong> → 左上角 “+” 选择 IPA 安装</li>
+                    </ol>
+
+                    <h2>iOS 16+：开启开发者模式</h2>
+                    <p>
+                        设置 → 隐私与安全性 → 拉到底部找到「开发者模式」→ 开启，按提示重启设备并确认。
+                    </p>
+
+                    <h2>常见问题</h2>
+                    <h3>首次打开提示「不受信任的开发者」</h3>
+                    <p>
+                        设置 → 通用 → VPN 与设备管理（旧系统显示为「描述文件与设备管理」）→
+                        在「开发者 APP」下点你的 Apple ID → 信任并确认，之后即可正常打开。
+                    </p>
+                    <h3>7 天后 App 打不开了</h3>
+                    <p>
+                        签名过期了。用安装时的工具重新执行一次安装（续签）即可，应用数据不会丢失；
+                        开启前文的自动续签可以避免手动操作。
+                    </p>
+                    <h3>不想依赖电脑续签</h3>
+                    <p>
+                        可以了解 <strong>SideStore</strong>（AltStore 的社区分支，支持免电脑续签），
+                        安装步骤更复杂，适合进阶用户。
+                    </p>
+                </>
+            ) : (
+                <>
+                    <h1>Install on iOS</h1>
+
+                    <p>
+                        The TrendingAI iOS app is not distributed through the App Store — it is installed by
+                        <strong> sideloading</strong>. This guide covers two options:
+                        <strong> Sideloadly</strong> (fewest steps, recommended) and <strong>AltStore</strong>.
+                    </p>
+                    <p class="notice">
+                        The iOS app is at an early stage and still evolving. If you hit problems, please
+                        <a href="https://github.com/HarlonWang/TrendingAI/issues" target="_blank" rel="noopener"> open an issue</a>.
+                    </p>
+
+                    <h2>Before you start</h2>
+                    <p>Both options rely on Apple's free developer signing, which comes with limits:</p>
+                    <ul>
+                        <li><strong>Signatures expire after 7 days</strong> — the app stops opening until re-signed (your data is kept; both tools can auto-refresh over the same Wi-Fi)</li>
+                        <li>At most <strong>3 sideloaded apps</strong> per Apple ID at a time</li>
+                        <li>A macOS or Windows computer is required for the first install</li>
+                        <li>iOS 16 and later require Developer Mode (see below)</li>
+                    </ul>
+
+                    <h2>What you need</h2>
+                    <ul>
+                        <li>A macOS or Windows computer, an iPhone / iPad, and a reliable cable</li>
+                        <li>An Apple ID</li>
+                        <li>The app: download the latest <code>TrendingAI-x.y.z.ipa</code> asset from <a href={RELEASES_URL} target="_blank" rel="noopener">GitHub Releases</a></li>
+                        <li>Windows users must install <strong>iTunes from Apple's website</strong> (the Microsoft Store version does not work — uninstall it and reinstall from apple.com)</li>
+                    </ul>
+
+                    <h2>Option 1: Sideloadly</h2>
+                    <ol>
+                        <li>Download and install Sideloadly from <a href={SIDELOADLY_URL} target="_blank" rel="noopener">sideloadly.io</a></li>
+                        <li>Open Sideloadly and enter your Apple ID email</li>
+                        <li>Connect your device with a cable and tap "Trust This Computer" on the phone; your device appears in the iDevice field</li>
+                        <li>Click the IPA icon, pick the downloaded IPA file, then click <strong>Start</strong></li>
+                        <li>Enter your Apple ID password on first use; with two-factor auth, enter the 6-digit code in the prompt</li>
+                        <li>When the progress bar shows <strong>Done.</strong>, the app is installed</li>
+                    </ol>
+                    <p>
+                        Tip: keep the refresh icon next to Start enabled (it is by default) — the signature
+                        auto-refreshes every 7 days while the device and computer share the same Wi-Fi.
+                    </p>
+
+                    <h2>Option 2: AltStore</h2>
+                    <ol>
+                        <li>(Windows only) Besides iTunes, install <strong>iCloud from Apple's website</strong> (again, not the Microsoft Store version)</li>
+                        <li>Download AltServer from <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a>: on macOS unzip and drag AltServer.app into Applications; on Windows unzip, run Setup.exe, then run it as administrator</li>
+                        <li>Connect and trust your device, then enable Wi-Fi sync (macOS: select the device in Finder and check "Show this iPhone when on Wi-Fi"; Windows: check "Sync with this iPhone over Wi-Fi" in the iTunes device summary)</li>
+                        <li>Click the AltServer icon on your computer → <strong>Install AltStore</strong> → choose your device and enter your Apple ID and password; wait for the AltStore icon to appear on the phone (restart the device if it doesn't)</li>
+                        <li>On iOS 16+, enable Developer Mode first (see below)</li>
+                        <li>Send the IPA to your phone (AirDrop or the Files app), open AltStore → <strong>My Apps</strong> → tap “+” and pick the IPA</li>
+                    </ol>
+
+                    <h2>iOS 16+: enable Developer Mode</h2>
+                    <p>
+                        Settings → Privacy &amp; Security → scroll to the bottom → Developer Mode → turn it on,
+                        then restart and confirm when prompted.
+                    </p>
+
+                    <h2>FAQ</h2>
+                    <h3>"Untrusted Developer" on first launch</h3>
+                    <p>
+                        Settings → General → VPN &amp; Device Management (or "Profiles &amp; Device Management"
+                        on older versions) → under Developer App, tap your Apple ID → Trust.
+                    </p>
+                    <h3>The app stopped opening after 7 days</h3>
+                    <p>
+                        The signature expired. Re-run the install (re-sign) with the same tool — your data is
+                        kept. Enabling auto-refresh as described above avoids the manual step.
+                    </p>
+                    <h3>Refreshing without a computer</h3>
+                    <p>
+                        Look into <strong>SideStore</strong> (a community fork of AltStore that refreshes without
+                        a computer). Setup is more involved and best suited to advanced users.
+                    </p>
+                </>
+            )}
+        </article>
+    </main>
+    <Footer />
+</BaseLayout>
+
+<style>
+    .prose {
+        color: var(--color-on-surface-variant);
+        line-height: 1.75;
+    }
+    .prose h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        color: var(--color-on-surface);
+    }
+    .prose h1:first-child {
+        margin-top: 0;
+    }
+    .prose h2 {
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 0.75rem;
+        color: var(--color-on-surface);
+    }
+    .prose h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--color-on-surface);
+    }
+    .prose p {
+        margin-bottom: 1rem;
+    }
+    .prose ul,
+    .prose ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    .prose ul {
+        list-style-type: disc;
+    }
+    .prose ol {
+        list-style-type: decimal;
+    }
+    .prose li {
+        margin-bottom: 0.25rem;
+    }
+    .prose strong {
+        color: var(--color-on-surface);
+        font-weight: 600;
+    }
+    .prose a {
+        color: var(--color-primary);
+        text-decoration: underline;
+    }
+    .prose code {
+        font-size: 0.875em;
+        background: var(--color-surface-container);
+        border-radius: 0.25rem;
+        padding: 0.125rem 0.375rem;
+    }
+    .prose .notice {
+        border-left: 3px solid var(--color-primary);
+        background: var(--color-surface-container);
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+    }
+</style>

@@ -56,6 +56,10 @@ const en = {
     "app.feature3Desc": "AI selects the most noteworthy projects from across the web",
     "app.feature4Title": "History Playback",
     "app.feature4Desc": "Browse trending lists from any past date and never miss a day",
+    "app.iosGuide": "iOS Install Guide",
+
+    "iosInstall.title": "Install on iOS - Trending AI",
+    "iosInstall.description": "How to sideload the TrendingAI iOS app with Sideloadly or AltStore",
 
     "privacy.title": "Privacy Policy - Trending AI",
     "privacy.description": "Trending AI privacy policy",
@@ -167,6 +171,10 @@ const zh: Record<UIKey, string> = {
     "app.feature3Desc": "AI 从全网筛选最值得关注的技术项目",
     "app.feature4Title": "历史回溯",
     "app.feature4Desc": "查看任意日期的趋势榜单，不错过每一天",
+    "app.iosGuide": "iOS 安装指南",
+
+    "iosInstall.title": "iOS 安装指南 - Trending AI",
+    "iosInstall.description": "通过 Sideloadly 或 AltStore 侧载安装 TrendingAI iOS 版",
 
     "privacy.title": "隐私政策 - Trending AI",
     "privacy.description": "Trending AI 隐私政策",
