@@ -50,10 +50,19 @@ const locale = resolveLocale(Astro.currentLocale);
                     </ul>
 
                     <h2>方法一：AltStore（推荐）</h2>
+                    <h3>电脑端准备（macOS）</h3>
                     <ol>
-                        <li>（仅 Windows）除 iTunes 外，还需安装<strong>官网版 iCloud</strong>（同样不能用 Microsoft Store 版）</li>
-                        <li>从 <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a> 下载 AltServer：macOS 解压后将 AltServer.app 拖入「应用程序」；Windows 解压运行 Setup.exe，之后以管理员身份运行</li>
-                        <li>数据线连接设备并信任，开启 Wi-Fi 同步（macOS：访达侧边栏选中设备，勾选「在 Wi-Fi 下显示此 iPhone」；Windows：iTunes 设备摘要页勾选「通过 Wi-Fi 与此 iPhone 同步」）</li>
+                        <li>从 <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a> 下载 AltServer，解压后把 AltServer.app 拖入「应用程序」并启动（图标在菜单栏）</li>
+                        <li>数据线连接 iPhone 并信任，访达侧边栏选中设备 → 勾选「在 Wi-Fi 下显示此 iPhone」</li>
+                    </ol>
+                    <h3>电脑端准备（Windows）</h3>
+                    <ol>
+                        <li>安装<strong>官网版 iTunes 与 iCloud</strong>（均不能用 Microsoft Store 版）</li>
+                        <li>从 <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a> 下载 AltServer，解压运行 Setup.exe，之后以管理员身份运行（图标在系统托盘）</li>
+                        <li>数据线连接 iPhone 并信任，iTunes 设备摘要页 → 勾选「通过 Wi-Fi 与此 iPhone 同步」</li>
+                    </ol>
+                    <h3>安装</h3>
+                    <ol>
                         <li>点击电脑上的 AltServer 图标 → <strong>Install AltStore</strong> → 选择设备，输入 Apple ID 与密码，等手机桌面出现 AltStore 图标（没出现可重启设备）</li>
                         <li>iOS 16 及以上先开启「开发者模式」（见下文）</li>
                         <li>把 IPA 文件传到手机（AirDrop 或文件 App），打开 AltStore → <strong>My Apps</strong> → 左上角 “+” 选择 IPA 安装；也可以在电脑上按住 Option（Windows：Shift）点击 AltServer 图标 → <strong>Sideload .ipa…</strong> 直接选文件推送安装</li>
@@ -148,10 +157,19 @@ const locale = resolveLocale(Astro.currentLocale);
                     </ul>
 
                     <h2>Option 1: AltStore (recommended)</h2>
+                    <h3>Computer setup (macOS)</h3>
                     <ol>
-                        <li>(Windows only) Besides iTunes, install <strong>iCloud from Apple's website</strong> (again, not the Microsoft Store version)</li>
-                        <li>Download AltServer from <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a>: on macOS unzip and drag AltServer.app into Applications; on Windows unzip, run Setup.exe, then run it as administrator</li>
-                        <li>Connect and trust your device, then enable Wi-Fi sync (macOS: select the device in Finder and check "Show this iPhone when on Wi-Fi"; Windows: check "Sync with this iPhone over Wi-Fi" in the iTunes device summary)</li>
+                        <li>Download AltServer from <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a>, unzip, drag AltServer.app into Applications and launch it (the icon lives in the menu bar)</li>
+                        <li>Connect and trust your iPhone, select it in the Finder sidebar → check "Show this iPhone when on Wi-Fi"</li>
+                    </ol>
+                    <h3>Computer setup (Windows)</h3>
+                    <ol>
+                        <li>Install <strong>iTunes and iCloud from Apple's website</strong> (neither may be the Microsoft Store version)</li>
+                        <li>Download AltServer from <a href={ALTSTORE_URL} target="_blank" rel="noopener">altstore.io</a>, unzip, run Setup.exe, then run it as administrator (the icon lives in the system tray)</li>
+                        <li>Connect and trust your iPhone, then check "Sync with this iPhone over Wi-Fi" in the iTunes device summary</li>
+                    </ol>
+                    <h3>Install</h3>
+                    <ol>
                         <li>Click the AltServer icon on your computer → <strong>Install AltStore</strong> → choose your device and enter your Apple ID and password; wait for the AltStore icon to appear on the phone (restart the device if it doesn't)</li>
                         <li>On iOS 16+, enable Developer Mode first (see below)</li>
                         <li>Send the IPA to your phone (AirDrop or the Files app), open AltStore → <strong>My Apps</strong> → tap “+” and pick the IPA; alternatively, hold Option (Windows: Shift) and click the AltServer icon → <strong>Sideload .ipa…</strong> to push the file directly</li>
