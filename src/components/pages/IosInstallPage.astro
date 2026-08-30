@@ -44,7 +44,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h2>准备工作</h2>
                     <ul>
                         <li>一台 macOS 或 Windows 电脑、iPhone / iPad、一根稳定的数据线</li>
-                        <li>一个 Apple ID</li>
+                        <li>一个 Apple ID——用于给安装包签名，<strong>不要求与手机上登录的账号相同</strong>，可以用小号；侧载数量、签名有效期等限制都算在这个账号头上</li>
                         <li>安装包：前往 <a href={RELEASES_URL} target="_blank" rel="noopener">GitHub Releases</a> 下载最新版本的 <code>TrendingAI-x.y.z.ipa</code> 附件</li>
                         <li>Windows 用户须安装<strong>官网版 iTunes</strong>（Microsoft Store 版不行，需卸载后从 Apple 官网重装）</li>
                     </ul>
@@ -81,12 +81,20 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>首次打开提示「不受信任的开发者」</h3>
                     <p>
                         设置 → 通用 → VPN 与设备管理（旧系统显示为「描述文件与设备管理」）→
-                        在「开发者 APP」下点你的 Apple ID → 信任并确认，之后即可正常打开。
+                        在「开发者 APP」下点签名用的 Apple ID → 信任并确认，之后即可正常打开。
+                    </p>
+                    <h3>自动续签需要什么条件？</h3>
+                    <p>
+                        三个条件缺一不可：电脑开机且工具在运行（Sideloadly 的后台服务 / AltServer 常驻）；
+                        手机与电脑在<strong>同一 Wi-Fi</strong>（数据线只有首次安装需要）；
+                        AltStore 用户还需开启过 Wi-Fi 同步。
+                        不需要时刻保持连接——7 天窗口内任意时刻回到同一网络续上一次即可。
+                        长期外出错过窗口也只是 App 暂时打不开，重新续签即可，数据不丢。
                     </p>
                     <h3>7 天后 App 打不开了</h3>
                     <p>
                         签名过期了。用安装时的工具重新执行一次安装（续签）即可，应用数据不会丢失；
-                        开启前文的自动续签可以避免手动操作。
+                        满足上一条的自动续签条件可以避免手动操作。
                     </p>
                     <h3>不想依赖电脑续签</h3>
                     <p>
@@ -120,7 +128,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h2>What you need</h2>
                     <ul>
                         <li>A macOS or Windows computer, an iPhone / iPad, and a reliable cable</li>
-                        <li>An Apple ID</li>
+                        <li>An Apple ID — used only to sign the app. It <strong>does not need to match the account signed in on your phone</strong>; a secondary account works fine. The sideload limits (app count, signature expiry) are tied to this account</li>
                         <li>The app: download the latest <code>TrendingAI-x.y.z.ipa</code> asset from <a href={RELEASES_URL} target="_blank" rel="noopener">GitHub Releases</a></li>
                         <li>Windows users must install <strong>iTunes from Apple's website</strong> (the Microsoft Store version does not work — uninstall it and reinstall from apple.com)</li>
                     </ul>
@@ -159,12 +167,21 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>"Untrusted Developer" on first launch</h3>
                     <p>
                         Settings → General → VPN &amp; Device Management (or "Profiles &amp; Device Management"
-                        on older versions) → under Developer App, tap your Apple ID → Trust.
+                        on older versions) → under Developer App, tap the Apple ID used for signing → Trust.
+                    </p>
+                    <h3>What does auto-refresh require?</h3>
+                    <p>
+                        Three things, all at once: the computer is on with the tool running (Sideloadly's
+                        background service / AltServer in the tray); the phone and computer are on the
+                        <strong> same Wi-Fi</strong> (the cable is only needed for the first install); and for
+                        AltStore, Wi-Fi sync enabled. You don't need to stay connected all the time — refreshing
+                        once at any point within the 7-day window is enough. If you miss the window while away,
+                        the app just stops opening until you re-sign; your data is kept.
                     </p>
                     <h3>The app stopped opening after 7 days</h3>
                     <p>
                         The signature expired. Re-run the install (re-sign) with the same tool — your data is
-                        kept. Enabling auto-refresh as described above avoids the manual step.
+                        kept. Meeting the auto-refresh conditions above avoids the manual step.
                     </p>
                     <h3>Refreshing without a computer</h3>
                     <p>
