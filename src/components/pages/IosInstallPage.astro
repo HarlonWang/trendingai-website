@@ -71,6 +71,20 @@ const locale = resolveLocale(Astro.currentLocale);
                         提示：安装过程中手机若在用蜂窝流量，AltStore 会提示找不到 AltServer——用数据线连着电脑操作即可，AltServer 同时支持 Wi-Fi 和 USB 两种通道。
                     </p>
 
+                    <h3>通过源安装与更新（推荐）</h3>
+                    <p>
+                        装好 AltStore 后，建议把 TrendingAI 的源添加进去：安装和以后的版本更新都变成商店式的一键操作，
+                        不再需要手动下载、传输 IPA。
+                    </p>
+                    <ol>
+                        <li>打开 AltStore → <strong>Sources</strong> 标签页 → 右上角 “+”</li>
+                        <li>粘贴源地址：<code>https://api.trendingai.cn/altstore.json</code></li>
+                        <li>添加后进入该源，找到 TrendingAI 点击安装；之后有新版本时，AltStore 会在 <strong>My Apps</strong> 里提示更新</li>
+                    </ol>
+                    <p>
+                        添加后若源里列表为空，是 iOS 首个正式版尚未发布；无需重复操作，发布后会自动出现。
+                    </p>
+
                     <h2>方法二：Sideloadly</h2>
                     <p class="notice">
                         iOS 26 及以上目前存在兼容问题：安装会报 <code>Invalid file</code> 错误，社区多有同款反馈且官方长期未修。
@@ -178,6 +192,21 @@ const locale = resolveLocale(Astro.currentLocale);
                         Tip: if the phone is on cellular data during install, AltStore will report it cannot find
                         AltServer — just keep the device connected to the computer with a cable; AltServer works
                         over both Wi-Fi and USB.
+                    </p>
+
+                    <h3>Install and update via source (recommended)</h3>
+                    <p>
+                        Once AltStore is set up, add the TrendingAI source: installing and future updates become
+                        one-tap, store-style operations — no more downloading and transferring IPA files by hand.
+                    </p>
+                    <ol>
+                        <li>Open AltStore → <strong>Sources</strong> tab → tap “+” in the top corner</li>
+                        <li>Paste the source URL: <code>https://api.trendingai.cn/altstore.json</code></li>
+                        <li>Open the source, find TrendingAI and tap to install; when a new version ships, AltStore shows an update in <strong>My Apps</strong></li>
+                    </ol>
+                    <p>
+                        If the source appears empty after adding it, the first official iOS release hasn't shipped
+                        yet — no need to re-add it; the app will show up automatically once released.
                     </p>
 
                     <h2>Option 2: Sideloadly</h2>
