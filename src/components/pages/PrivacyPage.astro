@@ -18,7 +18,7 @@ const locale = resolveLocale(Astro.currentLocale);
             {locale === "zh" ? (
                 <>
                     <h1>隐私政策</h1>
-                    <p class="text-secondary">最后更新：2026 年 8 月 20 日</p>
+                    <p class="text-secondary">最后更新：2026 年 9 月 8 日</p>
 
                     <p>
                         Trending AI（以下简称"我们"）重视您的隐私。本政策说明我们在您使用 Trending AI
@@ -104,11 +104,16 @@ const locale = resolveLocale(Astro.currentLocale);
                     <p>
                         我们不出售或出租您的个人数据。为提供服务，我们会与以下第三方共享必要数据：
                     </p>
-                    <h3>AI 服务提供商（OpenAI）</h3>
+                    <h3>AI 服务提供商（OpenAI、DeepSeek）</h3>
                     <p>
-                        您在 AI 功能中发送的内容会传输至 OpenAI 以生成回复。我们目前参与了 OpenAI 的数据
-                        共享计划，这意味着<strong>您的输入与输出会被 OpenAI 用于改进和训练其模型</strong>，
-                        并在其服务器上留存约 30 天。<strong>请不要在对话中输入敏感、机密或个人信息。</strong>
+                        您在 AI 功能中发送的内容会传输至您所选模型对应的服务提供商以生成回复。默认使用 OpenAI；
+                        当您在模型选择器中选择 DeepSeek 模型时，该次对话内容会传输至 DeepSeek，由其按
+                        DeepSeek 隐私政策处理。
+                    </p>
+                    <p>
+                        我们目前参与了 OpenAI 的数据共享计划，这意味着<strong>您发送给 OpenAI 模型的输入与输出会被
+                        OpenAI 用于改进和训练其模型</strong>，并在其服务器上留存约 30 天。
+                        <strong>无论选择哪家提供商，请不要在对话中输入敏感、机密或个人信息。</strong>
                     </p>
                     <h3>其他服务商</h3>
                     <ul>
@@ -163,7 +168,7 @@ const locale = resolveLocale(Astro.currentLocale);
             ) : (
                 <>
                     <h1>Privacy Policy</h1>
-                    <p class="text-secondary">Last Updated: August 20, 2026</p>
+                    <p class="text-secondary">Last Updated: September 8, 2026</p>
 
                     <p>
                         Trending AI ("we") values your privacy. This policy explains how we collect, use, and
@@ -259,13 +264,18 @@ const locale = resolveLocale(Astro.currentLocale);
                         We do not sell or rent your personal data. To provide our service, we share necessary data
                         with the following third parties:
                     </p>
-                    <h3>AI Service Provider (OpenAI)</h3>
+                    <h3>AI Service Providers (OpenAI, DeepSeek)</h3>
                     <p>
-                        Content you send through AI features is transmitted to OpenAI to generate responses. We
-                        currently participate in OpenAI's data sharing program, which means
-                        <strong>your inputs and outputs are used by OpenAI to improve and train their models</strong>,
+                        Content you send through AI features is transmitted to the provider of the model you have
+                        selected to generate responses. OpenAI is used by default; when you pick a DeepSeek model in
+                        the model picker, that conversation is transmitted to DeepSeek and handled under DeepSeek's
+                        privacy policy.
+                    </p>
+                    <p>
+                        We currently participate in OpenAI's data sharing program, which means
+                        <strong>inputs and outputs you send to OpenAI models are used by OpenAI to improve and train their models</strong>,
                         and are retained on their servers for about 30 days.
-                        <strong>Please do not enter sensitive, confidential, or personal information in conversations.</strong>
+                        <strong>Whichever provider you choose, please do not enter sensitive, confidential, or personal information in conversations.</strong>
                     </p>
                     <h3>Other Service Providers</h3>
                     <ul>
