@@ -18,7 +18,7 @@ const locale = resolveLocale(Astro.currentLocale);
             {locale === "zh" ? (
                 <>
                     <h1>隐私政策</h1>
-                    <p class="text-secondary">最后更新：2026 年 9 月 8 日</p>
+                    <p class="text-secondary">最后更新：2026 年 9 月 9 日</p>
 
                     <p>
                         Trending AI（以下简称"我们"）重视您的隐私。本政策说明我们在您使用 Trending AI
@@ -115,6 +115,10 @@ const locale = resolveLocale(Astro.currentLocale);
                         OpenAI 用于改进和训练其模型</strong>，并在其服务器上留存约 30 天。
                         <strong>无论选择哪家提供商，请不要在对话中输入敏感、机密或个人信息。</strong>
                     </p>
+                    <p>
+                        <strong>语音输入</strong>：使用语音输入时，录音会上传至 OpenAI 转写为文本，转写完成后音频立即从设备删除；
+                        我们的服务器不存储音频，只保留转写后的文本作为对话内容。
+                    </p>
                     <h3>其他服务商</h3>
                     <ul>
                         <li>Logto：登录认证</li>
@@ -168,7 +172,7 @@ const locale = resolveLocale(Astro.currentLocale);
             ) : (
                 <>
                     <h1>Privacy Policy</h1>
-                    <p class="text-secondary">Last Updated: September 8, 2026</p>
+                    <p class="text-secondary">Last Updated: September 9, 2026</p>
 
                     <p>
                         Trending AI ("we") values your privacy. This policy explains how we collect, use, and
@@ -276,6 +280,11 @@ const locale = resolveLocale(Astro.currentLocale);
                         <strong>inputs and outputs you send to OpenAI models are used by OpenAI to improve and train their models</strong>,
                         and are retained on their servers for about 30 days.
                         <strong>Whichever provider you choose, please do not enter sensitive, confidential, or personal information in conversations.</strong>
+                    </p>
+                    <p>
+                        <strong>Voice input</strong>: When you use voice input, the recording is uploaded to OpenAI for
+                        transcription and deleted from your device once transcribed. Our servers do not store audio;
+                        only the transcribed text is kept as part of the conversation.
                     </p>
                     <h3>Other Service Providers</h3>
                     <ul>
