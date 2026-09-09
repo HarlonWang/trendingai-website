@@ -83,8 +83,8 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>AI 功能使用记录</h3>
                     <p>
-                        当您使用 AI 对话、详细解读或深度调研功能时，我们会记录所用模型、消耗的额度与时间，
-                        用于计费和配额控制。深度调研功能还会保存您提交的调研主题与生成的报告，以便您后续查看。
+                        当您使用 AI 对话功能时，我们会记录所用模型、消耗的额度与时间，用于计费和配额控制。
+                        已下线的深度调研功能此前保存的调研主题与报告，随您的账号一并保留。
                     </p>
 
                     <h3>反馈信息</h3>
@@ -97,7 +97,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <ul>
                         <li>精确地理位置信息</li>
                         <li>通讯录、日历、文件等设备敏感数据</li>
-                        <li>支付信息（Pro 通过 GitHub Sponsors 处理，我们不接触您的支付资料）</li>
+                        <li>支付信息（Pro 订阅由 Paddle 处理，GitHub Sponsors 赞助由 GitHub 处理，我们不接触您的支付资料）</li>
                     </ul>
 
                     <h2>数据共享</h2>
@@ -122,6 +122,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>其他服务商</h3>
                     <ul>
                         <li>Logto：登录认证</li>
+                        <li>Paddle：Pro 订阅收款（我们只收到订阅状态，不接触支付资料）</li>
                         <li>Aptabase：使用统计（仅限应用 1.3.0 及更早版本，正在退出）</li>
                         <li>Resend：订阅邮件发送（含打开情况统计）</li>
                         <li>Cloudflare：服务器与数据库托管</li>
@@ -136,7 +137,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h2>数据保留</h2>
                     <ul>
                         <li>账号信息：保留至您注销账号</li>
-                        <li>AI 功能使用记录与深度调研报告：保留至您注销账号</li>
+                        <li>AI 功能使用记录（含已下线功能的历史报告）：保留至您注销账号</li>
                         <li>反馈信息：保留 12 个月</li>
                         <li>
                             使用统计：暂不设固定删除期限，长期保留用于跨年度的趋势与留存分析
@@ -245,9 +246,9 @@ const locale = resolveLocale(Astro.currentLocale);
 
                     <h3>AI Feature Usage Records</h3>
                     <p>
-                        When you use AI chat, detailed analysis, or deep research, we record the model used,
-                        credits consumed, and timestamps for billing and quota control. Deep research also saves
-                        the topic you submitted and the generated report so you can revisit it later.
+                        When you use AI chat, we record the model used, credits consumed, and timestamps for
+                        billing and quota control. Topics and reports saved by the discontinued deep research
+                        feature are retained alongside your account.
                     </p>
 
                     <h3>Feedback</h3>
@@ -260,7 +261,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <ul>
                         <li>Precise geographic location</li>
                         <li>Contacts, calendar, files, or other sensitive device data</li>
-                        <li>Payment information (Pro is handled via GitHub Sponsors; we never see your payment details)</li>
+                        <li>Payment information (Pro subscriptions are handled by Paddle and GitHub Sponsors by GitHub; we never see your payment details)</li>
                     </ul>
 
                     <h2>Data Sharing</h2>
@@ -289,6 +290,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h3>Other Service Providers</h3>
                     <ul>
                         <li>Logto: authentication</li>
+                        <li>Paddle: Pro subscription payments (we only receive subscription status, never payment details)</li>
                         <li>Aptabase: usage statistics (app 1.3.0 and earlier only; being retired)</li>
                         <li>Resend: newsletter delivery (including open tracking)</li>
                         <li>Cloudflare: server and database hosting</li>
@@ -304,7 +306,7 @@ const locale = resolveLocale(Astro.currentLocale);
                     <h2>Data Retention</h2>
                     <ul>
                         <li>Account information: retained until you delete your account</li>
-                        <li>AI feature usage records and deep research reports: retained until you delete your account</li>
+                        <li>AI feature usage records (including historical reports from discontinued features): retained until you delete your account</li>
                         <li>Feedback: retained for 12 months</li>
                         <li>
                             Usage statistics: no fixed deletion period for now — retained long term for
